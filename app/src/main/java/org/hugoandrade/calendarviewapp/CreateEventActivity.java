@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+/* 일정 작성 액티비티*/
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class CreateEventActivity extends AppCompatActivity {
 
@@ -98,6 +99,7 @@ public class CreateEventActivity extends AppCompatActivity {
         return true;
     }
 
+    /* 수정일 때 상단의 삭제 버튼 */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -114,6 +116,9 @@ public class CreateEventActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /* 일정 작성창 들어왔을 때 날짜선택부분 초기설정
+    *   처음 일정 작성일 때와 일정 수정일 때 설정값이 다르다.
+    *   (== 일정 작성과 수정이 같은 액티비티를 쓴다.)*/
     private void extractDataFromIntentAndInitialize() {
 
         mOriginalEvent = extractEventFromIntent(getIntent());
@@ -140,6 +145,7 @@ public class CreateEventActivity extends AppCompatActivity {
         }
     }
 
+    /* 실질적인 화면 구성*/
     private void initializeUI() {
         setContentView(R.layout.activity_create_event);
 
@@ -176,6 +182,7 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+        /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
         mDateTextView = findViewById(R.id.tv_date);
         mDateTextView.setText(dateFormat.format(mCalendar.getTime()));
         mDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +199,7 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+        /* 클릭하면, 일정의 색 선택가능*/
         mColorCardView = findViewById(R.id.cardView_event_color);
         mColorCardView.setCardBackgroundColor(mColor);
         mColorCardView.setOnClickListener(new View.OnClickListener() {
@@ -211,6 +219,8 @@ public class CreateEventActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+        /*일정 제목 기입*/
         mTitleView = findViewById(R.id.et_event_title);
         mTitleView.setText(mTitle);
         mIsCompleteCheckBox = findViewById(R.id.checkbox_completed);
@@ -237,6 +247,7 @@ public class CreateEventActivity extends AppCompatActivity {
         }
     }
 
+    /* 상단의 툴바 설정 스위치 같은 것 참이면 설정하고 거짓으로 설정*/
     private void setupEditMode() {
         if (isViewMode) {
             isViewMode = false;
@@ -244,6 +255,7 @@ public class CreateEventActivity extends AppCompatActivity {
         }
     }
 
+    /* 상단의 툴바 설정*/
     private void setupToolbar() {
         if (getSupportActionBar() != null) {
             if (isViewMode)
@@ -257,6 +269,7 @@ public class CreateEventActivity extends AppCompatActivity {
         }
     }
 
+    /*삭제*/
     private void delete() {
         Log.e(getClass().getSimpleName(), "delete");
 
@@ -268,6 +281,8 @@ public class CreateEventActivity extends AppCompatActivity {
 
     }
 
+    /*일정 작성 버튼*/
+/////* 여기서 mcalendar 변수 로그로 찾아다가 파베에다가 같은 형식으로 넣고 빼서 읽게하면 될수도...??*/
     private void save() {
 
         int action = mOriginalEvent != null ? ACTION_EDIT : ACTION_CREATE;
@@ -293,6 +308,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     }
 
+    /* 선택된 날짜시간 받아옴 */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SET_DATE_AND_TIME_REQUEST_CODE) {

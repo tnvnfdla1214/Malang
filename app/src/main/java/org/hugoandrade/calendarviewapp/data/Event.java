@@ -9,6 +9,7 @@ import java.util.Calendar;
  * Created by Hugo Andrade on 25/03/2018.
  */
 
+/* 여기에 getter setter 박고 파베랑 연동하면 쓸수 있지 않을까? */
 public class Event implements Parcelable {
 
     private String mID;

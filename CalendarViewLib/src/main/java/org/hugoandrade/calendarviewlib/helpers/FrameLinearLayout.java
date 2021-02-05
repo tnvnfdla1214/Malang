@@ -18,7 +18,7 @@ import android.view.ViewOutlineProvider;
 import android.widget.LinearLayout;
 
 import org.hugoandrade.calendarviewlib.R;
-
+/* xml_grid_item에서 날짜 하나하나의 직사각형 모양*/
 public class FrameLinearLayout extends LinearLayout {
 
     @SuppressWarnings("unused")

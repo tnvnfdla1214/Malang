@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+/* 커스텀 날짜 다이얼로그 */
 public class CalendarDialog {
 
     @SuppressWarnings("unused")
@@ -96,6 +97,7 @@ public class CalendarDialog {
         }, delayMillis);
     }
 
+    /* 날짜 창 빌드*/
     private void buildView() {
         mView = View.inflate(mContext, R.layout.dialog_calendar, null);
         mViewPager = mView.findViewById(R.id.viewPager_calendar);
@@ -117,6 +119,7 @@ public class CalendarDialog {
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setCurrentItem(mViewPagerAdapter.initialPageAndDay.first);
 
+        /* 다른 곳 누르면 닫힘 */
         mView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -128,6 +131,7 @@ public class CalendarDialog {
         mAlertDialog = new AlertDialog.Builder(mContext).create();
     }
 
+    /* 이거 뭘라나*/
     private void delayedShow() {
         if (mAlertDialog.getWindow() != null)
             mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -171,6 +175,7 @@ public class CalendarDialog {
         view.setScaleY(scale);
     }
 
+    /* 날짜 창을 뷰페이저 어댑터로 나열한다.*/
     private class ViewPagerAdapter extends PagerAdapter {
 
         private static final String DEFAULT_MIN_DATE = "01/01/1992";
@@ -201,6 +206,7 @@ public class CalendarDialog {
             final Calendar day = (Calendar) initialPageAndDay.second.clone();
             day.add(Calendar.DAY_OF_MONTH, position - initialPageAndDay.first);
 
+/////////// /* R.layout.pager_calendar_day : 날짜를 클릭했을 때 나오는 창 */
             LayoutInflater inflater = LayoutInflater.from(collection.getContext());
             View view = inflater.inflate(R.layout.pager_calendar_day, collection, false);
             view.setTag(position);
@@ -306,6 +312,7 @@ public class CalendarDialog {
 
     }
 
+    /* 날짜 창안의 일정을 어댑터로 나열한다.*/
     private class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdapter.ViewHolder>{
 
         private final List<Event> mCalendarEvents;
@@ -317,6 +324,7 @@ public class CalendarDialog {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater vi = LayoutInflater.from(parent.getContext());
+/////////////* R.layout.list_item_calendar_event : 날짜를 클릭했을 때 나오는 창에서 일정 item */
             View v = vi.inflate(R.layout.list_item_calendar_event, parent, false);
             return new ViewHolder(v);
         }
@@ -359,6 +367,7 @@ public class CalendarDialog {
         }
     }
 
+    /* 일정이 클릭되는 것, 일정이 만들어지는 것 리스너*/
     public interface OnCalendarDialogListener {
         void onEventClick(Event event);
         void onCreateEvent(Calendar calendar);
@@ -373,6 +382,7 @@ public class CalendarDialog {
         return date1.before(date2) ? -1 : 1;
     }
 
+    /* 다이얼로그의 빌더 */
     public static class Builder  {
 
         private final CalendarDialogParams P;
@@ -409,6 +419,7 @@ public class CalendarDialog {
         }
     }
 
+    /* 날짜 창의 날짜, 일정 리스트, 리스너*/
     private static class CalendarDialogParams {
 
         Context mContext;

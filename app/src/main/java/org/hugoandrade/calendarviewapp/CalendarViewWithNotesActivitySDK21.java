@@ -66,6 +66,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
                 }
             }
         });
+
+        /* 달력에서 일정의 유무에 다른 날짜 클릭 리스너*/
         mCalendarView.setOnItemClickedListener(new CalendarView.OnItemClickListener() {
             @Override
             public void onItemClicked(List<CalendarView.CalendarObject> calendarObjects,
@@ -82,10 +84,12 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
             }
         });
 
+/////////*일정 나열*/
         for (Event e : mEventList) {
             mCalendarView.addCalendarObject(parseCalendarObject(e));
         }
 
+        /* 상단바 */
         if (getSupportActionBar() != null) {
             int month = mCalendarView.getCurrentDate().get(Calendar.MONTH);
             int year = mCalendarView.getCurrentDate().get(Calendar.YEAR);
@@ -93,6 +97,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
             getSupportActionBar().setSubtitle(Integer.toString(year));
         }
 
+        /* 일정 추가 버튼*/
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +106,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
             }
         });
 
+        /* 다이얼로그의 클릭리스너*/
         mCalendarDialog = CalendarDialog.Builder.instance(this)
                 .setEventList(mEventList)
                 .setOnItemClickListener(new CalendarDialog.OnCalendarDialogListener() {
@@ -152,6 +158,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /* 다른 액티비티에서 행동의 결과에 따른*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CREATE_EVENT_REQUEST_CODE) {
@@ -207,6 +214,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /* 클릭한 날짜와 이전의 날짜를 비교*/
     public static int diffYMD(Calendar date1, Calendar date2) {
         if (date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
                 date1.get(Calendar.MONTH) == date2.get(Calendar.MONTH) &&
@@ -216,6 +224,9 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
         return date1.before(date2) ? -1 : 1;
     }
 
+    /* 여기서 일정의 데이터를 object로 바꿔서
+    171번째 줄  mCalendarView.addCalendarObject(parseCalendarObject(event));
+    로 달력에 반영*/
     private static CalendarView.CalendarObject parseCalendarObject(Event event) {
         return new CalendarView.CalendarObject(
                 event.getID(),

@@ -14,7 +14,7 @@ import org.hugoandrade.calendarviewlib.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/* xml_grid_item에서 일정바 만들면 달력에서 일정바 모양 관여 */
 public class MultipleTriangleView extends View {
 
     private class TriangleAttr {

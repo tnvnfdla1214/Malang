@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.hugoandrade.calendarviewapp">
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,27 +16,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".SimpleCalendarViewActivity"
-            android:label="@string/title_activity_simple_calendar_view"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.hugoandrade.calendarviewapp.MainActivity" />
-        </activity>
-        <activity
-            android:name=".ToolbarCalendarViewActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".MiniCalendarViewPopupActivity"
-            android:label="@string/title_activity_mini_calendar_view_popup"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.hugoandrade.calendarviewapp.MainActivity" />
         </activity>
         <activity
             android:name=".CalendarViewWithNotesActivity"

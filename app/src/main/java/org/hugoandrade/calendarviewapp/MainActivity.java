@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+/* 여기서는 별거 없이 안드로이드 버전만 체크한다 생각하면 될 듯*/
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -39,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
         rvOptions.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         OptionsAdapter adapter = new OptionsAdapter(
-                new Option("Simple CalendarView", "Default CalendarView"),
-                new Option("Toolbar & CalendarView sync", "The month-year header on the toolbar"),
-                new Option("Mini CalendarView", "CalendarView popup"),
                 new Option("CalendarView with notes", "Add notes to the calendar view")
         );
         adapter.setOnClickListener(new OptionsAdapter.OnClickListener() {
@@ -50,15 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 Context context = MainActivity.this;
                 switch (position) {
                     case 0:
-                        startActivity(SimpleCalendarViewActivity.makeIntent(context));
-                        break;
-                    case 1:
-                        startActivity(ToolbarCalendarViewActivity.makeIntent(context));
-                        break;
-                    case 2:
-                        startActivity(MiniCalendarViewPopupActivity.makeIntent(context));
-                        break;
-                    case 3:
+
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             startActivity(CalendarViewWithNotesActivitySDK21.makeIntent(context));
                         }

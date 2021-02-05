@@ -3,6 +3,7 @@ package org.hugoandrade.calendarviewlib.helpers;
 import java.util.Calendar;
 import java.util.Date;
 
+/* 잘 모르겠음 */
 public class YMDCalendar {
 
     public final int day;

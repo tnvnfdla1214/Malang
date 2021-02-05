@@ -189,8 +189,11 @@ public class CalendarView extends FrameLayout {
         a.recycle();
     }
 
+
+/////* 달력 xml 출력 */
     private void initChildViews(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
+/////////* R.layout.xml_calendar_view : 일정 입력 시 시간 선택하는 작은 캘린더 창, 처음의 달력 전체화면 */
         inflater.inflate(R.layout.xml_calendar_view, this, true);
 
         mViewPager = findViewById(R.id.view_pager);
@@ -249,6 +252,8 @@ public class CalendarView extends FrameLayout {
         return YMDCalendar.toCalendar(mSelectedDate);
     }
 
+
+/////* 여기서 받아다가 일정 표시하면 될것 같음*/
     public void addCalendarObject(CalendarObject calendarObject) {
         addCalendarObjectToSparseArray(calendarObject);
         mCalendarPagerAdapter.notifyDataSetChanged();
@@ -421,6 +426,9 @@ public class CalendarView extends FrameLayout {
         super.invalidate();
     }
 
+
+
+/////* 데이터 변화해서 이 어댑터로 넣는다.*/
     private class CalendarPagerAdapter extends PagerAdapter {
 
         private final String TAG = getClass().getSimpleName();
@@ -495,6 +503,7 @@ public class CalendarView extends FrameLayout {
             Calendar month = (Calendar) mInitialMonth.clone();
             month.add(Calendar.MONTH, position - mInitialPage);
 
+/////////* R.layout.xml_calendar_container : 일정 입력 시 시간 선택하는 작은 캘린더 창을 구성하는 캘린더, 처음의 달력 전체화면 */
             LayoutInflater vi = LayoutInflater.from(container.getContext());
             View monthContainer = vi.inflate(R.layout.xml_calendar_container, container, false);
 
@@ -559,7 +568,7 @@ public class CalendarView extends FrameLayout {
             SelectedTextView tvDay = view.findViewById(R.id.tv_calendar_day);
             MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
 
-            // Set Notes
+////////////// Set Notes
             vNotes.setColor(Color.TRANSPARENT);
             vNotes.setTriangleBackgroundColor(Color.TRANSPARENT);
             int i = 0;
@@ -572,7 +581,7 @@ public class CalendarView extends FrameLayout {
                     break;
             }
 
-            // Set day TextView (default)
+////////////// Set day TextView (default)
             tvDay.setText(String.valueOf(day.day));
             tvDay.setTextColor(mAttributes.get(Attr.dayTextColor));
             tvDay.setSelectedColor(Color.TRANSPARENT);

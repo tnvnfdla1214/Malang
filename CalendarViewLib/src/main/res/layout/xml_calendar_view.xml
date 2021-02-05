@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--달력의 상단 부분에 달이 왼쪽 오른쪽으로 이동하는 것 메인의 달력에서는 안 보인 가려진듯
+                                                        일정 작성의 달력에서는 보임-->
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
