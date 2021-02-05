@@ -3,7 +3,12 @@ package org.hugoandrade.calendarviewapp.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.hugoandrade.calendarviewlib.helpers.YMDCalendar;
+
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Hugo Andrade on 25/03/2018.
@@ -25,6 +30,18 @@ public class Event implements Parcelable {
         mColor = color;
         this.isCompleted = isCompleted;
     }
+
+
+    public Map<String, Object> getScheduleInfo(){
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("ScheduleModel_Title", mTitle);
+        docData.put("ScheduleModel_Date", mDate);
+        docData.put("ScheduleModel_Color", mColor);
+        docData.put("ScheduleModel_Id", mID);
+        docData.put("ScheduleModel_isCompleted", isCompleted);
+        return  docData;
+    }
+
 
     public String getID() {
         return mID;

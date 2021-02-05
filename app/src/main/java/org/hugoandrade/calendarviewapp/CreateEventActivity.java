@@ -7,11 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +20,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.hugoandrade.calendarviewapp.data.Event;
 import org.hugoandrade.calendarviewapp.utils.ColorUtils;
@@ -59,6 +64,9 @@ public class CreateEventActivity extends AppCompatActivity {
     private TextView mDateTextView;
     private CardView mColorCardView;
     private View mHeader;
+
+
+
 
 
     public static Intent makeIntent(Context context, @NonNull Calendar calendar) {
@@ -161,6 +169,7 @@ public class CreateEventActivity extends AppCompatActivity {
         mHeader.setVisibility(View.VISIBLE);
 
         setupToolbar();
+
 
         View tvSave = mHeader.findViewById(R.id.tv_save);
         tvSave.setOnClickListener(new View.OnClickListener() {
@@ -297,6 +306,13 @@ public class CreateEventActivity extends AppCompatActivity {
                 mIsCompleteCheckBox.isChecked()
         );
 
+/////////* 저장 버튼 눌렸을 때 파이어베이스에 넣는다.*/
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        String calendar_Id = firebaseFirestore.collection("SCHEDULE").document().getId();
+        final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
+        storeUpload(documentReference, mOriginalEvent);
+
+
 
         setResult(RESULT_OK, new Intent()
                 .putExtra(INTENT_EXTRA_ACTION, action)
@@ -306,6 +322,20 @@ public class CreateEventActivity extends AppCompatActivity {
         if (action == ACTION_CREATE)
             overridePendingTransition(R.anim.stay, R.anim.slide_out_down);
 
+    }
+
+    /*/*등록 함수*/
+    private void storeUpload(DocumentReference documentReference, final Event mOriginalEvent) {
+        documentReference.set(mOriginalEvent.getScheduleInfo())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
     }
 
     /* 선택된 날짜시간 받아옴 */

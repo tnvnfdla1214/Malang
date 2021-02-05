@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "153248216854",
+    "project_id": "calendar-set-a387a",
+    "storage_bucket": "calendar-set-a387a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153248216854:android:09de9c0a2d808c54ba8237",
+        "android_client_info": {
+          "package_name": "org.hugoandrade.calendarviewapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153248216854-n2v32aluofc058o8776u77n1ls0n3ivb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.hugoandrade.calendarviewapp",
+            "certificate_hash": "f46837e3e52e595462ec1de50f3615ada79e98e3"
+          }
+        },
+        {
+          "client_id": "153248216854-oji6oijpa80ee667ul5mhlrn4rgfp88c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmfTXDuGxMdZ1R2XFTij0wCP5p33bRr88"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153248216854-oji6oijpa80ee667ul5mhlrn4rgfp88c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

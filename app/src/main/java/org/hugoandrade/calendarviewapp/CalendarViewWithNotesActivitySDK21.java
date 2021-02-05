@@ -6,10 +6,23 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,10 +30,12 @@ import android.view.View;
 import org.hugoandrade.calendarviewapp.data.Event;
 import org.hugoandrade.calendarviewapp.uihelpers.CalendarDialog;
 import org.hugoandrade.calendarviewlib.CalendarView;
+import org.hugoandrade.calendarviewlib.helpers.YMDCalendar;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +48,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
     private CalendarView mCalendarView;
     private CalendarDialog mCalendarDialog;
 
-    private List<Event> mEventList = new ArrayList<>();
+    private final List<Event> mEventList = new ArrayList<>();
+    private ArrayList<Event> schedule;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, CalendarViewWithNotesActivitySDK21.class);
@@ -83,6 +99,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
                 }
             }
         });
+
 
 /////////*일정 나열*/
         for (Event e : mEventList) {

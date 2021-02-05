@@ -35,7 +35,7 @@
             android:fontFamily="sans-serif-condensed"
             android:text="@string/new_event"/>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_colors"
             android:layout_gravity="center_horizontal"
             android:layout_width="312dp"

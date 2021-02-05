@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--실제로 보이는 달력의 완성형-->
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -104,4 +104,4 @@
         app:layout_constraintTop_toBottomOf="@id/tv_weekday_4"
         app:layout_constraintVertical_weight="1" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

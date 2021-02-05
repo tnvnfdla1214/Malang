@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardView_outer"
         android:layout_width="44dp"
         android:layout_height="44dp"
@@ -13,7 +13,7 @@
         app:cardElevation="0dp"
         app:cardCornerRadius="22dp">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cardView_inner"
             android:layout_gravity="center"
             android:layout_width="40dp"
@@ -22,6 +22,6 @@
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
             />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

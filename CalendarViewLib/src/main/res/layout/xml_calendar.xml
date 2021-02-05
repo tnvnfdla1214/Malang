@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--가장 작은 날짜가 모여 달력-->
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_calendar_container"
@@ -563,5 +563,5 @@
         app:layout_constraintTop_toBottomOf="@+id/day_item_5_7"
         app:layout_constraintVertical_chainStyle="spread" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
