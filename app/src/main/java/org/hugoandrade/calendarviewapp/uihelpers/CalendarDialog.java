@@ -127,7 +127,6 @@ public class CalendarDialog {
                 return false;
             }
         });
-
         mAlertDialog = new AlertDialog.Builder(mContext).create();
     }
 
@@ -142,7 +141,8 @@ public class CalendarDialog {
         display.getSize(size);
 
         mAlertDialog.setCanceledOnTouchOutside(true);
-
+//////////////////////////////////////////////////////////////////////////////////////////////
+        mAlertDialog.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
         //alert.setContentView(view);
         mAlertDialog.show();
         mAlertDialog.setContentView(mView);

@@ -101,6 +101,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
         });
 
 
+
 /////////*일정 나열*/
         for (Event e : mEventList) {
             mCalendarView.addCalendarObject(parseCalendarObject(e));
@@ -123,7 +124,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
             }
         });
 
-        /* 다이얼로그의 클릭리스너*/
+        /* 다이얼로그 내부의 클릭리스너*/
         mCalendarDialog = CalendarDialog.Builder.instance(this)
                 .setEventList(mEventList)
                 .setOnItemClickListener(new CalendarDialog.OnCalendarDialogListener() {
