@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.hugoandrade.calendarviewapp.data.Event;
 import org.hugoandrade.calendarviewapp.utils.ColorUtils;
+import org.hugoandrade.calendarviewlib.helpers.YMDCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,6 +52,7 @@ public class CreateEventActivity extends AppCompatActivity {
             = new SimpleDateFormat("EEEE, dd/MM    HH:mm", Locale.getDefault());
 
     private Event mOriginalEvent;
+
 
     private Calendar mCalendar;
     private String mTitle;
@@ -298,16 +300,30 @@ public class CreateEventActivity extends AppCompatActivity {
         String id = mOriginalEvent != null ? mOriginalEvent.getID() : generateID();
         String rawTitle = mTitleView.getText().toString().trim();
 
+        YMDCalendar ymdCalendar = new YMDCalendar(mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH)+1,
+                mCalendar.get(Calendar.DATE));
+        Calendar calendar = YMDCalendar.toCalendar(ymdCalendar);
+        Log.d("캘린더더","ymdCalendar : " + ymdCalendar);
+        Log.d("캘린더더","calendar : " + calendar);
+
+
         mOriginalEvent = new Event(
                 id,
                 rawTitle.isEmpty() ? null : rawTitle,
-                mCalendar,
+                mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH),
+                mCalendar.get(Calendar.DATE),
                 mColor,
                 mIsCompleteCheckBox.isChecked()
         );
 
+        Log.d("캘린더더","mCalendar : " + mCalendar.get(Calendar.YEAR));
+        Log.d("캘린더더","mCalendar : " + mCalendar.get(Calendar.MONTH));
+        Log.d("캘린더더","mCalendar : " + mCalendar.get(Calendar.DATE));
 /////////* 저장 버튼 눌렸을 때 파이어베이스에 넣는다.*/
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
         String calendar_Id = firebaseFirestore.collection("SCHEDULE").document().getId();
         final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
         storeUpload(documentReference, mOriginalEvent);

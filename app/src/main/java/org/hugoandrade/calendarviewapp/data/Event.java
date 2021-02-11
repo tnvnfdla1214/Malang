@@ -23,6 +23,12 @@ public class Event implements Parcelable {
     private int mColor;
     private boolean isCompleted;
 
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+
+    public Event(){}
+
     public Event(String id, String title, Calendar date, int color, boolean isCompleted) {
         mID = id;
         mTitle = title;
@@ -31,11 +37,25 @@ public class Event implements Parcelable {
         this.isCompleted = isCompleted;
     }
 
+    public Event(String id, String title, int mYear, int mMonth, int mDay, int color, boolean isCompleted) {
+        mID = id;
+        mTitle = title;
+        this.mYear = mYear;
+        this.mMonth = mMonth;
+        this.mDay = mDay;
+        mColor = color;
+        this.isCompleted = isCompleted;
+    }
+
+
+
 
     public Map<String, Object> getScheduleInfo(){
         Map<String, Object> docData = new HashMap<>();
         docData.put("ScheduleModel_Title", mTitle);
-        docData.put("ScheduleModel_Date", mDate);
+        docData.put("ScheduleModel_Year", mYear);
+        docData.put("ScheduleModel_Month", mMonth);
+        docData.put("ScheduleModel_Day", mDay);
         docData.put("ScheduleModel_Color", mColor);
         docData.put("ScheduleModel_Id", mID);
         docData.put("ScheduleModel_isCompleted", isCompleted);

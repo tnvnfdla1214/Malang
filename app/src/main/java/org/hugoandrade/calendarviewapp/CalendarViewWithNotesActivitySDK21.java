@@ -7,15 +7,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -35,7 +34,6 @@ import org.hugoandrade.calendarviewlib.helpers.YMDCalendar;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,7 +47,9 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
     private CalendarDialog mCalendarDialog;
 
     private final List<Event> mEventList = new ArrayList<>();
-    private ArrayList<Event> schedule;
+
+    private ListenerRegistration listenerUsers;
+    private FirebaseFirestore Firestore= FirebaseFirestore.getInstance();
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, CalendarViewWithNotesActivitySDK21.class);
@@ -103,6 +103,49 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
 
 
 /////////*일정 나열*/
+        listenerUsers = Firestore.collection("SCHEDULE")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) { return; }
+                        for (QueryDocumentSnapshot doc : value) {
+
+
+                            Event event = new Event(
+                                    doc.getData().get("ScheduleModel_Id").toString(),
+                                    doc.getData().get("ScheduleModel_Title").toString(),
+                                    YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Day").toString()),
+                                            Integer.parseInt(doc.getData().get("ScheduleModel_Month").toString()),
+                                            Integer.parseInt(doc.getData().get("ScheduleModel_Year").toString())
+                                            )),
+                                    Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
+                                    Boolean.getBoolean(doc.getData().get("ScheduleModel_isCompleted").toString())
+                            );
+                            Log.d("민규", " event : " + event);
+                            Log.d("민규", " event.getTitle() : " + event.getID());
+                            Log.d("민규", " event.getTitle() : " + event.getTitle());
+                            Log.d("민규", " event.getTitle() : " + event.getDate());
+                            Log.d("민규", " event.getTitle() : " + event.getColor());
+                            Log.d("민규", " event.getTitle() : " + event.getScheduleInfo());
+
+                            mEventList.add(event);
+                            mCalendarView.addCalendarObject(parseCalendarObject(event));
+                            //mEventList.add(event);
+//                            for (Event ev : mEventList) {
+//                                mCalendarView.addCalendarObject(parseCalendarObject(ev));
+//                            }
+                            //EventList.put(1, doc.toObject(Event.class));
+                            //Log.d("민규", " EventList : " + EventList);
+                        }
+
+//                        for(int i = 0; i< mEventList.size();i++){
+//                            Log.d("민규", " mEventList :  " + mEventList.get(i));
+//                        }
+                    }
+                });
+
+
         for (Event e : mEventList) {
             mCalendarView.addCalendarObject(parseCalendarObject(e));
         }
