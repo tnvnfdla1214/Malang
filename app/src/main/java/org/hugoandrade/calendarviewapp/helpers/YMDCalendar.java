@@ -1,4 +1,4 @@
-package org.hugoandrade.calendarviewlib.helpers;
+package org.hugoandrade.calendarviewapp.helpers;
 
 import java.util.Calendar;
 import java.util.Date;

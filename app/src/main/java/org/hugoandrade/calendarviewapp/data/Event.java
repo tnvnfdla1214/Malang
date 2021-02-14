@@ -3,10 +3,7 @@ package org.hugoandrade.calendarviewapp.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.hugoandrade.calendarviewlib.helpers.YMDCalendar;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

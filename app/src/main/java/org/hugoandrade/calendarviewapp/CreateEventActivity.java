@@ -27,8 +27,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.hugoandrade.calendarviewapp.data.Event;
+import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import org.hugoandrade.calendarviewapp.utils.ColorUtils;
-import org.hugoandrade.calendarviewlib.helpers.YMDCalendar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

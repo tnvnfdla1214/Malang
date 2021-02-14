@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.hugoandrade.calendarviewapp.uihelpers.TranslateAnimationBuilder;
-import org.hugoandrade.calendarviewlib.CalendarView;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;

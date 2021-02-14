@@ -8,7 +8,6 @@ import android.view.View;
 
 
 import org.hugoandrade.calendarviewapp.uihelpers.NumberPicker;
-import org.hugoandrade.calendarviewlib.CalendarView;
 
 import java.util.Calendar;
 import java.util.List;

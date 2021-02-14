@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -27,9 +29,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.hugoandrade.calendarviewapp.data.Event;
+import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import org.hugoandrade.calendarviewapp.uihelpers.CalendarDialog;
-import org.hugoandrade.calendarviewlib.CalendarView;
-import org.hugoandrade.calendarviewlib.helpers.YMDCalendar;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -51,6 +52,14 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
     private ListenerRegistration listenerUsers;
     private FirebaseFirestore Firestore= FirebaseFirestore.getInstance();
 
+    private long mShakeTime;
+    private int mShakeCount = 0;
+    private static final int SHAKE_SKIP_TIME = 500;
+    private static final float SKAKE_THRESHOLD_GRAVITY = 2.7F;
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, CalendarViewWithNotesActivitySDK21.class);
     }
@@ -58,6 +67,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         mShortMonths = new DateFormatSymbols().getShortMonths();
 

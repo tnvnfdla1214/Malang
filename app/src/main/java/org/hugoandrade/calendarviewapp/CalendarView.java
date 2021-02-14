@@ -1,7 +1,6 @@
-package org.hugoandrade.calendarviewlib;
+package org.hugoandrade.calendarviewapp;
 
-import android.content.ClipData;
-import android.content.ClipDescription;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -12,10 +11,16 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -25,23 +30,21 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import org.hugoandrade.calendarviewlib.helpers.FrameLinearLayout;
-import org.hugoandrade.calendarviewlib.helpers.MultipleTriangleView;
-import org.hugoandrade.calendarviewlib.helpers.SelectedTextView;
-import org.hugoandrade.calendarviewlib.helpers.YMDCalendar;
+
+import org.hugoandrade.calendarviewapp.helpers.FrameLinearLayout;
+import org.hugoandrade.calendarviewapp.helpers.MultipleTriangleView;
+import org.hugoandrade.calendarviewapp.helpers.SelectedTextView;
+import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 
 import java.lang.reflect.Field;
 import java.text.DateFormatSymbols;
@@ -54,6 +57,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static android.content.Context.SENSOR_SERVICE;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal", "WeakerAccess"})
 public class CalendarView extends FrameLayout {
@@ -85,6 +90,17 @@ public class CalendarView extends FrameLayout {
     private YMDCalendar mCurrentDate = new YMDCalendar(Calendar.getInstance());
     private YMDCalendar mSelectedDate = new YMDCalendar(Calendar.getInstance());
 
+
+    private long mShakeTime;
+    private int mShakeCount = 0;
+    private static final int SHAKE_SKIP_TIME = 500;
+    private static final float SKAKE_THRESHOLD_GRAVITY = 2.7F;
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private FragmentTransaction ft;
+    private FragmentActivity fragmentActivity;
+    private Activity activity;
     /**
      * Map of Calendar Object by Month
      */
@@ -118,9 +134,17 @@ public class CalendarView extends FrameLayout {
     public CalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        FragmentTransaction ft = ((FragmentActivity)context).getChildFragmentManager().beginTransaction();
+        ft.replace(R.id.layout_main, ExampleFragment.newInstance(ExampleFragment.NODIR, ExampleFragment.sAnimationStyle));
+        ft.commit();
+
+        mSensorManager = (SensorManager) ((AppCompatActivity)context).getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         readAttributes(context, attrs);
 
         initChildViews(context);
+
     }
 
     private void readAttributes(Context context, AttributeSet attrs) {
@@ -193,6 +217,8 @@ public class CalendarView extends FrameLayout {
                 a.getInt(R.styleable.CalendarView_offset_day, Calendar.SUNDAY));
         mAttributes.put(Attr.startingWeekDay,
                 a.getInt(R.styleable.CalendarView_starting_weekday, Calendar.MONDAY));
+
+
 
         a.recycle();
     }
@@ -459,7 +485,7 @@ public class CalendarView extends FrameLayout {
                 R.id.day_item_4_5, R.id.day_item_4_6, R.id.day_item_4_7,
 
                 R.id.day_item_5_1, R.id.day_item_5_2, R.id.day_item_5_3, R.id.day_item_5_4,
-                R.id.day_item_5_5, R.id.day_item_5_6, R.id.day_item_5_7,
+               R.id.day_item_5_5, R.id.day_item_5_6, R.id.day_item_5_7,
 
                 R.id.day_item_6_1, R.id.day_item_6_2, R.id.day_item_6_3, R.id.day_item_6_4,
                 R.id.day_item_6_5, R.id.day_item_6_6, R.id.day_item_6_7
@@ -549,6 +575,7 @@ public class CalendarView extends FrameLayout {
             view.findViewById(R.id.ll_calendar_container)
                     .setBackgroundColor(mAttributes.get(Attr.contentBackgroundColor));
 
+            /* getDayViewList 날짜 촤르르륵 */
             List<View> viewList = getDayViewList(view);
             List<YMDCalendar> dayList = getDayList(month);
             SparseArray<List<CalendarObject>> mObjectsByDayMap = getCalendarObjectsOfMonthByDay(month);
@@ -580,6 +607,22 @@ public class CalendarView extends FrameLayout {
             final FrameLinearLayout container = (FrameLinearLayout) view;
             final SelectedTextView tvDay = view.findViewById(R.id.tv_calendar_day);
             MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
+
+
+
+
+
+
+
+//            ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.layout_main, ExampleFragment.newInstance(ExampleFragment.NODIR, ExampleFragment.sAnimationStyle));
+//            ft.commit();
+//
+//            SensorManager mSensorManager = (SensorManager) Activity.getSystemService(SENSOR_SERVICE);
+//            Sensor mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+
+
 
 
 ////////////// Set Notes
@@ -670,6 +713,111 @@ public class CalendarView extends FrameLayout {
                             YMDCalendar day = CalendardayList.get(i);
                             tvDay.setText(String.valueOf(day.day));
                             final FrameLinearLayout container = (FrameLinearLayout)viewCalendarList.get(i);
+
+//                            viewCalendarList.get(i).setOnTouchListener(new OnTouchListener() {
+//                                @Override
+//                                public boolean onTouch(View view, MotionEvent motionEvent) {
+//                                    if (isOffsetDay) {
+//                                        tvDay.setTextColor(mAttributes.get(Attr.offsetDayTextColor));
+//                                    } else {
+//                                        tvDay.setTextColor(mAttributes.get(Attr.selectedDayTextColor));
+//                                    }
+//                                    container.setFrameColor(mAttributes.get(Attr.selectedDayBorderColor));
+//                                    container.setBackgroundColor(mAttributes.get(Attr.selectedDayBackgroundColor));
+//                                    return false;
+//                                }
+//                            });
+
+                            /*드래그 리스너*/
+//                            viewCalendarList.get(i).setOnDragListener(new OnDragListener() {
+//                                @Override
+//                                public boolean onDrag(View view, DragEvent dragEvent) {
+////                                    if (isOffsetDay) {
+////                                        tvDay.setTextColor(mAttributes.get(Attr.offsetDayTextColor));
+////                                    } else {
+////                                        tvDay.setTextColor(mAttributes.get(Attr.selectedDayTextColor));
+////                                    }
+////                                    container.setFrameColor(mAttributes.get(Attr.selectedDayBorderColor));
+////                                    container.setBackgroundColor(mAttributes.get(Attr.selectedDayBackgroundColor));
+//
+//                                    //이벤트를 받음
+//
+//                                    switch(dragEvent.getAction()){
+//
+//                                        //드래그가 시작되면
+//                                        case DragEvent.ACTION_DRAG_STARTED:
+//                                            //클립 설명이 텍스트면
+//                                            if(dragEvent.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
+//                                                //btn.setText("Drop OK");//버튼의 글자를 바꿈
+//                                                return true;
+//                                            }else{//인텐트의 경우 이쪽으로 와서 드래그를 받을 수가 없다.
+//                                                return false;
+//                                            }
+//                                        //드래그가 뷰의 경계안으로 들어오면
+//                                        case DragEvent.ACTION_DRAG_ENTERED:
+//                                            //btn.setText("Enter");//버튼 글자 바꿈
+//                                            return true;
+//
+//                                        //드래그가 뷰의 경계밖을 나가면
+//                                        case DragEvent.ACTION_DRAG_EXITED:
+//                                            //btn.setText("Exit");//버튼 글자 바꿈
+//                                            return true;
+//
+//                                        //드래그가 드롭되면
+//                                        case DragEvent.ACTION_DROP:
+//                                            //클립데이터의 값을 가져옴
+//                                            String text = dragEvent.getClipData().getItemAt(0).getText().toString();
+//                                            Log.d("캘린더","text : " + text);
+//                                            //btn.setText(text);
+//                                            if (isOffsetDay) {
+//                                                tvDay.setTextColor(mAttributes.get(Attr.offsetDayTextColor));
+//                                            } else {
+//                                                tvDay.setTextColor(mAttributes.get(Attr.selectedDayTextColor));
+//                                            }
+//                                            container.setFrameColor(mAttributes.get(Attr.selectedDayBorderColor));
+//                                            container.setBackgroundColor(mAttributes.get(Attr.selectedDayBackgroundColor));
+//
+//                                            return true;
+//
+////                                        //드래그 성공 취소 여부에 상관없이 모든뷰에게
+////                                        case DragEvent.ACTION_DRAG_ENDED:
+////                                            if(dragEvent.getResult()){//드래그 성공시
+////                                                Toast.makeText(DragButton.this, "Drag & Drop 완료", 0).show();
+////                                            }else{//드래그 실패시
+////                                                btn.setText("Target");
+////                                            }
+////                                            return true;
+//                                    }
+//                                    return true;
+//                                }
+//                            });
+
+                            /*드래그 앤드롭*//*
+                            // Create a new ClipData.Item from the ImageView object's tag
+                            ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
+
+                            // Create a new ClipData using the tag as a label, the plain text MIME type, and
+                            // the already-created item. This will create a new ClipDescription object within the
+                            // ClipData, and set its MIME type entry to "text/plain"
+                            ClipData dragData = new ClipData(
+                                    (CharSequence) view.getTag(),
+                                    new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN },
+                                    item);
+
+                            // Instantiates the drag shadow builder.
+                            View.DragShadowBuilder myShadow = new MyDragShadowBuilder(container);
+
+                            // Starts the drag
+
+                            view.startDrag(dragData,  // the data to be dragged
+                                    myShadow,  // the drag shadow builder
+                                    null,      // no need to use local data
+                                    0          // flags (not currently used, set to 0)
+                            );
+                            */
+
+
+
 
                         }
 
@@ -841,6 +989,7 @@ public class CalendarView extends FrameLayout {
         private List<View> getDayViewList(View monthView) {
             List<View> dayViewList = new ArrayList<>();
 
+            /* dayViewIDs 1,2,3,4,....*/
             for (int id : dayViewIDs)
                     dayViewList.add(monthView.findViewById(id));
 
@@ -1326,4 +1475,33 @@ public class CalendarView extends FrameLayout {
         }
         return text;
     }
+
+    //흔들면 회전
+    public void onSensorChanged(SensorEvent event) {
+        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            float axisX = event.values[0];
+            float axisY = event.values[1];
+            float axisZ = event.values[2];
+
+            float gravityX = axisX / SensorManager.GRAVITY_EARTH;
+            float gravityY = axisY / SensorManager.GRAVITY_EARTH;
+            float gravityZ = axisZ / SensorManager.GRAVITY_EARTH;
+
+            Float f = gravityX * gravityX + gravityY * gravityY + gravityZ * gravityZ;
+            double squaredD = Math.sqrt(f.doubleValue());
+            float gForce = (float) squaredD;
+            if(gForce > SKAKE_THRESHOLD_GRAVITY){
+                long currentTime = System.currentTimeMillis();
+                if(mShakeTime + SHAKE_SKIP_TIME > currentTime){
+                    return;
+                }
+                mShakeTime = currentTime;
+                ExampleFragment mf = (ExampleFragment) fragmentActivity.getSupportFragmentManager().findFragmentById(R.id.layout_main);
+                //왼쪽으로 돌리기
+                mf.onButtonLeft();
+                //mf.setAnimationStyleText();
+            }
+        }
+    }
+
 }

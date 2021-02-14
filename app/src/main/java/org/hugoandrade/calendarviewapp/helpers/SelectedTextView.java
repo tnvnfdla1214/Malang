@@ -1,4 +1,4 @@
-package org.hugoandrade.calendarviewlib.helpers;
+package org.hugoandrade.calendarviewapp.helpers;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,7 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 
-import org.hugoandrade.calendarviewlib.R;
+import org.hugoandrade.calendarviewapp.R;
 
 /* xml_grid_item에서 날짜 */
 public class SelectedTextView extends androidx.appcompat.widget.AppCompatTextView {

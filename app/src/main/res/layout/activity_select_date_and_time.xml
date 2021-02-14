@@ -27,7 +27,7 @@
             android:focusable="true"
             android:padding="16dp">
 
-            <org.hugoandrade.calendarviewlib.CalendarView
+            <org.hugoandrade.calendarviewapp.CalendarView
                 android:id="@+id/cv_select_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

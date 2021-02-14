@@ -1,4 +1,4 @@
-package org.hugoandrade.calendarviewlib.helpers;
+package org.hugoandrade.calendarviewapp.helpers;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -15,11 +15,11 @@ import androidx.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
-import org.hugoandrade.calendarviewlib.R;
+import org.hugoandrade.calendarviewapp.R;
 /* xml_grid_item에서 날짜 하나하나의 직사각형 모양*/
-public class FrameLinearLayout extends LinearLayout {
+public class FrameLinearLayout extends FrameLayout {
 
     @SuppressWarnings("unused")
     private static final String TAG = FrameLinearLayout.class.getSimpleName();

@@ -15,4 +15,7 @@
     <string name="event_default_title">My event</string>
     <string name="no_events">no events</string>
     <string name="delete">delete</string>
+    <string name="not_available">not available</string>
+    <string name="previous_month">previous month</string>
+    <string name="next_month">next month</string>
 </resources>

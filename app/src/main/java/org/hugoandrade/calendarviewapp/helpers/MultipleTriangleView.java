@@ -1,4 +1,4 @@
-package org.hugoandrade.calendarviewlib.helpers;
+package org.hugoandrade.calendarviewapp.helpers;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,7 +10,7 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.View;
 
-import org.hugoandrade.calendarviewlib.R;
+import org.hugoandrade.calendarviewapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
