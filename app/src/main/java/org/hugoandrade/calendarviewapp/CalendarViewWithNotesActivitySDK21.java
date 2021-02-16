@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,11 +24,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import org.hugoandrade.calendarviewapp.data.Event;
 import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
@@ -39,7 +43,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
+public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
 
     private final static int CREATE_EVENT_REQUEST_CODE = 100;
 
@@ -59,11 +63,11 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
 
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
+    private FrameLayout frameLayout;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, CalendarViewWithNotesActivitySDK21.class);
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +76,9 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
         mShortMonths = new DateFormatSymbols().getShortMonths();
 
         initializeUI();
+
     }
+
 
     private void initializeUI() {
 
@@ -83,6 +89,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
 
 
         mCalendarView = findViewById(R.id.calendarView);
+        frameLayout = mCalendarView.findViewById(R.id.day_item_1_2);
         mCalendarView.setOnMonthChangedListener(new CalendarView.OnMonthChangedListener() {
             @Override
             public void onMonthChanged(int month, int year) {
@@ -119,28 +126,47 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
                     public void onEvent(@Nullable QuerySnapshot value,
                                         @Nullable FirebaseFirestoreException e) {
                         if (e != null) { return; }
-                        for (QueryDocumentSnapshot doc : value) {
+
+                            for (QueryDocumentSnapshot doc : value) {
 
 
-                            Event event = new Event(
-                                    doc.getData().get("ScheduleModel_Id").toString(),
-                                    doc.getData().get("ScheduleModel_Title").toString(),
-                                    YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Day").toString()),
-                                            Integer.parseInt(doc.getData().get("ScheduleModel_Month").toString()),
-                                            Integer.parseInt(doc.getData().get("ScheduleModel_Year").toString())
-                                            )),
-                                    Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
-                                    Boolean.getBoolean(doc.getData().get("ScheduleModel_isCompleted").toString())
-                            );
-                            Log.d("민규", " event : " + event);
-                            Log.d("민규", " event.getTitle() : " + event.getID());
-                            Log.d("민규", " event.getTitle() : " + event.getTitle());
-                            Log.d("민규", " event.getTitle() : " + event.getDate());
-                            Log.d("민규", " event.getTitle() : " + event.getColor());
-                            Log.d("민규", " event.getTitle() : " + event.getScheduleInfo());
+                                Event event = new Event(
+                                        doc.getData().get("ScheduleModel_Id").toString(),
+                                        doc.getData().get("ScheduleModel_Title").toString(),
+                                        YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Day").toString()),
+                                                Integer.parseInt(doc.getData().get("ScheduleModel_Month").toString()),
+                                                Integer.parseInt(doc.getData().get("ScheduleModel_Year").toString())
+                                        )),
+                                        Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
+                                        Boolean.getBoolean(doc.getData().get("ScheduleModel_isCompleted").toString())
+                                );
+                                Log.d("민규", " event : " + event);
+                                Log.d("민규", " event.getTitle() : " + event.getID());
+                                Log.d("민규", " event.getTitle() : " + event.getTitle());
+                                Log.d("민규", " event.getTitle() : " + event.getDate());
+                                Log.d("민규", " event.getTitle() : " + event.getColor());
 
-                            mEventList.add(event);
-                            mCalendarView.addCalendarObject(parseCalendarObject(event));
+                                //mEventList.add(event);
+                                //
+                                Event oldEvent = null;
+                                for (Event ef : mEventList) {
+                                    if (Objects.equals(event.getID(), ef.getID())) {
+                                        oldEvent = ef;
+                                        break;
+                                    }
+                                }
+                                if (oldEvent == null) {
+                                    Log.d("석규", " mEventList2 : " + mEventList);
+                                    //mEventList = new ArrayList<>();
+                                    mEventList.add(event);
+                                    Log.d("석규", " mEventList3 : " + mEventList);
+                                    mCalendarView.addCalendarObject(parseCalendarObject(event));
+
+                                }
+
+
+                                //mCalendarView.addCalendarObject(parseCalendarObject(event));
+                                //mEventList.add(event);
                             //mEventList.add(event);
 //                            for (Event ev : mEventList) {
 //                                mCalendarView.addCalendarObject(parseCalendarObject(ev));
@@ -239,9 +265,9 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity {
 
                 switch (action) {
                     case CreateEventActivity.ACTION_CREATE: {
-                        mEventList.add(event);
-                        mCalendarView.addCalendarObject(parseCalendarObject(event));
-                        mCalendarDialog.setEventList(mEventList);
+//                        mEventList.add(event);
+//                        mCalendarView.addCalendarObject(parseCalendarObject(event));
+//                        mCalendarDialog.setEventList(mEventList);
                         break;
                     }
                     case CreateEventActivity.ACTION_EDIT: {

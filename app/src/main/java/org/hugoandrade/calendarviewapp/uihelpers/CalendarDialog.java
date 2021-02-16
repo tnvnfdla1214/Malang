@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -480,7 +481,10 @@ public class CalendarDialog {
             @Override
             public void onClick(View v) {
                 if (mListener != null)
-                    mListener.onEventClick(mEventList.get(getAdapterPosition()));
+                    mListener.onEventClick(mCalendarEvents.get(getAdapterPosition()));
+                    Log.d("석규", " mEventList : " + mEventList);
+                    Log.d("석규", " getAdapterPosition() : " + getAdapterPosition());
+                    Log.d("석규", " mEventList.get(getAdapterPosition()) : " + mEventList.get(getAdapterPosition()));
             }
         }
     }

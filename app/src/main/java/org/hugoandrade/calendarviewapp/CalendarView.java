@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import androidx.annotation.AttrRes;
@@ -134,19 +135,48 @@ public class CalendarView extends FrameLayout {
     public CalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        FragmentTransaction ft = ((FragmentActivity)context).getChildFragmentManager().beginTransaction();
-        ft.replace(R.id.layout_main, ExampleFragment.newInstance(ExampleFragment.NODIR, ExampleFragment.sAnimationStyle));
-        ft.commit();
-
-        mSensorManager = (SensorManager) ((AppCompatActivity)context).getSystemService(SENSOR_SERVICE);
-        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        FragmentTransaction ft = ((FragmentActivity)context).getChildFragmentManager().beginTransaction();
+//        ft.replace(R.id.layout_main, ExampleFragment.newInstance(ExampleFragment.NODIR, ExampleFragment.sAnimationStyle));
+//        ft.commit();
+//
+//        mSensorManager = (SensorManager) ((AppCompatActivity)context).getSystemService(SENSOR_SERVICE);
+//        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         readAttributes(context, attrs);
 
         initChildViews(context);
 
     }
-
+//    public void onAccuracyChanged(Sensor sensor, int accuracy){
+//        //정확도 설정
+//    }
+//
+//    //흔들면 회전
+//    @Override
+//    public void onSensorChanged(SensorEvent event) {
+//        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+//            float axisX = event.values[0];
+//            float axisY = event.values[1];
+//            float axisZ = event.values[2];
+//
+//            float gravityX = axisX / SensorManager.GRAVITY_EARTH;
+//            float gravityY = axisY / SensorManager.GRAVITY_EARTH;
+//            float gravityZ = axisZ / SensorManager.GRAVITY_EARTH;
+//
+//            Float f = gravityX * gravityX + gravityY * gravityY + gravityZ * gravityZ;
+//            double squaredD = Math.sqrt(f.doubleValue());
+//            float gForce = (float) squaredD;
+//            if(gForce > SKAKE_THRESHOLD_GRAVITY){
+//                long currentTime = System.currentTimeMillis();
+//                if(mShakeTime + SHAKE_SKIP_TIME > currentTime){
+//                    return;
+//                }
+//                mShakeTime = currentTime;
+//                ExampleFragment mf = (ExampleFragment) fragmentActivity.getSupportFragmentManager().findFragmentById(R.id.v_notes);
+//                mf.onButtonLeft();
+//            }
+//        }
+//    }
     private void readAttributes(Context context, AttributeSet attrs) {
 
         int colorPrimary = getThemeColor(context, R.attr.colorPrimary);
@@ -572,8 +602,7 @@ public class CalendarView extends FrameLayout {
         }
 
         private void setMonthView(View view, final Calendar month) {
-            view.findViewById(R.id.ll_calendar_container)
-                    .setBackgroundColor(mAttributes.get(Attr.contentBackgroundColor));
+            view.findViewById(R.id.ll_calendar_container).setBackgroundColor(mAttributes.get(Attr.contentBackgroundColor));
 
             /* getDayViewList 날짜 촤르르륵 */
             List<View> viewList = getDayViewList(view);
@@ -615,11 +644,11 @@ public class CalendarView extends FrameLayout {
 
 
 //            ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.layout_main, ExampleFragment.newInstance(ExampleFragment.NODIR, ExampleFragment.sAnimationStyle));
+//            ft.replace(R.id.v_notes, ExampleFragment.newInstance(ExampleFragment.NODIR, ExampleFragment.sAnimationStyle));
 //            ft.commit();
 //
-//            SensorManager mSensorManager = (SensorManager) Activity.getSystemService(SENSOR_SERVICE);
-//            Sensor mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//            mSensorManager = (SensorManager) activity.getSystemService(SENSOR_SERVICE);
+//            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
 
 
@@ -1476,32 +1505,6 @@ public class CalendarView extends FrameLayout {
         return text;
     }
 
-    //흔들면 회전
-    public void onSensorChanged(SensorEvent event) {
-        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-            float axisX = event.values[0];
-            float axisY = event.values[1];
-            float axisZ = event.values[2];
 
-            float gravityX = axisX / SensorManager.GRAVITY_EARTH;
-            float gravityY = axisY / SensorManager.GRAVITY_EARTH;
-            float gravityZ = axisZ / SensorManager.GRAVITY_EARTH;
-
-            Float f = gravityX * gravityX + gravityY * gravityY + gravityZ * gravityZ;
-            double squaredD = Math.sqrt(f.doubleValue());
-            float gForce = (float) squaredD;
-            if(gForce > SKAKE_THRESHOLD_GRAVITY){
-                long currentTime = System.currentTimeMillis();
-                if(mShakeTime + SHAKE_SKIP_TIME > currentTime){
-                    return;
-                }
-                mShakeTime = currentTime;
-                ExampleFragment mf = (ExampleFragment) fragmentActivity.getSupportFragmentManager().findFragmentById(R.id.layout_main);
-                //왼쪽으로 돌리기
-                mf.onButtonLeft();
-                //mf.setAnimationStyleText();
-            }
-        }
-    }
 
 }

@@ -129,7 +129,7 @@ public class ExampleFragment extends Fragment {
         getArguments().putInt("direction", LEFT);
         getArguments().putInt("data", sAnimationStyle);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.layout_main, ExampleFragment.newInstance(LEFT, sAnimationStyle));
+        ft.replace(R.id.v_notes, ExampleFragment.newInstance(LEFT, sAnimationStyle));
         ft.commit();
     }
 //
