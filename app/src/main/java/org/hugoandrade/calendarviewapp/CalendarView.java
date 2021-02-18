@@ -135,48 +135,11 @@ public class CalendarView extends FrameLayout {
     public CalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-//        FragmentTransaction ft = ((FragmentActivity)context).getChildFragmentManager().beginTransaction();
-//        ft.replace(R.id.layout_main, ExampleFragment.newInstance(ExampleFragment.NODIR, ExampleFragment.sAnimationStyle));
-//        ft.commit();
-//
-//        mSensorManager = (SensorManager) ((AppCompatActivity)context).getSystemService(SENSOR_SERVICE);
-//        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
         readAttributes(context, attrs);
 
         initChildViews(context);
 
     }
-//    public void onAccuracyChanged(Sensor sensor, int accuracy){
-//        //정확도 설정
-//    }
-//
-//    //흔들면 회전
-//    @Override
-//    public void onSensorChanged(SensorEvent event) {
-//        if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-//            float axisX = event.values[0];
-//            float axisY = event.values[1];
-//            float axisZ = event.values[2];
-//
-//            float gravityX = axisX / SensorManager.GRAVITY_EARTH;
-//            float gravityY = axisY / SensorManager.GRAVITY_EARTH;
-//            float gravityZ = axisZ / SensorManager.GRAVITY_EARTH;
-//
-//            Float f = gravityX * gravityX + gravityY * gravityY + gravityZ * gravityZ;
-//            double squaredD = Math.sqrt(f.doubleValue());
-//            float gForce = (float) squaredD;
-//            if(gForce > SKAKE_THRESHOLD_GRAVITY){
-//                long currentTime = System.currentTimeMillis();
-//                if(mShakeTime + SHAKE_SKIP_TIME > currentTime){
-//                    return;
-//                }
-//                mShakeTime = currentTime;
-//                ExampleFragment mf = (ExampleFragment) fragmentActivity.getSupportFragmentManager().findFragmentById(R.id.v_notes);
-//                mf.onButtonLeft();
-//            }
-//        }
-//    }
     private void readAttributes(Context context, AttributeSet attrs) {
 
         int colorPrimary = getThemeColor(context, R.attr.colorPrimary);
@@ -638,22 +601,6 @@ public class CalendarView extends FrameLayout {
             MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
 
 
-
-
-
-
-
-//            ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.v_notes, ExampleFragment.newInstance(ExampleFragment.NODIR, ExampleFragment.sAnimationStyle));
-//            ft.commit();
-//
-//            mSensorManager = (SensorManager) activity.getSystemService(SENSOR_SERVICE);
-//            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-
-
-
-
 ////////////// Set Notes
             vNotes.setColor(Color.TRANSPARENT);
             vNotes.setTriangleBackgroundColor(Color.TRANSPARENT);
@@ -724,12 +671,6 @@ public class CalendarView extends FrameLayout {
                 container.setOnLongClickListener(new OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-//                        Log.d("캘린더","년도 : " + calendarObjectList.get(0).mDatetime.get(Calendar.YEAR));
-//                        Log.d("캘린더","월 : " + calendarObjectList.get(0).mDatetime.get(Calendar.MONTH));
-//                        Log.d("캘린더","일 : " + calendarObjectList.get(0).mDatetime.get(Calendar.DATE));
-//                        Log.d("캘린더","YMD년도 : " + day.year);
-//                        Log.d("캘린더","YMD월 : " + day.month);
-//                        Log.d("캘린더","YMD일 : " + day.day);
                         if (isOffsetDay) {
                             tvDay.setTextColor(mAttributes.get(Attr.offsetDayTextColor));
                         } else {
@@ -1176,12 +1117,14 @@ public class CalendarView extends FrameLayout {
         private Calendar mDatetime;
         private int mPrimaryColor;
         private int mSecondaryColor;
+        private String fireUid;
 
-        public CalendarObject(String id, Calendar datetime, int primaryColor, int secondaryColor) {
+        public CalendarObject(String id, Calendar datetime, int primaryColor, int secondaryColor, String Uid) {
             mID = id;
             mDatetime = datetime;
             mPrimaryColor = primaryColor;
             mSecondaryColor = secondaryColor;
+            fireUid = Uid;
         }
 
         public String getID() {

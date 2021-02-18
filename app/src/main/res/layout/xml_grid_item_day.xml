@@ -12,11 +12,6 @@
     app:frame_color="@android:color/transparent"
     android:layout_gravity="center">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/layout_main">
-        </FrameLayout>
 
         <org.hugoandrade.calendarviewapp.helpers.SelectedTextView
             android:id="@+id/tv_calendar_day"

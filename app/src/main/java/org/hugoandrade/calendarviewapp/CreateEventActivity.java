@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,14 +59,18 @@ public class CreateEventActivity extends AppCompatActivity {
     private String mTitle;
     private boolean mIsComplete;
     private int mColor;
+    private String mUid;
 
     private boolean isViewMode = true;
 
     private EditText mTitleView;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch mIsCompleteCheckBox;
     private TextView mDateTextView;
     private CardView mColorCardView;
     private View mHeader;
+
+    private FirebaseHelper Firebasehelper;
 
 
 
@@ -147,6 +152,7 @@ public class CreateEventActivity extends AppCompatActivity {
             isViewMode = false;
         }
         else {
+            mUid = mOriginalEvent.getEvent_Uid();
             mCalendar = mOriginalEvent.getDate();
             mColor = mOriginalEvent.getColor();
             mTitle = mOriginalEvent.getTitle();
@@ -169,6 +175,9 @@ public class CreateEventActivity extends AppCompatActivity {
 
         mHeader = findViewById(R.id.ll_header);
         mHeader.setVisibility(View.VISIBLE);
+
+        Firebasehelper = new FirebaseHelper(this);
+        Firebasehelper.setOnScheduleListener(onPostListener);
 
         setupToolbar();
 
@@ -242,7 +251,18 @@ public class CreateEventActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     setupEditMode();
-                    mIsCompleteCheckBox.setOnCheckedChangeListener(null);
+                    mIsCompleteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if(mIsComplete = false){
+                                mIsComplete = true;
+                                mIsCompleteCheckBox.setChecked(mIsComplete);
+                            }else {
+                                mIsComplete = false;
+                                mIsCompleteCheckBox.setChecked(mIsComplete);
+                            }
+                        }
+                    });
                 }
             });
             mTitleView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -283,7 +303,7 @@ public class CreateEventActivity extends AppCompatActivity {
     /*삭제*/
     private void delete() {
         Log.e(getClass().getSimpleName(), "delete");
-
+        Firebasehelper.Schedule_Delete(mOriginalEvent);
         setResult(RESULT_OK, new Intent()
                 .putExtra(INTENT_EXTRA_ACTION, ACTION_DELETE)
                 .putExtra(INTENT_EXTRA_EVENT, mOriginalEvent));
@@ -292,6 +312,12 @@ public class CreateEventActivity extends AppCompatActivity {
 
     }
 
+    OnScheduleListener onPostListener = new OnScheduleListener() {
+        @Override
+        public void onScheduleDelete(Event event) { }
+        @Override
+        public void onModify() { Log.e("로그 ","수정 성공"); }
+    };
     /*일정 작성 버튼*/
 /////* 여기서 mcalendar 변수 로그로 찾아다가 파베에다가 같은 형식으로 넣고 빼서 읽게하면 될수도...??*/
     private void save() {
@@ -304,11 +330,14 @@ public class CreateEventActivity extends AppCompatActivity {
                 mCalendar.get(Calendar.MONTH)+1,
                 mCalendar.get(Calendar.DATE));
         Calendar calendar = YMDCalendar.toCalendar(ymdCalendar);
-        Log.d("캘린더더","ymdCalendar : " + ymdCalendar);
-        Log.d("캘린더더","calendar : " + calendar);
 
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+        String calendar_Id = mOriginalEvent != null ? mUid : firebaseFirestore.collection("SCHEDULE").document().getId();
+        final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
 
         mOriginalEvent = new Event(
+                calendar_Id,
                 id,
                 rawTitle.isEmpty() ? null : rawTitle,
                 mCalendar.get(Calendar.YEAR),
@@ -317,16 +346,9 @@ public class CreateEventActivity extends AppCompatActivity {
                 mColor,
                 mIsCompleteCheckBox.isChecked()
         );
-
-        Log.d("캘린더더","mCalendar : " + mCalendar.get(Calendar.YEAR));
-        Log.d("캘린더더","mCalendar : " + mCalendar.get(Calendar.MONTH));
-        Log.d("캘린더더","mCalendar : " + mCalendar.get(Calendar.DATE));
-/////////* 저장 버튼 눌렸을 때 파이어베이스에 넣는다.*/
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
-        String calendar_Id = firebaseFirestore.collection("SCHEDULE").document().getId();
-        final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
         storeUpload(documentReference, mOriginalEvent);
+/////////* 저장 버튼 눌렸을 때 파이어베이스에 넣는다.*/
+
 
 
 
@@ -335,7 +357,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 .putExtra(INTENT_EXTRA_EVENT, mOriginalEvent));
         finish();
 
-        if (action == ACTION_CREATE)
+//        if (action == ACTION_CREATE)
             overridePendingTransition(R.anim.stay, R.anim.slide_out_down);
 
     }

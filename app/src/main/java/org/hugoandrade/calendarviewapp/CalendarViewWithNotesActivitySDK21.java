@@ -56,14 +56,6 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     private ListenerRegistration listenerUsers;
     private FirebaseFirestore Firestore= FirebaseFirestore.getInstance();
 
-    private long mShakeTime;
-    private int mShakeCount = 0;
-    private static final int SHAKE_SKIP_TIME = 500;
-    private static final float SKAKE_THRESHOLD_GRAVITY = 2.7F;
-
-    private SensorManager mSensorManager;
-    private Sensor mAccelerometer;
-    private FrameLayout frameLayout;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, CalendarViewWithNotesActivitySDK21.class);
@@ -89,7 +81,6 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
 
 
         mCalendarView = findViewById(R.id.calendarView);
-        frameLayout = mCalendarView.findViewById(R.id.day_item_1_2);
         mCalendarView.setOnMonthChangedListener(new CalendarView.OnMonthChangedListener() {
             @Override
             public void onMonthChanged(int month, int year) {
@@ -131,6 +122,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
 
 
                                 Event event = new Event(
+                                        doc.getData().get("ScheduleModel_Uid").toString(),
                                         doc.getData().get("ScheduleModel_Id").toString(),
                                         doc.getData().get("ScheduleModel_Title").toString(),
                                         YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Day").toString()),
@@ -138,16 +130,9 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                                 Integer.parseInt(doc.getData().get("ScheduleModel_Year").toString())
                                         )),
                                         Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
-                                        Boolean.getBoolean(doc.getData().get("ScheduleModel_isCompleted").toString())
+                                        Boolean.parseBoolean(doc.getData().get("ScheduleModel_isCompleted").toString())
                                 );
-                                Log.d("민규", " event : " + event);
-                                Log.d("민규", " event.getTitle() : " + event.getID());
-                                Log.d("민규", " event.getTitle() : " + event.getTitle());
-                                Log.d("민규", " event.getTitle() : " + event.getDate());
-                                Log.d("민규", " event.getTitle() : " + event.getColor());
-
-                                //mEventList.add(event);
-                                //
+                                Log.d("파이어j", " sssssssssmIsComplete 확인 : " + event.isCompleted());
                                 Event oldEvent = null;
                                 for (Event ef : mEventList) {
                                     if (Objects.equals(event.getID(), ef.getID())) {
@@ -156,28 +141,11 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                     }
                                 }
                                 if (oldEvent == null) {
-                                    Log.d("석규", " mEventList2 : " + mEventList);
-                                    //mEventList = new ArrayList<>();
                                     mEventList.add(event);
-                                    Log.d("석규", " mEventList3 : " + mEventList);
                                     mCalendarView.addCalendarObject(parseCalendarObject(event));
-
                                 }
-
-
-                                //mCalendarView.addCalendarObject(parseCalendarObject(event));
-                                //mEventList.add(event);
-                            //mEventList.add(event);
-//                            for (Event ev : mEventList) {
-//                                mCalendarView.addCalendarObject(parseCalendarObject(ev));
-//                            }
-                            //EventList.put(1, doc.toObject(Event.class));
-                            //Log.d("민규", " EventList : " + EventList);
                         }
-
-//                        for(int i = 0; i< mEventList.size();i++){
-//                            Log.d("민규", " mEventList :  " + mEventList.get(i));
-//                        }
+                        mCalendarDialog.setEventList(mEventList);
                     }
                 });
 
@@ -325,11 +293,14 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     171번째 줄  mCalendarView.addCalendarObject(parseCalendarObject(event));
     로 달력에 반영*/
     private static CalendarView.CalendarObject parseCalendarObject(Event event) {
+        int a = event.isCompleted() ? Color.TRANSPARENT : Color.RED;
         return new CalendarView.CalendarObject(
                 event.getID(),
                 event.getDate(),
                 event.getColor(),
-                event.isCompleted() ? Color.TRANSPARENT : Color.RED);
+                event.isCompleted() ? Color.TRANSPARENT : Color.RED,
+                event.getEvent_Uid());
+
     }
 
 }

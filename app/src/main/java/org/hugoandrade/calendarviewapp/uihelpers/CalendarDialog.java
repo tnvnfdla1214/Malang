@@ -86,6 +86,7 @@ public class CalendarDialog {
     }
 
     public void setEventList(List<Event> eventList) {
+        Log.d("파이어ㅓ", " eventList 확인 : " + eventList);
         mEventList = eventList;
         mViewPagerAdapter.notifyDataSetChanged();
     }
@@ -482,9 +483,6 @@ public class CalendarDialog {
             public void onClick(View v) {
                 if (mListener != null)
                     mListener.onEventClick(mCalendarEvents.get(getAdapterPosition()));
-                    Log.d("석규", " mEventList : " + mEventList);
-                    Log.d("석규", " getAdapterPosition() : " + getAdapterPosition());
-                    Log.d("석규", " mEventList.get(getAdapterPosition()) : " + mEventList.get(getAdapterPosition()));
             }
         }
     }
@@ -547,6 +545,12 @@ public class CalendarDialog {
     }
 
     private static int diffYMD(Calendar date1, Calendar date2) {
+        Log.d("파이어k", " date1.get(Calendar.YEAR) 확인 : " + date1.get(Calendar.YEAR));
+        Log.d("파이어k", " date2.get(Calendar.YEAR) 확인 : " + date2.get(Calendar.YEAR));
+        Log.d("파이어k", " date1.get(Calendar.MONTH) 확인 : " + date1.get(Calendar.MONTH));
+        Log.d("파이어k", " date2.get(Calendar.MONTH) 확인 : " + date2.get(Calendar.MONTH));
+        Log.d("파이어k", " date1.get(Calendar.DAY_OF_MONTH) 확인 : " + date1.get(Calendar.DAY_OF_MONTH));
+        Log.d("파이어k", " date2.get(Calendar.DAY_OF_MONTH) 확인 : " + date2.get(Calendar.DAY_OF_MONTH));
         if (date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
                 date1.get(Calendar.MONTH) == date2.get(Calendar.MONTH) &&
                 date1.get(Calendar.DAY_OF_MONTH) == date2.get(Calendar.DAY_OF_MONTH))
@@ -569,6 +573,7 @@ public class CalendarDialog {
         }
 
         public Builder setEventList(List<Event> calendarEventList) {
+            P.mEventList = new ArrayList<>();
             P.mEventList = calendarEventList;
             return this;
         }

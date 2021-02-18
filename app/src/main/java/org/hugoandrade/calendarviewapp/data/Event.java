@@ -14,6 +14,7 @@ import java.util.Map;
 /* 여기에 getter setter 박고 파베랑 연동하면 쓸수 있지 않을까? */
 public class Event implements Parcelable {
 
+    private String Event_Uid;
     private String mID;
     private String mTitle;
     private Calendar mDate;
@@ -26,7 +27,8 @@ public class Event implements Parcelable {
 
     public Event(){}
 
-    public Event(String id, String title, Calendar date, int color, boolean isCompleted) {
+    public Event(String Event_Uid, String id, String title, Calendar date, int color, boolean isCompleted) {
+        this.Event_Uid = Event_Uid;
         mID = id;
         mTitle = title;
         mDate = date;
@@ -34,7 +36,8 @@ public class Event implements Parcelable {
         this.isCompleted = isCompleted;
     }
 
-    public Event(String id, String title, int mYear, int mMonth, int mDay, int color, boolean isCompleted) {
+    public Event(String Event_Uid, String id, String title, int mYear, int mMonth, int mDay, int color, boolean isCompleted) {
+        this.Event_Uid = Event_Uid;
         mID = id;
         mTitle = title;
         this.mYear = mYear;
@@ -49,6 +52,7 @@ public class Event implements Parcelable {
 
     public Map<String, Object> getScheduleInfo(){
         Map<String, Object> docData = new HashMap<>();
+        docData.put("ScheduleModel_Uid", Event_Uid);
         docData.put("ScheduleModel_Title", mTitle);
         docData.put("ScheduleModel_Year", mYear);
         docData.put("ScheduleModel_Month", mMonth);
@@ -81,19 +85,21 @@ public class Event implements Parcelable {
     }
 
     protected Event(Parcel in) {
+        Event_Uid = in.readString();
         mID = in.readString();
         mTitle = in.readString();
-        mColor = in.readInt();
         mDate = (Calendar) in.readSerializable();
+        mColor = in.readInt();
         isCompleted = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Event_Uid);
         dest.writeString(mID);
         dest.writeString(mTitle);
-        dest.writeInt(mColor);
         dest.writeSerializable(mDate);
+        dest.writeInt(mColor);
         dest.writeByte((byte) (isCompleted ? 1 : 0));
     }
 
@@ -113,4 +119,12 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    public String getEvent_Uid() {
+        return Event_Uid;
+    }
+
+    public void setEvent_Uid(String event_Uid) {
+        Event_Uid = event_Uid;
+    }
 }

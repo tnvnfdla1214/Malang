@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(CalendarViewWithNotesActivitySDK21.makeIntent(context));
                         }
                         else {
-                            startActivity(CalendarViewWithNotesActivity.makeIntent(context));
+                            //startActivity(CalendarViewWithNotesActivity.makeIntent(context));
                         }
                         break;
                 }
