@@ -132,7 +132,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                         Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
                                         Boolean.parseBoolean(doc.getData().get("ScheduleModel_isCompleted").toString())
                                 );
-                                Log.d("파이어j", " sssssssssmIsComplete 확인 : " + event.isCompleted());
+                                Log.d("파이어a", " 확인 : " + event.getDate());
+                                Log.d("파이어a", " getScheduleInfo 확인 : " + event.getScheduleInfo());
                                 Event oldEvent = null;
                                 for (Event ef : mEventList) {
                                     if (Objects.equals(event.getID(), ef.getID())) {
@@ -142,6 +143,12 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                 }
                                 if (oldEvent == null) {
                                     mEventList.add(event);
+                                    mCalendarView.addCalendarObject(parseCalendarObject(event));
+                                }else {
+                                    mEventList.remove(oldEvent);
+                                    mEventList.add(event);
+
+                                    mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent));
                                     mCalendarView.addCalendarObject(parseCalendarObject(event));
                                 }
                         }
@@ -239,21 +246,34 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                         break;
                     }
                     case CreateEventActivity.ACTION_EDIT: {
-                        Event oldEvent = null;
-                        for (Event e : mEventList) {
-                            if (Objects.equals(event.getID(), e.getID())) {
-                                oldEvent = e;
-                                break;
-                            }
-                        }
-                        if (oldEvent != null) {
-                            mEventList.remove(oldEvent);
-                            mEventList.add(event);
-
-                            mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent));
-                            mCalendarView.addCalendarObject(parseCalendarObject(event));
-                            mCalendarDialog.setEventList(mEventList);
-                        }
+//                        Event oldEvent = null;
+//                        for (Event e : mEventList) {
+//                            if (Objects.equals(event.getID(), e.getID())) {
+//                                oldEvent = e;
+//                                break;
+//                            }
+//                        }
+//                        if (oldEvent != null) {
+//                            mEventList.remove(oldEvent);
+//                            mEventList.add(event);
+//
+//                            mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent));
+//                            mCalendarView.addCalendarObject(parseCalendarObject(event));
+//                            mCalendarDialog = CalendarDialog.Builder.instance(this)
+//                                    .setEventList(mEventList)
+//                                    .setOnItemClickListener(new CalendarDialog.OnCalendarDialogListener() {
+//                                        @Override
+//                                        public void onEventClick(Event event) {
+//                                            onEventSelected(event);
+//                                        }
+//
+//                                        @Override
+//                                        public void onCreateEvent(Calendar calendar) {
+//                                            createEvent(calendar);
+//                                        }
+//                                    })
+//                                    .create();
+//                        }
                         break;
                     }
                     case CreateEventActivity.ACTION_DELETE: {

@@ -294,7 +294,10 @@ public class CalendarDialog {
         private List<Event> getCalendarEventsOfDay(Calendar day) {
             List<Event> eventList = new ArrayList<>();
             for (Event e : mEventList) {
+                Log.d("파이어a", " e.getScheduleInfo 확인 : " + e.getScheduleInfo());
+                Log.d("파이어a", " e.getDate 확인 : " + e.getDate());
                 if (diffYMD(e.getDate(), day) == 0)
+
                     eventList.add(e);
             }
             return eventList;
@@ -386,7 +389,7 @@ public class CalendarDialog {
 //                                                return false;
 //                                            }
                                             dismissDialog();
-                                            return false;
+                                            return true;
                                         //드래그가 뷰의 경계안으로 들어오면
                                         case DragEvent.ACTION_DRAG_ENTERED:
                                             //btn.setText("Enter");//버튼 글자 바꿈

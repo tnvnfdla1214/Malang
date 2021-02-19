@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -71,10 +72,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private View mHeader;
 
     private FirebaseHelper Firebasehelper;
-
-
-
-
+    private InputMethodManager imm;
 
     public static Intent makeIntent(Context context, @NonNull Calendar calendar) {
         return new Intent(context, CreateEventActivity.class).putExtra(INTENT_EXTRA_CALENDAR, calendar);
@@ -99,7 +97,7 @@ public class CreateEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         setResult(RESULT_CANCELED);
 
         extractDataFromIntentAndInitialize();
@@ -187,6 +185,7 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 save();
+                imm.hideSoftInputFromWindow(mTitleView.getWindowToken(), 0);
             }
         });
 
@@ -357,9 +356,12 @@ public class CreateEventActivity extends AppCompatActivity {
                 .putExtra(INTENT_EXTRA_EVENT, mOriginalEvent));
         finish();
 
-//        if (action == ACTION_CREATE)
+        if (action == ACTION_CREATE)
+            Log.d("파이어cc", " 111111111 : ");
             overridePendingTransition(R.anim.stay, R.anim.slide_out_down);
-
+        if (action == ACTION_EDIT)
+            Log.d("파이어cc", " 2222222222 : ");
+            overridePendingTransition(R.anim.stay, R.anim.slide_out_down);
     }
 
     /*/*등록 함수*/
