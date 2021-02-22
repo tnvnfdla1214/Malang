@@ -598,21 +598,21 @@ public class CalendarView extends FrameLayout {
 
             final FrameLinearLayout container = (FrameLinearLayout) view;
             final SelectedTextView tvDay = view.findViewById(R.id.tv_calendar_day);
-            MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
+            //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
 
 
 ////////////// Set Notes
-            vNotes.setColor(Color.TRANSPARENT);
-            vNotes.setTriangleBackgroundColor(Color.TRANSPARENT);
-            int i = 0;
-            for (CalendarObject c : calendarObjectList) {
-                vNotes.setColor(i, c.getSecondaryColor());
-                vNotes.setTriangleBackgroundColor(i, c.getPrimaryColor());
-
-                i++;
-                if (i == vNotes.getNumberOfItems())
-                    break;
-            }
+//            vNotes.setColor(Color.TRANSPARENT);
+//            vNotes.setTriangleBackgroundColor(Color.TRANSPARENT);
+//            int i = 0;
+//            for (CalendarObject c : calendarObjectList) {
+//                vNotes.setColor(i, c.getSecondaryColor());
+//                vNotes.setTriangleBackgroundColor(i, c.getPrimaryColor());
+//
+//                i++;
+//                if (i == vNotes.getNumberOfItems())
+//                    break;
+//            }
 
 ////////////// Set day TextView (default)
             tvDay.setText(String.valueOf(day.day));
