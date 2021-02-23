@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    app:frame_width="1dp"
+    app:frame_width="0dp"
     app:frame_color="@android:color/transparent"
     android:layout_gravity="center|bottom">
 
