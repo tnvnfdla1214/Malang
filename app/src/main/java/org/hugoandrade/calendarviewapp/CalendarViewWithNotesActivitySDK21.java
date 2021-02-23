@@ -129,6 +129,10 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                                 Integer.parseInt(doc.getData().get("ScheduleModel_Month").toString()),
                                                 Integer.parseInt(doc.getData().get("ScheduleModel_Year").toString())
                                         )),
+                                        YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Final_Day").toString()),
+                                                Integer.parseInt(doc.getData().get("ScheduleModel_Final_Month").toString()),
+                                                Integer.parseInt(doc.getData().get("ScheduleModel_Final_Year").toString())
+                                        )),
                                         Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
                                         Boolean.parseBoolean(doc.getData().get("ScheduleModel_isCompleted").toString())
                                 );
@@ -142,8 +146,34 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                     }
                                 }
                                 if (oldEvent == null) {
-                                    mEventList.add(event);
-                                    mCalendarView.addCalendarObject(parseCalendarObject(event));
+                                    /*if(event.getDate().equals(event.getFinalDate())){
+                                     */
+                                        mEventList.add(event);
+                                        mCalendarView.addCalendarObject(parseCalendarObject(event));
+                                    /*
+                                    }else{
+                                        Calendar startday = event.getDate();
+                                        Calendar endday = event.getFinalDate();
+                                        Calendar day;
+
+                                        mEventList.add(event);
+                                        mCalendarView.addCalendarObject(parseCalendarObject(event));
+
+                                        int count = 0;
+                                        while (!startday.after(endday)){
+                                            count++;
+                                            startday.add(Calendar.DATE,1);
+                                            day = startday;
+                                            event.setDate(day);
+                                            Log.d("cccount", " event.getDate(day) : "+ event.getDate());
+                                            mEventList.add(event);
+                                            mCalendarView.addCalendarObject(parseCalendarObject(event));
+                                        }
+                                        Log.d("cccount", " count : "+ count);
+                                    }
+
+                                     */
+
                                 }else {
                                     mEventList.remove(oldEvent);
                                     mEventList.add(event);
@@ -317,6 +347,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         return new CalendarView.CalendarObject(
                 event.getID(),
                 event.getDate(),
+                event.getFinalDate(),
                 event.getColor(),
                 event.isCompleted() ? Color.TRANSPARENT : Color.RED,
                 event.getEvent_Uid());

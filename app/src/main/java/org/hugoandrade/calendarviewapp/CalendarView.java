@@ -16,6 +16,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
+
+import androidx.annotation.ArrayRes;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -38,6 +40,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
@@ -217,7 +220,7 @@ public class CalendarView extends FrameLayout {
     }
 
 
-/////* 달력 xml 출력 */
+    /////* 달력 xml 출력 */
     private void initChildViews(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
 /////////* R.layout.xml_calendar_view : 일정 입력 시 시간 선택하는 작은 캘린더 창, 처음의 달력 전체화면 */
@@ -280,7 +283,7 @@ public class CalendarView extends FrameLayout {
     }
 
 
-/////* 여기서 받아다가 일정 표시하면 될것 같음*/
+    /////* 여기서 받아다가 일정 표시하면 될것 같음*/
     public void addCalendarObject(CalendarObject calendarObject) {
         addCalendarObjectToSparseArray(calendarObject);
         mCalendarPagerAdapter.notifyDataSetChanged();
@@ -455,7 +458,7 @@ public class CalendarView extends FrameLayout {
 
 
 
-/////* 데이터 변화해서 이 어댑터로 넣는다.*/
+    /////* 데이터 변화해서 이 어댑터로 넣는다.*/
     private class CalendarPagerAdapter extends PagerAdapter {
 
         private final String TAG = getClass().getSimpleName();
@@ -478,7 +481,7 @@ public class CalendarView extends FrameLayout {
                 R.id.day_item_4_5, R.id.day_item_4_6, R.id.day_item_4_7,
 
                 R.id.day_item_5_1, R.id.day_item_5_2, R.id.day_item_5_3, R.id.day_item_5_4,
-               R.id.day_item_5_5, R.id.day_item_5_6, R.id.day_item_5_7,
+                R.id.day_item_5_5, R.id.day_item_5_6, R.id.day_item_5_7,
 
                 R.id.day_item_6_1, R.id.day_item_6_2, R.id.day_item_6_3, R.id.day_item_6_4,
                 R.id.day_item_6_5, R.id.day_item_6_6, R.id.day_item_6_7
@@ -508,8 +511,8 @@ public class CalendarView extends FrameLayout {
             // Total number of pages (between min and max date)
             NUMBER_OF_PAGES =
                     mMaxDate.month - mMinDate.month +
-                    12 * (mMaxDate.year - mMinDate.year) +
-                    1;
+                            12 * (mMaxDate.year - mMinDate.year) +
+                            1;
 
             // Total number of pages (between min and max date)
             int diffYear = mSelectedDate.year - mMinDate.year;
@@ -577,12 +580,12 @@ public class CalendarView extends FrameLayout {
             for (int i = 0 ; i < dayList.size() ; i++) {
                 YMDCalendar day = dayList.get(i);
                 onBindView(i,
-                           month,
-                           day,
-                           mObjectsByDayMap.get(getDateCode(day, 2), emptyEventList),
-                           viewList.get(i),
-                            viewList,
-                            dayList);
+                        month,
+                        day,
+                        mObjectsByDayMap.get(getDateCode(day, 2), emptyEventList),
+                        viewList.get(i),
+                        viewList,
+                        dayList);
             }
 
             mInstantiatedMonthViewList.put(getDateCode(month, 1), view);
@@ -599,6 +602,30 @@ public class CalendarView extends FrameLayout {
             final FrameLinearLayout container = (FrameLinearLayout) view;
             final SelectedTextView tvDay = view.findViewById(R.id.tv_calendar_day);
             //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
+            final LinearLayout first_Schedule = view.findViewById(R.id.first_schedule);
+
+
+//            LinearLayout.LayoutParams startparams = new LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            startparams.setMarginStart(1);
+//
+//            LinearLayout.LayoutParams midparams = new LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            midparams.setMarginStart((int) getResources().getDimension(R.dimen.term));
+//            midparams.setMarginEnd((int) getResources().getDimension(R.dimen.term));
+//
+//            LinearLayout.LayoutParams endparams = new LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            endparams.setMargins(1,0,1,0);
+
+
+
+            if(!calendarObjectList.equals(new ArrayList<CalendarObject>())){
+                first_Schedule.setBackground(getResources().getDrawable(R.drawable.c1_border_left));
+                //first_Schedule.setBackgroundColor(calendarObjectList.get(0).getPrimaryColor());
+
+                //first_Schedule.setLayoutParams(endparams);
+            }
 
 
 ////////////// Set Notes
@@ -961,7 +988,7 @@ public class CalendarView extends FrameLayout {
 
             /* dayViewIDs 1,2,3,4,....*/
             for (int id : dayViewIDs)
-                    dayViewList.add(monthView.findViewById(id));
+                dayViewList.add(monthView.findViewById(id));
 
             return dayViewList;
         }
@@ -1115,13 +1142,15 @@ public class CalendarView extends FrameLayout {
 
         private String mID;
         private Calendar mDatetime;
+        private Calendar mFinalDatetime;
         private int mPrimaryColor;
         private int mSecondaryColor;
         private String fireUid;
 
-        public CalendarObject(String id, Calendar datetime, int primaryColor, int secondaryColor, String Uid) {
+        public CalendarObject(String id, Calendar datetime, Calendar finaldatetime,int primaryColor, int secondaryColor, String Uid) {
             mID = id;
             mDatetime = datetime;
+            mFinalDatetime = finaldatetime;
             mPrimaryColor = primaryColor;
             mSecondaryColor = secondaryColor;
             fireUid = Uid;

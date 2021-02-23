@@ -18,6 +18,7 @@ public class Event implements Parcelable {
     private String mID;
     private String mTitle;
     private Calendar mDate;
+    private Calendar mFinalDate;
     private int mColor;
     private boolean isCompleted;
 
@@ -25,24 +26,32 @@ public class Event implements Parcelable {
     private int mMonth;
     private int mDay;
 
+    private int mFinalYear;
+    private int mFinalMonth;
+    private int mFinalDay;
+
     public Event(){}
 
-    public Event(String Event_Uid, String id, String title, Calendar date, int color, boolean isCompleted) {
+    public Event(String Event_Uid, String id, String title, Calendar date, Calendar finaldate, int color, boolean isCompleted) {
         this.Event_Uid = Event_Uid;
         mID = id;
         mTitle = title;
+        mFinalDate = finaldate;
         mDate = date;
         mColor = color;
         this.isCompleted = isCompleted;
     }
 
-    public Event(String Event_Uid, String id, String title, int mYear, int mMonth, int mDay, int color, boolean isCompleted) {
+    public Event(String Event_Uid, String id, String title, int mYear, int mMonth, int mDay, int mFinalYear, int mFinalMonth, int mFinalDay, int color, boolean isCompleted) {
         this.Event_Uid = Event_Uid;
         mID = id;
         mTitle = title;
         this.mYear = mYear;
         this.mMonth = mMonth;
         this.mDay = mDay;
+        this.mFinalYear = mFinalYear;
+        this.mFinalMonth = mFinalMonth;
+        this.mFinalDay = mFinalDay;
         mColor = color;
         this.isCompleted = isCompleted;
     }
@@ -57,6 +66,9 @@ public class Event implements Parcelable {
         docData.put("ScheduleModel_Year", mYear);
         docData.put("ScheduleModel_Month", mMonth);
         docData.put("ScheduleModel_Day", mDay);
+        docData.put("ScheduleModel_Final_Year", mFinalYear);
+        docData.put("ScheduleModel_Final_Month", mFinalMonth);
+        docData.put("ScheduleModel_Final_Day", mFinalDay);
         docData.put("ScheduleModel_Color", mColor);
         docData.put("ScheduleModel_Id", mID);
         docData.put("ScheduleModel_isCompleted", isCompleted);
@@ -75,6 +87,12 @@ public class Event implements Parcelable {
     public Calendar getDate() {
         return mDate;
     }
+    public void setDate(Calendar date) {
+        mDate = date;
+    }
+    public Calendar getFinalDate() {
+        return mFinalDate;
+    }
 
     public int getColor() {
         return mColor;
@@ -89,6 +107,7 @@ public class Event implements Parcelable {
         mID = in.readString();
         mTitle = in.readString();
         mDate = (Calendar) in.readSerializable();
+        mFinalDate = (Calendar) in.readSerializable();
         mColor = in.readInt();
         isCompleted = in.readByte() != 0;
     }
@@ -99,6 +118,7 @@ public class Event implements Parcelable {
         dest.writeString(mID);
         dest.writeString(mTitle);
         dest.writeSerializable(mDate);
+        dest.writeSerializable(mFinalDate);
         dest.writeInt(mColor);
         dest.writeByte((byte) (isCompleted ? 1 : 0));
     }

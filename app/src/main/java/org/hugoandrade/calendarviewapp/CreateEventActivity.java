@@ -49,6 +49,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private static final String INTENT_EXTRA_CALENDAR = "intent_extra_calendar";
 
     private static final int SET_DATE_AND_TIME_REQUEST_CODE = 200;
+    private static final int SET_FINAL_DATE_AND_TIME_REQUEST_CODE = 300;
 
     private final static SimpleDateFormat dateFormat
             = new SimpleDateFormat("EEEE, dd/MM    HH:mm", Locale.getDefault());
@@ -57,6 +58,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
     private Calendar mCalendar;
+    private Calendar mFinalCalendar;
     private String mTitle;
     private boolean mIsComplete;
     private int mColor;
@@ -68,6 +70,7 @@ public class CreateEventActivity extends AppCompatActivity {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch mIsCompleteCheckBox;
     private TextView mDateTextView;
+    private TextView mFinalDateTextView;
     private CardView mColorCardView;
     private View mHeader;
 
@@ -144,6 +147,13 @@ public class CreateEventActivity extends AppCompatActivity {
             mCalendar.set(Calendar.MINUTE, 0);
             mCalendar.set(Calendar.SECOND, 0);
             mCalendar.set(Calendar.MILLISECOND, 0);
+            mFinalCalendar = extractCalendarFromIntent(getIntent());
+            if (mFinalCalendar == null)
+                mFinalCalendar = Calendar.getInstance();
+            mFinalCalendar.set(Calendar.HOUR_OF_DAY, 8);
+            mFinalCalendar.set(Calendar.MINUTE, 0);
+            mFinalCalendar.set(Calendar.SECOND, 0);
+            mFinalCalendar.set(Calendar.MILLISECOND, 0);
             mColor = ColorUtils.mColors[0];
             mTitle = "";
             mIsComplete = false;
@@ -152,6 +162,7 @@ public class CreateEventActivity extends AppCompatActivity {
         else {
             mUid = mOriginalEvent.getEvent_Uid();
             mCalendar = mOriginalEvent.getDate();
+            mFinalCalendar = mOriginalEvent.getFinalDate();
             mColor = mOriginalEvent.getColor();
             mTitle = mOriginalEvent.getTitle();
             mIsComplete = mOriginalEvent.isCompleted();
@@ -214,6 +225,24 @@ public class CreateEventActivity extends AppCompatActivity {
 
                 startActivityForResult(intent,
                         SET_DATE_AND_TIME_REQUEST_CODE,
+                        ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
+            }
+        });
+
+
+        /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
+        mFinalDateTextView = findViewById(R.id.tv_final_date);
+        mFinalDateTextView.setText(dateFormat.format(mFinalCalendar.getTime()));
+        mFinalDateTextView.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View v) {
+                Activity context = CreateEventActivity.this;
+                Intent intent = SelectDateAndTimeActivity.makeIntent(context, mFinalCalendar);
+
+                startActivityForResult(intent,
+                        SET_FINAL_DATE_AND_TIME_REQUEST_CODE,
                         ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
             }
         });
@@ -342,6 +371,9 @@ public class CreateEventActivity extends AppCompatActivity {
                 mCalendar.get(Calendar.YEAR),
                 mCalendar.get(Calendar.MONTH),
                 mCalendar.get(Calendar.DATE),
+                mFinalCalendar.get(Calendar.YEAR),
+                mFinalCalendar.get(Calendar.MONTH),
+                mFinalCalendar.get(Calendar.DATE),
                 mColor,
                 mIsCompleteCheckBox.isChecked()
         );
@@ -391,6 +423,17 @@ public class CreateEventActivity extends AppCompatActivity {
             }
             return;
         }
+        if (requestCode == SET_FINAL_DATE_AND_TIME_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                mFinalCalendar = SelectDateAndTimeActivity.extractCalendarFromIntent(data);
+                mFinalDateTextView.setText(dateFormat.format(mFinalCalendar.getTime()));
+
+                setupEditMode();
+            }
+            return;
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
