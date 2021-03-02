@@ -21,14 +21,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.hugoandrade.calendarviewapp.data.Event;
+import org.hugoandrade.calendarviewapp.data.Event_firebase;
 import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import org.hugoandrade.calendarviewapp.utils.ColorUtils;
 
@@ -54,7 +53,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private final static SimpleDateFormat dateFormat
             = new SimpleDateFormat("EEEE, dd/MM    HH:mm", Locale.getDefault());
 
-    private Event mOriginalEvent;
+    private Event_firebase mOriginalEventFirebase;
 
 
     private Calendar mCalendar;
@@ -81,11 +80,11 @@ public class CreateEventActivity extends AppCompatActivity {
         return new Intent(context, CreateEventActivity.class).putExtra(INTENT_EXTRA_CALENDAR, calendar);
     }
 
-    public static Intent makeIntent(Context context, @NonNull Event event) {
-        return new Intent(context, CreateEventActivity.class).putExtra(INTENT_EXTRA_EVENT, event);
+    public static Intent makeIntent(Context context, @NonNull Event_firebase eventFirebase) {
+        return new Intent(context, CreateEventActivity.class).putExtra(INTENT_EXTRA_EVENT, eventFirebase);
     }
 
-    public static Event extractEventFromIntent(Intent intent) {
+    public static Event_firebase extractEventFromIntent(Intent intent) {
         return intent.getParcelableExtra(INTENT_EXTRA_EVENT);
     }
 
@@ -137,9 +136,9 @@ public class CreateEventActivity extends AppCompatActivity {
     *   (== 일정 작성과 수정이 같은 액티비티를 쓴다.)*/
     private void extractDataFromIntentAndInitialize() {
 
-        mOriginalEvent = extractEventFromIntent(getIntent());
+        mOriginalEventFirebase = extractEventFromIntent(getIntent());
 
-        if (mOriginalEvent == null) {
+        if (mOriginalEventFirebase == null) {
             mCalendar = extractCalendarFromIntent(getIntent());
             if (mCalendar == null)
                 mCalendar = Calendar.getInstance();
@@ -160,12 +159,12 @@ public class CreateEventActivity extends AppCompatActivity {
             isViewMode = false;
         }
         else {
-            mUid = mOriginalEvent.getEvent_Uid();
-            mCalendar = mOriginalEvent.getDate();
-            mFinalCalendar = mOriginalEvent.getFinalDate();
-            mColor = mOriginalEvent.getColor();
-            mTitle = mOriginalEvent.getTitle();
-            mIsComplete = mOriginalEvent.isCompleted();
+            mUid = mOriginalEventFirebase.getEvent_Uid();
+            mCalendar = mOriginalEventFirebase.getDate();
+            mFinalCalendar = mOriginalEventFirebase.getFinalDate();
+            mColor = mOriginalEventFirebase.getColor();
+            mTitle = mOriginalEventFirebase.getTitle();
+            mIsComplete = mOriginalEventFirebase.isCompleted();
             isViewMode = true;
         }
     }
@@ -207,7 +206,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
                 onBackPressed();
 
-                if (mOriginalEvent == null)
+                if (mOriginalEventFirebase == null)
                     overridePendingTransition(R.anim.stay, R.anim.slide_out_down);
             }
         });
@@ -331,10 +330,10 @@ public class CreateEventActivity extends AppCompatActivity {
     /*삭제*/
     private void delete() {
         Log.e(getClass().getSimpleName(), "delete");
-        Firebasehelper.Schedule_Delete(mOriginalEvent);
+        Firebasehelper.Schedule_Delete(mOriginalEventFirebase);
         setResult(RESULT_OK, new Intent()
                 .putExtra(INTENT_EXTRA_ACTION, ACTION_DELETE)
-                .putExtra(INTENT_EXTRA_EVENT, mOriginalEvent));
+                .putExtra(INTENT_EXTRA_EVENT, mOriginalEventFirebase));
         finish();
         overridePendingTransition(R.anim.stay, R.anim.slide_out_down);
 
@@ -342,7 +341,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     OnScheduleListener onPostListener = new OnScheduleListener() {
         @Override
-        public void onScheduleDelete(Event event) { }
+        public void onScheduleDelete(Event_firebase eventFirebase) { }
         @Override
         public void onModify() { Log.e("로그 ","수정 성공"); }
     };
@@ -350,8 +349,8 @@ public class CreateEventActivity extends AppCompatActivity {
 /////* 여기서 mcalendar 변수 로그로 찾아다가 파베에다가 같은 형식으로 넣고 빼서 읽게하면 될수도...??*/
     private void save() {
 
-        int action = mOriginalEvent != null ? ACTION_EDIT : ACTION_CREATE;
-        String id = mOriginalEvent != null ? mOriginalEvent.getID() : generateID();
+        int action = mOriginalEventFirebase != null ? ACTION_EDIT : ACTION_CREATE;
+        String id = mOriginalEventFirebase != null ? mOriginalEventFirebase.getID() : generateID();
         String rawTitle = mTitleView.getText().toString().trim();
 
         YMDCalendar ymdCalendar = new YMDCalendar(mCalendar.get(Calendar.YEAR),
@@ -361,10 +360,10 @@ public class CreateEventActivity extends AppCompatActivity {
 
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-        String calendar_Id = mOriginalEvent != null ? mUid : firebaseFirestore.collection("SCHEDULE").document().getId();
+        String calendar_Id = mOriginalEventFirebase != null ? mUid : firebaseFirestore.collection("SCHEDULE").document().getId();
         final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
 
-        mOriginalEvent = new Event(
+        mOriginalEventFirebase = new Event_firebase(
                 calendar_Id,
                 id,
                 rawTitle.isEmpty() ? null : rawTitle,
@@ -377,15 +376,12 @@ public class CreateEventActivity extends AppCompatActivity {
                 mColor,
                 mIsCompleteCheckBox.isChecked()
         );
-        storeUpload(documentReference, mOriginalEvent);
+        storeUpload(documentReference, mOriginalEventFirebase);
 /////////* 저장 버튼 눌렸을 때 파이어베이스에 넣는다.*/
-
-
-
 
         setResult(RESULT_OK, new Intent()
                 .putExtra(INTENT_EXTRA_ACTION, action)
-                .putExtra(INTENT_EXTRA_EVENT, mOriginalEvent));
+                .putExtra(INTENT_EXTRA_EVENT, mOriginalEventFirebase));
         finish();
 
         if (action == ACTION_CREATE)
@@ -397,8 +393,8 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     /*/*등록 함수*/
-    private void storeUpload(DocumentReference documentReference, final Event mOriginalEvent) {
-        documentReference.set(mOriginalEvent.getScheduleInfo())
+    private void storeUpload(DocumentReference documentReference, final Event_firebase mOriginalEventFirebase) {
+        documentReference.set(mOriginalEventFirebase.getScheduleInfo())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

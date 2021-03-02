@@ -64,7 +64,7 @@ import java.util.Locale;
 
 import static android.content.Context.SENSOR_SERVICE;
 
-@SuppressWarnings({"unused", "FieldCanBeLocal", "WeakerAccess"})
+
 public class CalendarView extends FrameLayout {
 
     private static final String TAG = CalendarView.class.getSimpleName();
@@ -602,30 +602,6 @@ public class CalendarView extends FrameLayout {
             final FrameLinearLayout container = (FrameLinearLayout) view;
             final SelectedTextView tvDay = view.findViewById(R.id.tv_calendar_day);
             //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
-            final LinearLayout first_Schedule = view.findViewById(R.id.first_schedule);
-
-
-//            LinearLayout.LayoutParams startparams = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            startparams.setMarginStart(1);
-//
-//            LinearLayout.LayoutParams midparams = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            midparams.setMarginStart((int) getResources().getDimension(R.dimen.term));
-//            midparams.setMarginEnd((int) getResources().getDimension(R.dimen.term));
-//
-//            LinearLayout.LayoutParams endparams = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            endparams.setMargins(1,0,1,0);
-
-
-
-            if(!calendarObjectList.equals(new ArrayList<CalendarObject>())){
-                first_Schedule.setBackground(getResources().getDrawable(R.drawable.c1_border_left));
-                //first_Schedule.setBackgroundColor(calendarObjectList.get(0).getPrimaryColor());
-
-                //first_Schedule.setLayoutParams(endparams);
-            }
 
 
 ////////////// Set Notes
@@ -792,7 +768,6 @@ public class CalendarView extends FrameLayout {
                             /*드래그 앤드롭*//*
                             // Create a new ClipData.Item from the ImageView object's tag
                             ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
-
                             // Create a new ClipData using the tag as a label, the plain text MIME type, and
                             // the already-created item. This will create a new ClipDescription object within the
                             // ClipData, and set its MIME type entry to "text/plain"
@@ -800,12 +775,9 @@ public class CalendarView extends FrameLayout {
                                     (CharSequence) view.getTag(),
                                     new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN },
                                     item);
-
                             // Instantiates the drag shadow builder.
                             View.DragShadowBuilder myShadow = new MyDragShadowBuilder(container);
-
                             // Starts the drag
-
                             view.startDrag(dragData,  // the data to be dragged
                                     myShadow,  // the drag shadow builder
                                     null,      // no need to use local data
@@ -1142,15 +1114,13 @@ public class CalendarView extends FrameLayout {
 
         private String mID;
         private Calendar mDatetime;
-        private Calendar mFinalDatetime;
         private int mPrimaryColor;
         private int mSecondaryColor;
         private String fireUid;
 
-        public CalendarObject(String id, Calendar datetime, Calendar finaldatetime,int primaryColor, int secondaryColor, String Uid) {
+        public CalendarObject(String id, Calendar datetime, int primaryColor, int secondaryColor, String Uid) {
             mID = id;
             mDatetime = datetime;
-            mFinalDatetime = finaldatetime;
             mPrimaryColor = primaryColor;
             mSecondaryColor = secondaryColor;
             fireUid = Uid;

@@ -11,9 +11,9 @@
     <string name="completed">Completed</string>
     <string name="set">set</string>
     <string name="double_dots" translatable="false">:</string>
-    <string name="select_color_instruction">Select color of event</string>
-    <string name="event_default_title">My event</string>
-    <string name="no_events">no events</string>
+    <string name="select_color_instruction">Select color of eventFirebase</string>
+    <string name="event_default_title">My eventFirebase</string>
+    <string name="no_events">no eventFirebases</string>
     <string name="delete">delete</string>
     <string name="not_available">not available</string>
     <string name="previous_month">previous month</string>

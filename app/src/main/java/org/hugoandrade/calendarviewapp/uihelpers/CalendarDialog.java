@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import org.hugoandrade.calendarviewapp.R;
 import org.hugoandrade.calendarviewapp.data.Event;
+import org.hugoandrade.calendarviewapp.data.Event_firebase;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+/* 커스텀 날짜 다이얼로그 */
 /* 커스텀 날짜 다이얼로그 */
 public class CalendarDialog {
 
@@ -294,9 +296,7 @@ public class CalendarDialog {
         private List<Event> getCalendarEventsOfDay(Calendar day) {
             List<Event> eventList = new ArrayList<>();
             for (Event e : mEventList) {
-                Log.d("파이어a", " e.getScheduleInfo 확인 : " + e.getScheduleInfo());
-                Log.d("파이어a", " e.getDate 확인 : " + e.getDate());
-                if (diffYMD(e.getDate(), day) == 0)
+                if (diffYMD(e.getmDate(), day) == 0)
 
                     eventList.add(e);
             }
@@ -363,10 +363,10 @@ public class CalendarDialog {
 //                                }
 //                            });
 
-                        /*드래그 리스너*/
+                    /*드래그 리스너*/
                     view.setOnDragListener(new View.OnDragListener() {
-                                @Override
-                                public boolean onDrag(View view, DragEvent dragEvent) {
+                        @Override
+                        public boolean onDrag(View view, DragEvent dragEvent) {
 //                                    if (isOffsetDay) {
 //                                        tvDay.setTextColor(mAttributes.get(Attr.offsetDayTextColor));
 //                                    } else {
@@ -375,40 +375,40 @@ public class CalendarDialog {
 //                                    container.setFrameColor(mAttributes.get(Attr.selectedDayBorderColor));
 //                                    container.setBackgroundColor(mAttributes.get(Attr.selectedDayBackgroundColor));
 
-                                    //이벤트를 받음
+                            //이벤트를 받음
 
-                                    switch(dragEvent.getAction()){
+                            switch(dragEvent.getAction()){
 
-                                        //드래그가 시작되면
-                                        case DragEvent.ACTION_DRAG_STARTED:
-                                            //클립 설명이 텍스트면
+                                //드래그가 시작되면
+                                case DragEvent.ACTION_DRAG_STARTED:
+                                    //클립 설명이 텍스트면
 //                                            if(dragEvent.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
 //                                                //btn.setText("Drop OK");//버튼의 글자를 바꿈
 //                                                return true;
 //                                            }else{//인텐트의 경우 이쪽으로 와서 드래그를 받을 수가 없다.
 //                                                return false;
 //                                            }
-                                            dismissDialog();
-                                            return true;
-                                        //드래그가 뷰의 경계안으로 들어오면
-                                        case DragEvent.ACTION_DRAG_ENTERED:
-                                            //btn.setText("Enter");//버튼 글자 바꿈
-                                            return true;
+                                    dismissDialog();
+                                    return true;
+                                //드래그가 뷰의 경계안으로 들어오면
+                                case DragEvent.ACTION_DRAG_ENTERED:
+                                    //btn.setText("Enter");//버튼 글자 바꿈
+                                    return true;
 
-                                        //드래그가 뷰의 경계밖을 나가면
-                                        case DragEvent.ACTION_DRAG_EXITED:
-                                            //btn.setText("Exit");//버튼 글자 바꿈
-                                            return true;
+                                //드래그가 뷰의 경계밖을 나가면
+                                case DragEvent.ACTION_DRAG_EXITED:
+                                    //btn.setText("Exit");//버튼 글자 바꿈
+                                    return true;
 
-                                        //드래그가 드롭되면
-                                        case DragEvent.ACTION_DROP:
-                                            //클립데이터의 값을 가져옴
+                                //드래그가 드롭되면
+                                case DragEvent.ACTION_DROP:
+                                    //클립데이터의 값을 가져옴
 //                                            String text = dragEvent.getClipData().getItemAt(0).getText().toString();
 //                                            Log.d("캘린더","text : " + text);
-                                            //btn.setText(text);
+                                    //btn.setText(text);
 
 
-                                            return true;
+                                    return true;
 
 //                                        //드래그 성공 취소 여부에 상관없이 모든뷰에게
 //                                        case DragEvent.ACTION_DRAG_ENDED:
@@ -418,33 +418,33 @@ public class CalendarDialog {
 //                                                btn.setText("Target");
 //                                            }
 //                                            return true;
-                                    }
-                                    return true;
-                                }
-                            });
+                            }
+                            return true;
+                        }
+                    });
 
-                        /*드래그 앤드롭*/
-                            // Create a new ClipData.Item from the ImageView object's tag
-                            ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
+                    /*드래그 앤드롭*/
+                    // Create a new ClipData.Item from the ImageView object's tag
+                    ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
 
-                            // Create a new ClipData using the tag as a label, the plain text MIME type, and
-                            // the already-created item. This will create a new ClipDescription object within the
-                            // ClipData, and set its MIME type entry to "text/plain"
-                            ClipData dragData = new ClipData(
-                                    (CharSequence) view.getTag(),
-                                    new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN },
-                                    item);
+                    // Create a new ClipData using the tag as a label, the plain text MIME type, and
+                    // the already-created item. This will create a new ClipDescription object within the
+                    // ClipData, and set its MIME type entry to "text/plain"
+                    ClipData dragData = new ClipData(
+                            (CharSequence) view.getTag(),
+                            new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN },
+                            item);
 
-                            // Instantiates the drag shadow builder.
-                            View.DragShadowBuilder myShadow = new MyDragShadowBuilder(view);
+                    // Instantiates the drag shadow builder.
+                    View.DragShadowBuilder myShadow = new MyDragShadowBuilder(view);
 
-                            // Starts the drag
+                    // Starts the drag
 
-                            view.startDrag(dragData,  // the data to be dragged
-                                    myShadow,  // the drag shadow builder
-                                    null,      // no need to use local data
-                                    0          // flags (not currently used, set to 0)
-                            );
+                    view.startDrag(dragData,  // the data to be dragged
+                            myShadow,  // the drag shadow builder
+                            null,      // no need to use local data
+                            0          // flags (not currently used, set to 0)
+                    );
 
                     return true;
                 }
@@ -457,11 +457,11 @@ public class CalendarDialog {
             Event event = mCalendarEvents.get(position);
 
             String defaultTitle = holder.itemView.getContext().getString(R.string.event_default_title);
-            String title = event.getTitle() == null ? defaultTitle : event.getTitle();
+            String title = event.getmTitle() == null ? defaultTitle : event.getmTitle();
 
             holder.tvEventName.setText(title);
-            holder.rclEventIcon.setBackgroundColor(event.getColor());
-            holder.tvEventStatus.setText(timeFormat.format(event.getDate().getTime()));
+            holder.rclEventIcon.setBackgroundColor(event.getmColor());
+            holder.tvEventStatus.setText(timeFormat.format(event.getmDate().getTime()));
         }
 
         @Override
