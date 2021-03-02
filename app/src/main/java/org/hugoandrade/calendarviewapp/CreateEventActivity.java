@@ -22,11 +22,15 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.hugoandrade.calendarviewapp.data.Event;
 import org.hugoandrade.calendarviewapp.data.Event_firebase;
 import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import org.hugoandrade.calendarviewapp.utils.ColorUtils;
@@ -53,7 +57,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private final static SimpleDateFormat dateFormat
             = new SimpleDateFormat("EEEE, dd/MM    HH:mm", Locale.getDefault());
 
-    private Event_firebase mOriginalEventFirebase;
+    private Event mOriginalEventFirebase;
+    private Event_firebase mEventFirebase;
 
 
     private Calendar mCalendar;
@@ -76,17 +81,23 @@ public class CreateEventActivity extends AppCompatActivity {
     private FirebaseHelper Firebasehelper;
     private InputMethodManager imm;
 
+    private String FireUid;
+    private Event_firebase OriginalEvent;
+    private Calendar start_date;
+    private Calendar final_date;
+
     public static Intent makeIntent(Context context, @NonNull Calendar calendar) {
         return new Intent(context, CreateEventActivity.class).putExtra(INTENT_EXTRA_CALENDAR, calendar);
     }
 
-    public static Intent makeIntent(Context context, @NonNull Event_firebase eventFirebase) {
+    public static Intent makeIntent(Context context, @NonNull Event eventFirebase) {
         return new Intent(context, CreateEventActivity.class).putExtra(INTENT_EXTRA_EVENT, eventFirebase);
     }
 
-    public static Event_firebase extractEventFromIntent(Intent intent) {
+    public static Event extractEventFromIntent(Intent intent) {
         return intent.getParcelableExtra(INTENT_EXTRA_EVENT);
     }
+
 
     public static int extractActionFromIntent(Intent intent) {
         return intent.getIntExtra(INTENT_EXTRA_ACTION, 0);
@@ -159,11 +170,71 @@ public class CreateEventActivity extends AppCompatActivity {
             isViewMode = false;
         }
         else {
+            FireUid = mOriginalEventFirebase.getEvent_Uid();
+            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("SCHEDULE").document(FireUid);
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null) {
+                            if (document.exists()) {  //데이터의 존재여부
+                                start_date =
+                                        YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(document.getData().get("ScheduleModel_Day").toString()),
+                                                Integer.parseInt(document.getData().get("ScheduleModel_Month").toString()),
+                                                Integer.parseInt(document.getData().get("ScheduleModel_Year").toString())
+                                        ));
+                                mCalendar = start_date;
+                                final_date =
+                                        YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(document.getData().get("ScheduleModel_Final_Day").toString()),
+                                                Integer.parseInt(document.getData().get("ScheduleModel_Final_Month").toString()),
+                                                Integer.parseInt(document.getData().get("ScheduleModel_Final_Year").toString())
+                                        ));
+                                mFinalCalendar = final_date;
+                                Log.d("석규짱","mFinalCalendar : " + mFinalCalendar);
+                            }
+                            /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
+                            mDateTextView = findViewById(R.id.tv_date);
+                            mDateTextView.setText(dateFormat.format(mCalendar.getTime()));
+                            mDateTextView.setOnClickListener(new View.OnClickListener() {
+
+                                @SuppressLint("RestrictedApi")
+                                @Override
+                                public void onClick(View v) {
+                                    Activity context = CreateEventActivity.this;
+                                    Intent intent = SelectDateAndTimeActivity.makeIntent(context, mCalendar);
+
+                                    startActivityForResult(intent,
+                                            SET_DATE_AND_TIME_REQUEST_CODE,
+                                            ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
+                                }
+                            });
+
+                            /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
+                            mFinalDateTextView = findViewById(R.id.tv_final_date);
+                            mFinalDateTextView.setText(dateFormat.format(mFinalCalendar.getTime()));
+                            mFinalDateTextView.setOnClickListener(new View.OnClickListener() {
+
+                                @SuppressLint("RestrictedApi")
+                                @Override
+                                public void onClick(View v) {
+                                    Activity context = CreateEventActivity.this;
+                                    Intent intent = SelectDateAndTimeActivity.makeIntent(context, mFinalCalendar);
+
+                                    startActivityForResult(intent,
+                                            SET_FINAL_DATE_AND_TIME_REQUEST_CODE,
+                                            ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+            Log.d("석규짱","mFinalCalendar2222 : " + mFinalCalendar);
             mUid = mOriginalEventFirebase.getEvent_Uid();
-            mCalendar = mOriginalEventFirebase.getDate();
-            mFinalCalendar = mOriginalEventFirebase.getFinalDate();
-            mColor = mOriginalEventFirebase.getColor();
-            mTitle = mOriginalEventFirebase.getTitle();
+            mColor = mOriginalEventFirebase.getmColor();
+            mTitle = mOriginalEventFirebase.getmTitle();
             mIsComplete = mOriginalEventFirebase.isCompleted();
             isViewMode = true;
         }
@@ -211,40 +282,42 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
-        /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
-        mDateTextView = findViewById(R.id.tv_date);
-        mDateTextView.setText(dateFormat.format(mCalendar.getTime()));
-        mDateTextView.setOnClickListener(new View.OnClickListener() {
-
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onClick(View v) {
-                Activity context = CreateEventActivity.this;
-                Intent intent = SelectDateAndTimeActivity.makeIntent(context, mCalendar);
-
-                startActivityForResult(intent,
-                        SET_DATE_AND_TIME_REQUEST_CODE,
-                        ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
-            }
-        });
-
 
         /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
-        mFinalDateTextView = findViewById(R.id.tv_final_date);
-        mFinalDateTextView.setText(dateFormat.format(mFinalCalendar.getTime()));
-        mFinalDateTextView.setOnClickListener(new View.OnClickListener() {
+        if (mOriginalEventFirebase == null) {
+            /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
+            mDateTextView = findViewById(R.id.tv_date);
+            mDateTextView.setText(dateFormat.format(mCalendar.getTime()));
+            mDateTextView.setOnClickListener(new View.OnClickListener() {
 
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onClick(View v) {
-                Activity context = CreateEventActivity.this;
-                Intent intent = SelectDateAndTimeActivity.makeIntent(context, mFinalCalendar);
+                @SuppressLint("RestrictedApi")
+                @Override
+                public void onClick(View v) {
+                    Activity context = CreateEventActivity.this;
+                    Intent intent = SelectDateAndTimeActivity.makeIntent(context, mCalendar);
 
-                startActivityForResult(intent,
-                        SET_FINAL_DATE_AND_TIME_REQUEST_CODE,
-                        ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
-            }
-        });
+                    startActivityForResult(intent,
+                            SET_DATE_AND_TIME_REQUEST_CODE,
+                            ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
+                }
+            });
+
+            mFinalDateTextView = findViewById(R.id.tv_final_date);
+            mFinalDateTextView.setText(dateFormat.format(mFinalCalendar.getTime()));
+            mFinalDateTextView.setOnClickListener(new View.OnClickListener() {
+
+                @SuppressLint("RestrictedApi")
+                @Override
+                public void onClick(View v) {
+                    Activity context = CreateEventActivity.this;
+                    Intent intent = SelectDateAndTimeActivity.makeIntent(context, mFinalCalendar);
+
+                    startActivityForResult(intent,
+                            SET_FINAL_DATE_AND_TIME_REQUEST_CODE,
+                            ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
+                }
+            });
+        }
 
         /* 클릭하면, 일정의 색 선택가능*/
         mColorCardView = findViewById(R.id.cardView_event_color);
@@ -330,6 +403,7 @@ public class CreateEventActivity extends AppCompatActivity {
     /*삭제*/
     private void delete() {
         Log.e(getClass().getSimpleName(), "delete");
+
         Firebasehelper.Schedule_Delete(mOriginalEventFirebase);
         setResult(RESULT_OK, new Intent()
                 .putExtra(INTENT_EXTRA_ACTION, ACTION_DELETE)
@@ -341,7 +415,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     OnScheduleListener onPostListener = new OnScheduleListener() {
         @Override
-        public void onScheduleDelete(Event_firebase eventFirebase) { }
+        public void onScheduleDelete(Event event) { }
         @Override
         public void onModify() { Log.e("로그 ","수정 성공"); }
     };
@@ -350,7 +424,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private void save() {
 
         int action = mOriginalEventFirebase != null ? ACTION_EDIT : ACTION_CREATE;
-        String id = mOriginalEventFirebase != null ? mOriginalEventFirebase.getID() : generateID();
+        String id = mOriginalEventFirebase != null ? mOriginalEventFirebase.getmID() : generateID();
         String rawTitle = mTitleView.getText().toString().trim();
 
         YMDCalendar ymdCalendar = new YMDCalendar(mCalendar.get(Calendar.YEAR),
@@ -363,7 +437,7 @@ public class CreateEventActivity extends AppCompatActivity {
         String calendar_Id = mOriginalEventFirebase != null ? mUid : firebaseFirestore.collection("SCHEDULE").document().getId();
         final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
 
-        mOriginalEventFirebase = new Event_firebase(
+        mEventFirebase = new Event_firebase(
                 calendar_Id,
                 id,
                 rawTitle.isEmpty() ? null : rawTitle,
@@ -376,7 +450,18 @@ public class CreateEventActivity extends AppCompatActivity {
                 mColor,
                 mIsCompleteCheckBox.isChecked()
         );
-        storeUpload(documentReference, mOriginalEventFirebase);
+
+        mOriginalEventFirebase = new Event(
+                calendar_Id,
+                id,
+                rawTitle.isEmpty() ? null : rawTitle,
+                mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH),
+                mCalendar.get(Calendar.DATE),
+                mColor,
+                mIsCompleteCheckBox.isChecked()
+        );
+        storeUpload(documentReference, mEventFirebase);
 /////////* 저장 버튼 눌렸을 때 파이어베이스에 넣는다.*/
 
         setResult(RESULT_OK, new Intent()

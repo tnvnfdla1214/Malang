@@ -1,10 +1,11 @@
 package org.hugoandrade.calendarviewapp.data;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Calendar;
 
-public class Event{
+public class Event implements Parcelable{
 
     private String Event_Uid;
     private String mID;
@@ -25,6 +26,17 @@ public class Event{
         mID = id;
         mTitle = title;
         mDate = date;
+        mColor = color;
+        this.isCompleted = isCompleted;
+    }
+
+    public Event(String Event_Uid, String id, String title, int mYear, int mMonth, int mDay, int color, boolean isCompleted) {
+        this.Event_Uid = Event_Uid;
+        mID = id;
+        mTitle = title;
+        this.mYear = mYear;
+        this.mMonth = mMonth;
+        this.mDay = mDay;
         mColor = color;
         this.isCompleted = isCompleted;
     }
@@ -78,7 +90,7 @@ public class Event{
     }
 
     public int getmYear() {
-        return mYear;
+        return this.mYear;
     }
 
     public void setmYear(int mYear) {
@@ -86,7 +98,7 @@ public class Event{
     }
 
     public int getmMonth() {
-        return mMonth;
+        return this.mMonth;
     }
 
     public void setmMonth(int mMonth) {
@@ -94,10 +106,46 @@ public class Event{
     }
 
     public int getmDay() {
-        return mDay;
+        return this.mDay;
     }
 
     public void setmDay(int mDay) {
         this.mDay = mDay;
     }
+
+    protected Event(Parcel in) {
+        Event_Uid = in.readString();
+        mID = in.readString();
+        mTitle = in.readString();
+        mDate = (Calendar) in.readSerializable();
+        mColor = in.readInt();
+        isCompleted = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Event_Uid);
+        dest.writeString(mID);
+        dest.writeString(mTitle);
+        dest.writeSerializable(mDate);
+        dest.writeInt(mColor);
+        dest.writeByte((byte) (isCompleted ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }

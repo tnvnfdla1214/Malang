@@ -52,6 +52,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     private ListenerRegistration listenerUsers;
     private FirebaseFirestore Firestore= FirebaseFirestore.getInstance();
 
+    private static int shape;
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, CalendarViewWithNotesActivitySDK21.class);
@@ -114,40 +115,51 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                         @Nullable FirebaseFirestoreException e) {
                         if (e != null) { return; }
 
+
                         for (QueryDocumentSnapshot doc : value) {
                             Event_firebase event_firebase = create_event_firebase(doc);//민규가 만든 파이어베이스에서 정보 받아온걸로 이벤트 파이어베이스모델에 넣는 함수
-
+                            Calendar startday = event_firebase.getDate();
+                            Calendar endday = event_firebase.getFinalDate();
+                            //Calendar day = event_firebase.getDate();
                             //석규가 만든 중복되는거없애는거는 아직 안만듬
+                            Event oldEvent = null;
+                            for (Event ef : mEventList) {
+                                if (Objects.equals(event_firebase.getID(), ef.getmID())) {
+                                    oldEvent = ef;
+                                    break;
+                                }
+                            }
+
                             //하루짜리 날짜 생성
-                            if(event_firebase.getDate().equals(event_firebase.getFinalDate())){
+                            if(startday.get(Calendar.DATE) == (endday.get(Calendar.DATE)) && startday.get(Calendar.MONTH) == (endday.get(Calendar.MONTH))){
+                                shape = 0;
                                 Event c_event = new Event(); //초기화
                                 c_event =convert_event(event_firebase);   //민규가 만든 event_firebase -> evnet 바꾸는 함수
                                 mEventList.add(c_event);
                                 mCalendarView.addCalendarObject(parseCalendarObject(c_event));
-                                //캘린더뷰에 모양 뭔지 보내주어야함 -> 0
+
                             }
                             /* 2일 이상 짜리 = 일정 n개만큼 만들어줌 */
                             else{
-                                Calendar startday = event_firebase.getDate();
-                                Calendar endday = event_firebase.getFinalDate();
-                                Calendar day = Calendar.getInstance();
-                                day = startday;
+                                int count = 0;
                                 while (!startday.after(endday)){
-                                    if(day.equals(startday)){
-                                        //캘린더뷰에 모양 뭔지 보내주어야함 -> 1
+                                     if(startday.get(Calendar.DATE) == (endday.get(Calendar.DATE))){    //끝에날
+                                         shape = 2;
+                                    } else{   //중긴
+                                         if(count == 0){
+                                             shape = 1;
+                                         }else{
+                                             shape = 3;
+                                         }
                                     }
-                                    else if(day.equals(endday)){
-                                        //캘린더뷰에 모양 뭔지 보내주어야함 -> 2
-                                    }
-                                    else{
-                                        //캘린더뷰에 모양 뭔지 보내주어야함 -> 3
-                                    }
-                                        Event c_event = new Event(); //초기화
-                                        c_event=day_convert_event(event_firebase,day); //변경된 day를 넣어주는 함수
-                                        mEventList.add(c_event);
-                                        mCalendarView.addCalendarObject(parseCalendarObject(c_event));
-                                    day.add(Calendar.DATE,1);
+                                     count++;
+                                     Event c_event = new Event(); //초기화
+                                    c_event = day_convert_event(event_firebase,startday); //변경된 day를 넣어주는 함수
+                                    mEventList.add(c_event);
+                                    mCalendarView.addCalendarObject(parseCalendarObject(c_event));
+                                    startday.add(Calendar.DATE,1);
                                 }
+                                //초기화를 해야할수도 있음
                             }
                         }
                         mCalendarDialog.setEventList(mEventList);
@@ -193,7 +205,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 .create();
     }
 
-    private void onEventSelected(Event_firebase event_firebase) {
+    private void onEventSelected(Event event_firebase) {
         Activity context = CalendarViewWithNotesActivitySDK21.this;
         Intent intent = CreateEventActivity.makeIntent(context, event_firebase);
 
@@ -234,7 +246,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         if (requestCode == CREATE_EVENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 int action = CreateEventActivity.extractActionFromIntent(data);
-                Event_firebase event_firebase = CreateEventActivity.extractEventFromIntent(data);
+                Event event = CreateEventActivity.extractEventFromIntent(data);
 
                 switch (action) {
                     case CreateEventActivity.ACTION_CREATE: {
@@ -275,19 +287,19 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                         break;
                     }
                     case CreateEventActivity.ACTION_DELETE: {
-                        Event oldEvent = null;
+                        ArrayList<Event> oldEvent = new ArrayList<>();
                         for (Event e : mEventList) {
-                            if (Objects.equals(event_firebase.getmID(), e.getmID())) {
-                                oldEvent = e;
-                                break;
+                            if (Objects.equals(event.getEvent_Uid(), e.getEvent_Uid())) {
+                                oldEvent.add(e);
                             }
                         }
-                        if (oldEvent != null) {
-                            mEventList.remove(oldEvent);
-                            mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent));
-
-                            mCalendarDialog.setEventList(mEventList);
+                        int count = oldEvent.size();
+                        for(int i = 0; i < count ; i++){
+                            mEventList.remove(oldEvent.get(i));
+                            mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(i)));
                         }
+                        mCalendarDialog.setEventList(mEventList);
+
                         break;
                     }
                 }
@@ -317,7 +329,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 event.getmDate(),
                 event.getmColor(),
                 event.isCompleted() ? Color.TRANSPARENT : Color.RED,
-                event.getEvent_Uid());
+                event.getEvent_Uid(),
+                shape);
 
     }
     //Event_firebase 를 생성하는 함수
@@ -344,6 +357,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     Event convert_event(Event_firebase event_firebase){
         Event C_event = new Event(event_firebase.getEvent_Uid(),event_firebase.getID(),event_firebase.getTitle(),
                                     event_firebase.getDate(),event_firebase.getColor(),event_firebase.isCompleted());
+        Log.d("석규짱","f_event.getDate() : " + C_event.getmDay());
         return C_event;
     }
 
@@ -355,7 +369,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                         date,event_firebase.getFinalDate(),
                                         event_firebase.getColor(),event_firebase.isCompleted());
         Event c_event = new Event(); //초기화
-        c_event =convert_event(event_firebase);   //민규가 만든 event_firebase -> evnet 바꾸는 함수
+        c_event =convert_event(f_event);   //민규가 만든 event_firebase -> evnet 바꾸는 함수
+
 
         return c_event;
     }

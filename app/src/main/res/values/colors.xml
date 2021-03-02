@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="girl">#9FE1E7</color>
+    <color name="men">#FFC107</color>
     <color name="background">#4f000000</color>
 </resources>

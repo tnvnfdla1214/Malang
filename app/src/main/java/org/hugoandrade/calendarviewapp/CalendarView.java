@@ -601,7 +601,23 @@ public class CalendarView extends FrameLayout {
 
             final FrameLinearLayout container = (FrameLinearLayout) view;
             final SelectedTextView tvDay = view.findViewById(R.id.tv_calendar_day);
+            final LinearLayout first_schedule = view.findViewById(R.id.first_schedule);
             //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
+
+            if(!calendarObjectList.equals(new ArrayList<>())){
+//                Log.d("석규짱","day.day : " + day.day);
+//                Log.d("석규짱","뷰shape : " + calendarObjectList.get(0).getShape());
+                if(calendarObjectList.get(0).getShape() == 0){
+                    first_schedule.setBackgroundResource(R.drawable.calendarbar_all_girl);
+                }else if(calendarObjectList.get(0).getShape() == 1){
+                    first_schedule.setBackgroundResource(R.drawable.calendarbar_left_girl);
+                }else if(calendarObjectList.get(0).getShape() == 2){
+                    first_schedule.setBackgroundResource(R.drawable.calendarbar_right_girl);
+                }else{
+                    first_schedule.setBackgroundResource(R.color.girl);
+                }
+            }
+
 
 
 ////////////// Set Notes
@@ -1117,13 +1133,15 @@ public class CalendarView extends FrameLayout {
         private int mPrimaryColor;
         private int mSecondaryColor;
         private String fireUid;
+        private int mshape;
 
-        public CalendarObject(String id, Calendar datetime, int primaryColor, int secondaryColor, String Uid) {
+        public CalendarObject(String id, Calendar datetime, int primaryColor, int secondaryColor, String Uid, int shape) {
             mID = id;
             mDatetime = datetime;
             mPrimaryColor = primaryColor;
             mSecondaryColor = secondaryColor;
             fireUid = Uid;
+            mshape = shape;
         }
 
         public String getID() {
@@ -1140,6 +1158,10 @@ public class CalendarView extends FrameLayout {
 
         public int getSecondaryColor() {
             return mSecondaryColor;
+        }
+
+        public int getShape() {
+            return mshape;
         }
     }
 
