@@ -115,51 +115,56 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                         @Nullable FirebaseFirestoreException e) {
                         if (e != null) { return; }
 
-
+                        ArrayList<Event> oldEvent = new ArrayList<>();
                         for (QueryDocumentSnapshot doc : value) {
                             Event_firebase event_firebase = create_event_firebase(doc);//민규가 만든 파이어베이스에서 정보 받아온걸로 이벤트 파이어베이스모델에 넣는 함수
                             Calendar startday = event_firebase.getDate();
                             Calendar endday = event_firebase.getFinalDate();
-                            //Calendar day = event_firebase.getDate();
-                            //석규가 만든 중복되는거없애는거는 아직 안만듬
-                            Event oldEvent = null;
+
+                            /* [1]. oldEvent에다가 Uid가 같은 일정 객체를 전부 담는다.
+                                oldEvent = List<Event> */
                             for (Event ef : mEventList) {
                                 if (Objects.equals(event_firebase.getID(), ef.getmID())) {
-                                    oldEvent = ef;
-                                    break;
+                                    oldEvent.add(ef);
                                 }
                             }
 
-                            //하루짜리 날짜 생성
+                            /* [2]. oldEvent가 비어 있지 않다면 한번 싹지운다.
+                            *       그리고 난 후 oldEvent는 초기화 해준다*/
+                            if (!oldEvent.equals(new ArrayList<>())) {
+                                int count = oldEvent.size();
+                                for(int i = 0; i < count ; i++){
+                                    mEventList.remove(oldEvent.get(i));
+                                    mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(i)));
+                                }oldEvent = new ArrayList<>();
+                            }
+
+                            /* [3]. 날짜 객체를 채워준다. */
                             if(startday.get(Calendar.DATE) == (endday.get(Calendar.DATE)) && startday.get(Calendar.MONTH) == (endday.get(Calendar.MONTH))){
                                 shape = 0;
                                 Event c_event = new Event(); //초기화
                                 c_event =convert_event(event_firebase);   //민규가 만든 event_firebase -> evnet 바꾸는 함수
                                 mEventList.add(c_event);
                                 mCalendarView.addCalendarObject(parseCalendarObject(c_event));
-
-                            }
-                            /* 2일 이상 짜리 = 일정 n개만큼 만들어줌 */
-                            else{
+                            } else{
                                 int count = 0;
                                 while (!startday.after(endday)){
-                                     if(startday.get(Calendar.DATE) == (endday.get(Calendar.DATE))){    //끝에날
-                                         shape = 2;
+                                    if(startday.get(Calendar.DATE) == (endday.get(Calendar.DATE))){    //끝에날
+                                        shape = 2;
                                     } else{   //중긴
-                                         if(count == 0){
-                                             shape = 1;
-                                         }else{
-                                             shape = 3;
-                                         }
+                                        if(count == 0){
+                                            shape = 1;
+                                        }else{
+                                            shape = 3;
+                                        }
                                     }
-                                     count++;
-                                     Event c_event = new Event(); //초기화
+                                    count++;
+                                    Event c_event = new Event(); //초기화
                                     c_event = day_convert_event(event_firebase,startday); //변경된 day를 넣어주는 함수
                                     mEventList.add(c_event);
                                     mCalendarView.addCalendarObject(parseCalendarObject(c_event));
                                     startday.add(Calendar.DATE,1);
                                 }
-                                //초기화를 해야할수도 있음
                             }
                         }
                         mCalendarDialog.setEventList(mEventList);
