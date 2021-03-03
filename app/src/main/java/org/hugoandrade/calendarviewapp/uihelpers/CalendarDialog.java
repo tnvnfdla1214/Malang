@@ -30,7 +30,6 @@ import android.widget.TextView;
 
 import org.hugoandrade.calendarviewapp.R;
 import org.hugoandrade.calendarviewapp.data.Event;
-import org.hugoandrade.calendarviewapp.data.Event_firebase;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -296,7 +295,7 @@ public class CalendarDialog {
         private List<Event> getCalendarEventsOfDay(Calendar day) {
             List<Event> eventList = new ArrayList<>();
             for (Event e : mEventList) {
-                if (diffYMD(e.getmDate(), day) == 0)
+                if (diffYMD(e.getMarked_Date(), day) == 0)
 
                     eventList.add(e);
             }
@@ -457,11 +456,11 @@ public class CalendarDialog {
             Event event = mCalendarEvents.get(position);
 
             String defaultTitle = holder.itemView.getContext().getString(R.string.event_default_title);
-            String title = event.getmTitle() == null ? defaultTitle : event.getmTitle();
+            String title = event.getTitle() == null ? defaultTitle : event.getTitle();
 
             holder.tvEventName.setText(title);
-            holder.rclEventIcon.setBackgroundColor(event.getmColor());
-            holder.tvEventStatus.setText(timeFormat.format(event.getmDate().getTime()));
+            holder.rclEventIcon.setBackgroundColor(event.getColor());
+            holder.tvEventStatus.setText(timeFormat.format(event.getMarked_Date().getTime()));
         }
 
         @Override

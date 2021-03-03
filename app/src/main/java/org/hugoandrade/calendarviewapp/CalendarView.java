@@ -12,16 +12,12 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 
-import androidx.annotation.ArrayRes;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
@@ -46,7 +42,6 @@ import android.widget.TextView;
 
 
 import org.hugoandrade.calendarviewapp.helpers.FrameLinearLayout;
-import org.hugoandrade.calendarviewapp.helpers.MultipleTriangleView;
 import org.hugoandrade.calendarviewapp.helpers.SelectedTextView;
 import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 
@@ -61,8 +56,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static android.content.Context.SENSOR_SERVICE;
 
 
 public class CalendarView extends FrameLayout {
@@ -290,7 +283,7 @@ public class CalendarView extends FrameLayout {
     }
 
     public void removeCalendarObjectByID(CalendarObject calendarObject) {
-        int dateCode = getDateCode(calendarObject.getDatetime(), 1);
+        int dateCode = getDateCode(calendarObject.getMarked_Date(), 1);
 
         List<CalendarObject> calendarObjectList = mObjectsByMonthMap.get(dateCode);
         if (calendarObjectList != null) {
@@ -409,13 +402,13 @@ public class CalendarView extends FrameLayout {
     }
 
     private void addCalendarObjectToSparseArray(CalendarObject calendarObject) {
-        int dateCode = getDateCode(calendarObject.getDatetime(), 1);
+        int dateCode = getDateCode(calendarObject.getMarked_Date(), 1);
         if (mObjectsByMonthMap.get(dateCode) != null) {
             mObjectsByMonthMap.get(dateCode).add(calendarObject);
             Collections.sort(mObjectsByMonthMap.get(dateCode), new Comparator<CalendarObject>() {
                 @Override
                 public int compare(CalendarObject o1, CalendarObject o2) {
-                    return o1.getDatetime().after(o2.getDatetime())? 1 : -1;
+                    return o1.getMarked_Date().after(o2.getMarked_Date())? 1 : -1;
                 }
             });
         } else {
@@ -605,8 +598,8 @@ public class CalendarView extends FrameLayout {
             //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
 
             if(!calendarObjectList.equals(new ArrayList<>())){
-//                Log.d("석규짱","day.day : " + day.day);
-//                Log.d("석규짱","뷰shape : " + calendarObjectList.get(0).getShape());
+                Log.d("정은짱","day.day : " + day.day);
+                Log.d("정은짱","뷰shape : " + calendarObjectList.get(0).getShape());
                 if(calendarObjectList.get(0).getShape() == 0){
                     first_schedule.setBackgroundResource(R.drawable.calendarbar_all_girl);
                 }else if(calendarObjectList.get(0).getShape() == 1){
@@ -996,7 +989,7 @@ public class CalendarView extends FrameLayout {
 
             SparseArray<List<CalendarObject>> mObjectByDayMap = new SparseArray<>();
             for (CalendarObject object : objectList) {
-                int dateCode = getDateCode(object.getDatetime(), 2);
+                int dateCode = getDateCode(object.getMarked_Date(), 2);
                 if (mObjectByDayMap.get(dateCode) != null) {
                     mObjectByDayMap.get(dateCode).add(object);
                 } else {
@@ -1014,7 +1007,7 @@ public class CalendarView extends FrameLayout {
                     mObjectsByMonthMap.get(getDateCode(calendar, 1), new ArrayList<CalendarObject>());
 
             for (CalendarObject e : tmpObjectList)
-                if (getDateCode(e.getDatetime(), 2) == getDateCode(calendar, 2))
+                if (getDateCode(e.getMarked_Date(), 2) == getDateCode(calendar, 2))
                     eventList.add(e);
 
             return eventList;
@@ -1129,15 +1122,19 @@ public class CalendarView extends FrameLayout {
     public static class CalendarObject {
 
         private String mID;
-        private Calendar mDatetime;
+        private Calendar Marked_Date;
+        private Calendar Start_Date;
+        private Calendar End_Date;
         private int mPrimaryColor;
         private int mSecondaryColor;
         private String fireUid;
         private int mshape;
 
-        public CalendarObject(String id, Calendar datetime, int primaryColor, int secondaryColor, String Uid, int shape) {
+        public CalendarObject(String id, Calendar Marked_Date, Calendar Start_Date, Calendar End_Date, int primaryColor, int secondaryColor, String Uid, int shape) {
             mID = id;
-            mDatetime = datetime;
+            this.Marked_Date = Marked_Date;
+            this.Start_Date = Start_Date;
+            this.End_Date = End_Date;
             mPrimaryColor = primaryColor;
             mSecondaryColor = secondaryColor;
             fireUid = Uid;
@@ -1148,8 +1145,8 @@ public class CalendarView extends FrameLayout {
             return mID;
         }
 
-        public Calendar getDatetime() {
-            return mDatetime;
+        public Calendar getMarked_Date() {
+            return this.Marked_Date;
         }
 
         public int getPrimaryColor() {

@@ -15,45 +15,45 @@ import java.util.Map;
 public class Event_firebase implements Parcelable {
 
     private String Event_Uid;
-    private String mID;
-    private String mTitle;
-    private Calendar mDate;
-    private Calendar mFinalDate;
-    private int mColor;
-    private boolean isCompleted;
+    private String Id;
+    private String Title;
+    private Calendar Start_Date;
+    private Calendar End_Date;
+    private int Color;
+    private boolean IsCompleted;
 
-    private int mYear;
-    private int mMonth;
-    private int mDay;
+    private int Start_Year;
+    private int Start_Month;
+    private int Start_Day;
 
-    private int mFinalYear;
-    private int mFinalMonth;
-    private int mFinalDay;
+    private int End_Year;
+    private int End_Month;
+    private int End_Day;
 
     public Event_firebase(){}
 
-    public Event_firebase(String Event_Uid, String id, String title, Calendar date, Calendar finaldate, int color, boolean isCompleted) {
+    public Event_firebase(String Event_Uid, String Id, String Title, Calendar Start_Date, Calendar End_Date, int Color, boolean IsCompleted) {
         this.Event_Uid = Event_Uid;
-        mID = id;
-        mTitle = title;
-        mFinalDate = finaldate;
-        mDate = date;
-        mColor = color;
-        this.isCompleted = isCompleted;
+        this.Id = Id;
+        this.Title = Title;
+        this.Start_Date = Start_Date;
+        this.End_Date = End_Date;
+        this.Color = Color;
+        this.IsCompleted = IsCompleted;
     }
 
-    public Event_firebase(String Event_Uid, String id, String title, int mYear, int mMonth, int mDay, int mFinalYear, int mFinalMonth, int mFinalDay, int color, boolean isCompleted) {
+    public Event_firebase(String Event_Uid, String Id, String Title, int Start_Year, int Start_Month, int Start_Day, int End_Year, int End_Month, int End_Day, int Color, boolean IsCompleted) {
         this.Event_Uid = Event_Uid;
-        mID = id;
-        mTitle = title;
-        this.mYear = mYear;
-        this.mMonth = mMonth;
-        this.mDay = mDay;
-        this.mFinalYear = mFinalYear;
-        this.mFinalMonth = mFinalMonth;
-        this.mFinalDay = mFinalDay;
-        mColor = color;
-        this.isCompleted = isCompleted;
+        this.Id = Id;
+        this.Title = Title;
+        this.Start_Year = Start_Year;
+        this.Start_Month = Start_Month;
+        this.Start_Day = Start_Day;
+        this.End_Year = End_Year;
+        this.End_Month = End_Month;
+        this.End_Day = End_Day;
+        this.Color = Color;
+        this.IsCompleted = IsCompleted;
     }
 
 
@@ -62,65 +62,65 @@ public class Event_firebase implements Parcelable {
     public Map<String, Object> getScheduleInfo(){
         Map<String, Object> docData = new HashMap<>();
         docData.put("ScheduleModel_Uid", Event_Uid);
-        docData.put("ScheduleModel_Title", mTitle);
-        docData.put("ScheduleModel_Year", mYear);
-        docData.put("ScheduleModel_Month", mMonth);
-        docData.put("ScheduleModel_Day", mDay);
-        docData.put("ScheduleModel_Final_Year", mFinalYear);
-        docData.put("ScheduleModel_Final_Month", mFinalMonth);
-        docData.put("ScheduleModel_Final_Day", mFinalDay);
-        docData.put("ScheduleModel_Color", mColor);
-        docData.put("ScheduleModel_Id", mID);
-        docData.put("ScheduleModel_isCompleted", isCompleted);
+        docData.put("ScheduleModel_Title", Title);
+        docData.put("ScheduleModel_Start_Year", Start_Year);
+        docData.put("ScheduleModel_Start_Month", Start_Month);
+        docData.put("ScheduleModel_Start_Day", Start_Day);
+        docData.put("ScheduleModel_Final_Year", End_Year);
+        docData.put("ScheduleModel_Final_Month", End_Month);
+        docData.put("ScheduleModel_Final_Day", End_Day);
+        docData.put("ScheduleModel_Color", Color);
+        docData.put("ScheduleModel_Id", Id);
+        docData.put("ScheduleModel_IsCompleted", IsCompleted);
         return  docData;
     }
 
 
-    public String getID() {
-        return mID;
+    public String getId() {
+        return this.Id;
     }
 
     public String getTitle() {
-        return mTitle;
+        return this.Title;
     }
 
-    public Calendar getDate() {
-        return mDate;
+    public Calendar getStart_Date() {
+        return this.Start_Date;
     }
-    public void setDate(Calendar date) {
-        mDate = date;
+    public void setStart_Date(Calendar Start_Date) {
+        this.Start_Date = Start_Date;
     }
-    public Calendar getFinalDate() {
-        return mFinalDate;
+    public Calendar getEnd_Date() {
+        return this.End_Date;
     }
 
     public int getColor() {
-        return mColor;
+        return this.Color;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
+    public boolean getIsCompleted() {
+        return this.IsCompleted;
     }
 
     protected Event_firebase(Parcel in) {
         Event_Uid = in.readString();
-        mID = in.readString();
-        mTitle = in.readString();
-        mDate = (Calendar) in.readSerializable();
-        mFinalDate = (Calendar) in.readSerializable();
-        mColor = in.readInt();
-        isCompleted = in.readByte() != 0;
+        Id = in.readString();
+        Title = in.readString();
+        Start_Date = (Calendar) in.readSerializable();
+        End_Date = (Calendar) in.readSerializable();
+        Color = in.readInt();
+        IsCompleted = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(Event_Uid);
-        dest.writeString(mID);
-        dest.writeString(mTitle);
-        dest.writeSerializable(mDate);
-        dest.writeSerializable(mFinalDate);
-        dest.writeInt(mColor);
-        dest.writeByte((byte) (isCompleted ? 1 : 0));
+        dest.writeString(Id);
+        dest.writeString(Title);
+        dest.writeSerializable(Start_Date);
+        dest.writeSerializable(End_Date);
+        dest.writeInt(Color);
+        dest.writeByte((byte) (IsCompleted ? 1 : 0));
     }
 
     @Override
@@ -141,10 +141,10 @@ public class Event_firebase implements Parcelable {
     };
 
     public String getEvent_Uid() {
-        return Event_Uid;
+        return this.Event_Uid;
     }
 
-    public void setEvent_Uid(String event_Uid) {
-        Event_Uid = event_Uid;
+    public void setEvent_Uid(String Event_Uid) {
+        this.Event_Uid = Event_Uid;
     }
 }

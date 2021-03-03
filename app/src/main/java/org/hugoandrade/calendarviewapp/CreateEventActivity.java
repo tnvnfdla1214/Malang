@@ -81,10 +81,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private FirebaseHelper Firebasehelper;
     private InputMethodManager imm;
 
-    private String FireUid;
-    private Event_firebase OriginalEvent;
-    private Calendar start_date;
-    private Calendar final_date;
+
 
     public static Intent makeIntent(Context context, @NonNull Calendar calendar) {
         return new Intent(context, CreateEventActivity.class).putExtra(INTENT_EXTRA_CALENDAR, calendar);
@@ -170,71 +167,15 @@ public class CreateEventActivity extends AppCompatActivity {
             isViewMode = false;
         }
         else {
-            FireUid = mOriginalEventFirebase.getEvent_Uid();
-            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("SCHEDULE").document(FireUid);
-            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document != null) {
-                            if (document.exists()) {  //데이터의 존재여부
-                                start_date =
-                                        YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(document.getData().get("ScheduleModel_Day").toString()),
-                                                Integer.parseInt(document.getData().get("ScheduleModel_Month").toString()),
-                                                Integer.parseInt(document.getData().get("ScheduleModel_Year").toString())
-                                        ));
-                                mCalendar = start_date;
-                                final_date =
-                                        YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(document.getData().get("ScheduleModel_Final_Day").toString()),
-                                                Integer.parseInt(document.getData().get("ScheduleModel_Final_Month").toString()),
-                                                Integer.parseInt(document.getData().get("ScheduleModel_Final_Year").toString())
-                                        ));
-                                mFinalCalendar = final_date;
-                                Log.d("석규짱","mFinalCalendar : " + mFinalCalendar);
-                            }
-                            /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
-                            mDateTextView = findViewById(R.id.tv_date);
-                            mDateTextView.setText(dateFormat.format(mCalendar.getTime()));
-                            mDateTextView.setOnClickListener(new View.OnClickListener() {
 
-                                @SuppressLint("RestrictedApi")
-                                @Override
-                                public void onClick(View v) {
-                                    Activity context = CreateEventActivity.this;
-                                    Intent intent = SelectDateAndTimeActivity.makeIntent(context, mCalendar);
+            mCalendar = mOriginalEventFirebase.getStart_Date();
+            Log.d("민규짱"," mOriginalEventFirebase.getStart_Date().get(Calendar.DATE) : " + mOriginalEventFirebase.getStart_Date().get(Calendar.DATE));
+            mFinalCalendar = mOriginalEventFirebase.getEnd_Date();
 
-                                    startActivityForResult(intent,
-                                            SET_DATE_AND_TIME_REQUEST_CODE,
-                                            ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
-                                }
-                            });
-
-                            /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
-                            mFinalDateTextView = findViewById(R.id.tv_final_date);
-                            mFinalDateTextView.setText(dateFormat.format(mFinalCalendar.getTime()));
-                            mFinalDateTextView.setOnClickListener(new View.OnClickListener() {
-
-                                @SuppressLint("RestrictedApi")
-                                @Override
-                                public void onClick(View v) {
-                                    Activity context = CreateEventActivity.this;
-                                    Intent intent = SelectDateAndTimeActivity.makeIntent(context, mFinalCalendar);
-
-                                    startActivityForResult(intent,
-                                            SET_FINAL_DATE_AND_TIME_REQUEST_CODE,
-                                            ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-
-            Log.d("석규짱","mFinalCalendar2222 : " + mFinalCalendar);
+            Log.d("석규짱","mFinalCalendar : " + mFinalCalendar);
             mUid = mOriginalEventFirebase.getEvent_Uid();
-            mColor = mOriginalEventFirebase.getmColor();
-            mTitle = mOriginalEventFirebase.getmTitle();
+            mColor = mOriginalEventFirebase.getColor();
+            mTitle = mOriginalEventFirebase.getTitle();
             mIsComplete = mOriginalEventFirebase.isCompleted();
             isViewMode = true;
         }
@@ -284,40 +225,37 @@ public class CreateEventActivity extends AppCompatActivity {
 
 
         /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
-        if (mOriginalEventFirebase == null) {
-            /*날짜 클릭하면 날짜 선택할 수 있게 한다.*/
-            mDateTextView = findViewById(R.id.tv_date);
-            mDateTextView.setText(dateFormat.format(mCalendar.getTime()));
-            mDateTextView.setOnClickListener(new View.OnClickListener() {
+        mDateTextView = findViewById(R.id.tv_date);
+        mDateTextView.setText(dateFormat.format(mCalendar.getTime()));
+        mDateTextView.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View v) {
+                Activity context = CreateEventActivity.this;
+                Intent intent = SelectDateAndTimeActivity.makeIntent(context, mCalendar);
 
-                @SuppressLint("RestrictedApi")
-                @Override
-                public void onClick(View v) {
-                    Activity context = CreateEventActivity.this;
-                    Intent intent = SelectDateAndTimeActivity.makeIntent(context, mCalendar);
+                startActivityForResult(intent,
+                        SET_DATE_AND_TIME_REQUEST_CODE,
+                        ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
+            }
+        });
 
-                    startActivityForResult(intent,
-                            SET_DATE_AND_TIME_REQUEST_CODE,
-                            ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
-                }
-            });
+        mFinalDateTextView = findViewById(R.id.tv_final_date);
+        mFinalDateTextView.setText(dateFormat.format(mFinalCalendar.getTime()));
+        mFinalDateTextView.setOnClickListener(new View.OnClickListener() {
 
-            mFinalDateTextView = findViewById(R.id.tv_final_date);
-            mFinalDateTextView.setText(dateFormat.format(mFinalCalendar.getTime()));
-            mFinalDateTextView.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View v) {
+                Activity context = CreateEventActivity.this;
+                Intent intent = SelectDateAndTimeActivity.makeIntent(context, mFinalCalendar);
 
-                @SuppressLint("RestrictedApi")
-                @Override
-                public void onClick(View v) {
-                    Activity context = CreateEventActivity.this;
-                    Intent intent = SelectDateAndTimeActivity.makeIntent(context, mFinalCalendar);
+                startActivityForResult(intent,
+                        SET_FINAL_DATE_AND_TIME_REQUEST_CODE,
+                        ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
+            }
+        });
 
-                    startActivityForResult(intent,
-                            SET_FINAL_DATE_AND_TIME_REQUEST_CODE,
-                            ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
-                }
-            });
-        }
 
         /* 클릭하면, 일정의 색 선택가능*/
         mColorCardView = findViewById(R.id.cardView_event_color);
@@ -424,7 +362,7 @@ public class CreateEventActivity extends AppCompatActivity {
     private void save() {
 
         int action = mOriginalEventFirebase != null ? ACTION_EDIT : ACTION_CREATE;
-        String id = mOriginalEventFirebase != null ? mOriginalEventFirebase.getmID() : generateID();
+        String id = mOriginalEventFirebase != null ? mOriginalEventFirebase.getId() : generateID();
         String rawTitle = mTitleView.getText().toString().trim();
 
         YMDCalendar ymdCalendar = new YMDCalendar(mCalendar.get(Calendar.YEAR),
@@ -455,9 +393,13 @@ public class CreateEventActivity extends AppCompatActivity {
                 calendar_Id,
                 id,
                 rawTitle.isEmpty() ? null : rawTitle,
+                0,0,0,
                 mCalendar.get(Calendar.YEAR),
                 mCalendar.get(Calendar.MONTH),
                 mCalendar.get(Calendar.DATE),
+                mFinalCalendar.get(Calendar.YEAR),
+                mFinalCalendar.get(Calendar.MONTH),
+                mFinalCalendar.get(Calendar.DATE),
                 mColor,
                 mIsCompleteCheckBox.isChecked()
         );
