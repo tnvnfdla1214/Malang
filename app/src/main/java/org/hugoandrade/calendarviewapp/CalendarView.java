@@ -41,6 +41,8 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 
+import org.hugoandrade.calendarviewapp.data.Event;
+import org.hugoandrade.calendarviewapp.data.Event_firebase;
 import org.hugoandrade.calendarviewapp.helpers.FrameLinearLayout;
 import org.hugoandrade.calendarviewapp.helpers.SelectedTextView;
 import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
@@ -438,6 +440,8 @@ public class CalendarView extends FrameLayout {
             return c.year * 100 + c.month;
         else if (type == 2)
             return c.month * 100 + c.day;
+        else if (type == 3)
+            return c.month * 100 + c.day - 1;
         else
             return -1;
     }
@@ -567,15 +571,17 @@ public class CalendarView extends FrameLayout {
             List<View> viewList = getDayViewList(view);
             List<YMDCalendar> dayList = getDayList(month);
             SparseArray<List<CalendarObject>> mObjectsByDayMap = getCalendarObjectsOfMonthByDay(month);
-
+            Log.d("정은짱짱","mObjectsByDayMap : " + mObjectsByDayMap);
 
             List<CalendarObject> emptyEventList = new ArrayList<>();
+            List<CalendarObject> yesterDayEventList = new ArrayList<>();
             for (int i = 0 ; i < dayList.size() ; i++) {
                 YMDCalendar day = dayList.get(i);
                 onBindView(i,
                         month,
                         day,
                         mObjectsByDayMap.get(getDateCode(day, 2), emptyEventList),
+                        mObjectsByDayMap.get(getDateCode(day, 3), yesterDayEventList),
                         viewList.get(i),
                         viewList,
                         dayList);
@@ -588,6 +594,7 @@ public class CalendarView extends FrameLayout {
                                 final Calendar month,
                                 final YMDCalendar day,
                                 final List<CalendarObject> calendarObjectList,
+                                final List<CalendarObject> yesterdayObjectList,
                                 View view,
                                 final List<View> viewCalendarList,
                                 final List<YMDCalendar> CalendardayList) {
@@ -595,21 +602,63 @@ public class CalendarView extends FrameLayout {
             final FrameLinearLayout container = (FrameLinearLayout) view;
             final SelectedTextView tvDay = view.findViewById(R.id.tv_calendar_day);
             final LinearLayout first_schedule = view.findViewById(R.id.first_schedule);
+            final LinearLayout second_schedule = view.findViewById(R.id.second_schedule);
             //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
 
+
+//            if(!calendarObjectList.equals(new ArrayList<>())){
+//                Log.d("정은짱","day.day : " + day.day);
+//                Log.d("정은짱","뷰shape : " + calendarObjectList.get(0).getShape());
+//                if(calendarObjectList.get(0).getShape() == 0){
+//                    first_schedule.setBackgroundResource(R.drawable.calendarbar_all_girl);
+//                }else if(calendarObjectList.get(0).getShape() == 1){
+//                    first_schedule.setBackgroundResource(R.drawable.calendarbar_left_girl);
+//                }else if(calendarObjectList.get(0).getShape() == 2){
+//                    first_schedule.setBackgroundResource(R.drawable.calendarbar_right_girl);
+//                }else{
+//                    first_schedule.setBackgroundResource(R.color.girl);
+//                }
+//            }
+
+
+
+            Collections.sort(calendarObjectList);
+            Collections.sort(yesterdayObjectList);
+
             if(!calendarObjectList.equals(new ArrayList<>())){
-                Log.d("정은짱","day.day : " + day.day);
-                Log.d("정은짱","뷰shape : " + calendarObjectList.get(0).getShape());
-                if(calendarObjectList.get(0).getShape() == 0){
-                    first_schedule.setBackgroundResource(R.drawable.calendarbar_all_girl);
-                }else if(calendarObjectList.get(0).getShape() == 1){
-                    first_schedule.setBackgroundResource(R.drawable.calendarbar_left_girl);
-                }else if(calendarObjectList.get(0).getShape() == 2){
-                    first_schedule.setBackgroundResource(R.drawable.calendarbar_right_girl);
-                }else{
-                    first_schedule.setBackgroundResource(R.color.girl);
-                }
+                Log.d("킹받","day.day : " + day.day);
             }
+
+                for (int i = 0; i < calendarObjectList.size(); i++) {
+
+                    Log.d("킹받","calendarObjectList : " + calendarObjectList.get(i).getfireUid());
+                    if(!yesterdayObjectList.isEmpty()){
+                        for (int j = 0; j < yesterdayObjectList.size(); j++) {
+                            if(!calendarObjectList.get(i).getID().equals(yesterdayObjectList.get(j).getID())){
+                                if (first_schedule.getBackground() == null) {
+                                    ColorMint(calendarObjectList, i, first_schedule, viewCalendarList, position);
+                                }else if(second_schedule.getBackground() == null){
+                                    ColorOrange(calendarObjectList, i, second_schedule, viewCalendarList, position);
+                                }
+                            }
+//                            else{
+//                                if(i==0){
+//                                    ColorMint(calendarObjectList, i, first_schedule, viewCalendarList, position);
+//                                }else if(i==1){
+//                                    ColorOrange(calendarObjectList, i, second_schedule, viewCalendarList, position);
+//                                }
+//                            }
+                        }
+                    }else{
+                        if(i==0){
+                            ColorMint(calendarObjectList, i, first_schedule, viewCalendarList, position);
+                        }else if(i==1) {
+                            ColorOrange(calendarObjectList, i, second_schedule, viewCalendarList, position);
+                        }
+                    }
+                }
+
+
 
 
 
@@ -880,7 +929,7 @@ public class CalendarView extends FrameLayout {
             nextMonth.add(Calendar.MONTH, 1);
             updateViewDayOfMonth(nextMonth, day, objectList);
         }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void updateViewDayOfMonth(Calendar month, YMDCalendar day, List<CalendarObject> eventList) {
             View monthView = mInstantiatedMonthViewList.get(getDateCode(month, 1));
             if (monthView != null) {
@@ -889,7 +938,7 @@ public class CalendarView extends FrameLayout {
 
                 if (position != -1) {
                     View dayView = getDayView(monthView, position);
-                    onBindView(position, month, day, eventList, dayView,null,null);
+                    onBindView(position, month, day, eventList, eventList, dayView,null,null);
 
 //                    final List<View> viewCalendarList,
 //                    final List<YMDCalendar> CalendardayList
@@ -990,12 +1039,17 @@ public class CalendarView extends FrameLayout {
             SparseArray<List<CalendarObject>> mObjectByDayMap = new SparseArray<>();
             for (CalendarObject object : objectList) {
                 int dateCode = getDateCode(object.getMarked_Date(), 2);
+
+
                 if (mObjectByDayMap.get(dateCode) != null) {
                     mObjectByDayMap.get(dateCode).add(object);
+                    Log.d("정은짱짱짱짱짱짱","mObjectsByDayMap : " + mObjectByDayMap);
+
                 } else {
                     mObjectByDayMap.put(dateCode, new ArrayList<CalendarObject>());
                     mObjectByDayMap.get(dateCode).add(object);
                 }
+
             }
             return mObjectByDayMap;
         }
@@ -1069,6 +1123,53 @@ public class CalendarView extends FrameLayout {
         }
     }
 
+    private void ColorMint(List<CalendarObject> calendarObjectList, int i, LinearLayout first_schedule, List<View> viewCalendarList, int position){
+        if (calendarObjectList.get(i).getShape() == 0) {
+            first_schedule.setBackgroundResource(R.drawable.calendarbar_all_girl);
+        } else if (calendarObjectList.get(i).getShape() == 1) {
+            first_schedule.setBackgroundResource(R.drawable.calendarbar_left_girl);
+            int count = 0;
+            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
+                count++;
+                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
+            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
+            for(int k=1;k<count;k++){
+                if(viewCalendarList != null){
+                    final LinearLayout mfirst_Schedule = viewCalendarList.get(position+k).findViewById(R.id.first_schedule);
+                    if((k+1) == count){
+                        mfirst_Schedule.setBackgroundResource(R.drawable.calendarbar_right_girl);
+                    }
+                    else{
+                        mfirst_Schedule.setBackgroundResource(R.color.girl);
+                    }
+                }
+            }
+        }
+    }
+    private void ColorOrange(List<CalendarObject> calendarObjectList, int i, LinearLayout second_schedule, List<View> viewCalendarList, int position){
+        if (calendarObjectList.get(i).getShape() == 0) {
+            second_schedule.setBackgroundResource(R.drawable.calendarbar_all_men);
+        } else if (calendarObjectList.get(i).getShape() == 1) {
+            second_schedule.setBackgroundResource(R.drawable.calendarbar_left_men);
+            int count = 0;
+            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
+                count++;
+                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
+            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
+            for(int k=1;k<count;k++){
+                if(viewCalendarList != null){
+                    final LinearLayout msecond_Schedule = viewCalendarList.get(position+k).findViewById(R.id.second_schedule);
+                    if((k+1) == count){
+                        msecond_Schedule.setBackgroundResource(R.drawable.calendarbar_right_men);
+                    }
+                    else{
+                        msecond_Schedule.setBackgroundResource(R.color.men);
+                    }
+                }
+            }
+        }
+    }
+
     private static class MyDragShadowBuilder extends View.DragShadowBuilder {
 
         // The drag shadow image, defined as a drawable thing
@@ -1119,7 +1220,7 @@ public class CalendarView extends FrameLayout {
             shadow.draw(canvas);
         }
     }
-    public static class CalendarObject {
+    public static class CalendarObject implements Comparable<CalendarObject> {
 
         private String mID;
         private Calendar Marked_Date;
@@ -1144,9 +1245,19 @@ public class CalendarView extends FrameLayout {
         public String getID() {
             return mID;
         }
+        public String getfireUid() {
+            return fireUid;
+        }
 
         public Calendar getMarked_Date() {
             return this.Marked_Date;
+        }
+
+        public Calendar getStart_Date() {
+            return this.Start_Date;
+        }
+        public Calendar getEnd_Date() {
+            return this.End_Date;
         }
 
         public int getPrimaryColor() {
@@ -1159,6 +1270,16 @@ public class CalendarView extends FrameLayout {
 
         public int getShape() {
             return mshape;
+        }
+
+        @Override
+        public int compareTo(CalendarObject s) {
+            if (this.Start_Date.before(s.getStart_Date())) {
+                return -1;
+            } else if (this.Start_Date.after(s.getStart_Date())) {
+                return 1;
+            }
+            return 0;
         }
     }
 

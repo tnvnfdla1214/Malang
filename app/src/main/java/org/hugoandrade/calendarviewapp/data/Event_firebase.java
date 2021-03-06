@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,13 +13,15 @@ import java.util.Map;
  */
 
 /* 여기에 getter setter 박고 파베랑 연동하면 쓸수 있지 않을까? */
-public class Event_firebase implements Parcelable {
+public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
+
 
     private String Event_Uid;
     private String Id;
     private String Title;
     private Calendar Start_Date;
     private Calendar End_Date;
+    private Calendar Fixed_Start_Date;
     private int Color;
     private boolean IsCompleted;
 
@@ -26,23 +29,28 @@ public class Event_firebase implements Parcelable {
     private int Start_Month;
     private int Start_Day;
 
+    private int Fixed_Start_Year;
+    private int Fixed_Start_Month;
+    private int Fixed_Start_Day;
+
     private int End_Year;
     private int End_Month;
     private int End_Day;
 
     public Event_firebase(){}
 
-    public Event_firebase(String Event_Uid, String Id, String Title, Calendar Start_Date, Calendar End_Date, int Color, boolean IsCompleted) {
+    public Event_firebase(String Event_Uid, String Id, String Title, Calendar Start_Date, Calendar End_Date, Calendar Fixed_Start_Date, int Color, boolean IsCompleted) {
         this.Event_Uid = Event_Uid;
         this.Id = Id;
         this.Title = Title;
         this.Start_Date = Start_Date;
         this.End_Date = End_Date;
+        this.Fixed_Start_Date = Fixed_Start_Date;
         this.Color = Color;
         this.IsCompleted = IsCompleted;
     }
 
-    public Event_firebase(String Event_Uid, String Id, String Title, int Start_Year, int Start_Month, int Start_Day, int End_Year, int End_Month, int End_Day, int Color, boolean IsCompleted) {
+    public Event_firebase(String Event_Uid, String Id, String Title, int Start_Year, int Start_Month, int Start_Day, int End_Year, int End_Month, int End_Day, int Fixed_Start_Year, int Fixed_Start_Month, int Fixed_Start_Day, int Color, boolean IsCompleted) {
         this.Event_Uid = Event_Uid;
         this.Id = Id;
         this.Title = Title;
@@ -52,6 +60,9 @@ public class Event_firebase implements Parcelable {
         this.End_Year = End_Year;
         this.End_Month = End_Month;
         this.End_Day = End_Day;
+        this.Fixed_Start_Year = Fixed_Start_Year;
+        this.Fixed_Start_Month = Fixed_Start_Month;
+        this.Fixed_Start_Day = Fixed_Start_Day;
         this.Color = Color;
         this.IsCompleted = IsCompleted;
     }
@@ -69,6 +80,9 @@ public class Event_firebase implements Parcelable {
         docData.put("ScheduleModel_Final_Year", End_Year);
         docData.put("ScheduleModel_Final_Month", End_Month);
         docData.put("ScheduleModel_Final_Day", End_Day);
+        docData.put("ScheduleModel_Fixed_Start_Year", Fixed_Start_Year);
+        docData.put("ScheduleModel_Fixed_Start_Month", Fixed_Start_Month);
+        docData.put("ScheduleModel_Fixed_Start_Day", Fixed_Start_Day);
         docData.put("ScheduleModel_Color", Color);
         docData.put("ScheduleModel_Id", Id);
         docData.put("ScheduleModel_IsCompleted", IsCompleted);
@@ -93,7 +107,9 @@ public class Event_firebase implements Parcelable {
     public Calendar getEnd_Date() {
         return this.End_Date;
     }
-
+    public Calendar getFixed_Start_Date() {
+        return this.Fixed_Start_Date;
+    }
     public int getColor() {
         return this.Color;
     }
@@ -108,6 +124,7 @@ public class Event_firebase implements Parcelable {
         Title = in.readString();
         Start_Date = (Calendar) in.readSerializable();
         End_Date = (Calendar) in.readSerializable();
+        Fixed_Start_Date = (Calendar) in.readSerializable();
         Color = in.readInt();
         IsCompleted = in.readByte() != 0;
     }
@@ -119,6 +136,7 @@ public class Event_firebase implements Parcelable {
         dest.writeString(Title);
         dest.writeSerializable(Start_Date);
         dest.writeSerializable(End_Date);
+        dest.writeSerializable(Fixed_Start_Date);
         dest.writeInt(Color);
         dest.writeByte((byte) (IsCompleted ? 1 : 0));
     }
@@ -147,4 +165,15 @@ public class Event_firebase implements Parcelable {
     public void setEvent_Uid(String Event_Uid) {
         this.Event_Uid = Event_Uid;
     }
+
+    @Override
+    public int compareTo(Event_firebase s) {
+        if (this.Start_Date.before(s.getStart_Date())) {
+            return -1;
+        } else if (this.Start_Date.after(s.getStart_Date())) {
+            return 1;
+        }
+        return 0;
+    }
+
 }

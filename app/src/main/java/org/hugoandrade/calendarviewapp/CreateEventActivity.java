@@ -385,6 +385,9 @@ public class CreateEventActivity extends AppCompatActivity {
                 mFinalCalendar.get(Calendar.YEAR),
                 mFinalCalendar.get(Calendar.MONTH),
                 mFinalCalendar.get(Calendar.DATE),
+                mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH),
+                mCalendar.get(Calendar.DATE),
                 mColor,
                 mIsCompleteCheckBox.isChecked()
         );
