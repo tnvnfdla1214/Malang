@@ -625,42 +625,55 @@ public class CalendarView extends FrameLayout {
             Collections.sort(calendarObjectList);
             Collections.sort(yesterdayObjectList);
 
+
             int judge = 0;
             if(!calendarObjectList.equals(new ArrayList<>())){
-                //Log.d("킹받","day.day : " + day.day);
+                Log.d("킹받","day : " + day.day);
             }
 
-                for (int i = 0; i < calendarObjectList.size(); i++) {
-                    //Log.d("킹받","calendarObjectList : " + calendarObjectList.get(i).getfireUid());
-                    if(!yesterdayObjectList.isEmpty()){
-                        for (int j = 0; j < yesterdayObjectList.size(); j++) {
-                            if(calendarObjectList.get(i).getID().equals(yesterdayObjectList.get(j).getID())){
-                                judge = 0;
-                                break;
-                            }else{
-                                judge = 1;
-                            }
-                        }
-                        if(judge == 1){
-                            if (first_schedule.getBackground() == null) {
-                                Log.d("킹받","A : ");
-                                ColorMint(calendarObjectList, i, first_schedule, viewCalendarList, position);
-                            }else if(second_schedule.getBackground() == null){
-                                Log.d("킹받","B : ");
-                                ColorOrange(calendarObjectList, i, second_schedule, viewCalendarList, position);
-                            }
-                        }
+            /* 오늘일정의 개수만큼 for문을 돌린다.*/
+            for (int i = 0; i < calendarObjectList.size(); i++) {
 
-                    }else{
-                        if(i==0){
-                            Log.d("킹받","C : ");
+                /* 전날일정이 있으면*/
+                if(!yesterdayObjectList.isEmpty()){
+
+                    /* 오늘일정[i]랑 전날 일정들이랑 비교하면서 같은게 있기만하면 추가로 비교하지 않고
+                       *   오늘일정[i]에 대한 일정바 칠하기는 넘어간다.*/
+                    for (int j = 0; j < yesterdayObjectList.size(); j++) {
+                        if(calendarObjectList.get(i).getID().equals(yesterdayObjectList.get(j).getID())){
+                            judge = 0;
+                            break;
+                        }else{
+                            judge = 1;
+                        }
+                    }
+
+                    /* 오늘일정[i]랑 전날 일정들 중 같은게 없으면 빈 칸에 오늘일정[i]를 칠한다. */
+                    if(judge == 1){
+                        if (first_schedule.getBackground() == null) {
+                            Log.d("킹받","A : ");
                             ColorMint(calendarObjectList, i, first_schedule, viewCalendarList, position);
-                        }else if(i==1) {
-                            Log.d("킹받","D : ");
+                        }else if(second_schedule.getBackground() == null){
+                            Log.d("씨받","무 : " + calendarObjectList.get(i).getStart_Date());
+                            Log.d("씨받","야 : " + calendarObjectList.get(i).getEnd_Date());
+                            Log.d("씨받","호 : " + calendarObjectList.get(i).getMarked_Date());
+                            //Log.d("씨받","호 : ");
                             ColorOrange(calendarObjectList, i, second_schedule, viewCalendarList, position);
                         }
                     }
                 }
+
+                /* 전날일정이 하나도 없으면 그냥 해당 칸에 일정바를 칠한다.*/
+                else{
+                    if(i==0){
+                        Log.d("킹받","C : ");
+                        ColorMint(calendarObjectList, i, first_schedule, viewCalendarList, position);
+                    }else if(i==1) {
+                        Log.d("킹받","D : ");
+                        ColorOrange(calendarObjectList, i, second_schedule, viewCalendarList, position);
+                    }
+                }
+            }
 
 
 
@@ -1180,7 +1193,6 @@ public class CalendarView extends FrameLayout {
             int count = 0;
             while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
                 count++;
-                Log.d("정은짱짱짱짱짱짱짱짱짱짱","count : " + count);
                 calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
             }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
             for(int k=1;k<count;k++){
@@ -1190,6 +1202,7 @@ public class CalendarView extends FrameLayout {
                         msecond_Schedule.setBackgroundResource(R.drawable.calendarbar_right_men);
                     }
                     else{
+                        Log.d("씨받","B : ");
                         msecond_Schedule.setBackgroundResource(R.color.men);
                     }
                 }
