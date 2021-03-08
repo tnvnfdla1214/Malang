@@ -29,9 +29,11 @@ public class Event implements Parcelable{
     private int End_Month;
     private int End_Day;
 
+    private int count;
+
     public Event(){}
 
-    public Event(String Event_Uid, String Id, String Title, Calendar Marked_Date, Calendar Start_Date, Calendar End_Date, int Color, boolean IsCompleted) {
+    public Event(String Event_Uid, String Id, String Title, Calendar Marked_Date, Calendar Start_Date, Calendar End_Date, int Color, boolean IsCompleted, int count) {
         this.Event_Uid = Event_Uid;
         this.Id = Id;
         this.Title = Title;
@@ -40,10 +42,11 @@ public class Event implements Parcelable{
         this.End_Date = End_Date;
         this.Color = Color;
         this.IsCompleted = IsCompleted;
+        this.count = count;
     }
 
     public Event(String Event_Uid, String Id, String Title, int Marked_Year, int Marked_Month, int Marked_Day,
-                 int Start_Year, int Start_Month, int Start_Day, int End_Year, int End_Month, int End_Day, int Color, boolean IsCompleted) {
+                 int Start_Year, int Start_Month, int Start_Day, int End_Year, int End_Month, int End_Day, int Color, boolean IsCompleted, int count) {
         this.Event_Uid = Event_Uid;
         this.Id = Id;
         this.Title = Title;
@@ -58,6 +61,7 @@ public class Event implements Parcelable{
         this.End_Day = End_Day;
         this.Color = Color;
         this.IsCompleted = IsCompleted;
+        this.count = count;
     }
 
     protected Event(Parcel in) {
@@ -69,6 +73,7 @@ public class Event implements Parcelable{
         End_Date = (Calendar) in.readSerializable();
         Color = in.readInt();
         IsCompleted = in.readByte() != 0;
+        count = in.readInt();
     }
 
     @Override
@@ -81,6 +86,7 @@ public class Event implements Parcelable{
         dest.writeSerializable(End_Date);
         dest.writeInt(Color);
         dest.writeByte((byte) (IsCompleted ? 1 : 0));
+        dest.writeInt(count);
     }
 
     @Override
@@ -130,6 +136,13 @@ public class Event implements Parcelable{
         return this.IsCompleted;
     }
     public void setCompleted(boolean IsCompleted) { this.IsCompleted = IsCompleted;    }
+
+    public int getCount() {
+        return this.count;
+    }
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public Calendar getMarked_Date() { return this.Marked_Date; }
     public void setMarked_Date(Calendar Marked_Date) { this.Marked_Date = Marked_Date; }

@@ -37,9 +37,11 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
     private int End_Month;
     private int End_Day;
 
+    private int count;
+
     public Event_firebase(){}
 
-    public Event_firebase(String Event_Uid, String Id, String Title, Calendar Start_Date, Calendar End_Date, Calendar Fixed_Start_Date, int Color, boolean IsCompleted) {
+    public Event_firebase(String Event_Uid, String Id, String Title, Calendar Start_Date, Calendar End_Date, Calendar Fixed_Start_Date, int Color, boolean IsCompleted, int count) {
         this.Event_Uid = Event_Uid;
         this.Id = Id;
         this.Title = Title;
@@ -48,9 +50,10 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         this.Fixed_Start_Date = Fixed_Start_Date;
         this.Color = Color;
         this.IsCompleted = IsCompleted;
+        this.count = count;
     }
 
-    public Event_firebase(String Event_Uid, String Id, String Title, int Start_Year, int Start_Month, int Start_Day, int End_Year, int End_Month, int End_Day, int Fixed_Start_Year, int Fixed_Start_Month, int Fixed_Start_Day, int Color, boolean IsCompleted) {
+    public Event_firebase(String Event_Uid, String Id, String Title, int Start_Year, int Start_Month, int Start_Day, int End_Year, int End_Month, int End_Day, int Fixed_Start_Year, int Fixed_Start_Month, int Fixed_Start_Day, int Color, boolean IsCompleted, int count) {
         this.Event_Uid = Event_Uid;
         this.Id = Id;
         this.Title = Title;
@@ -65,6 +68,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         this.Fixed_Start_Day = Fixed_Start_Day;
         this.Color = Color;
         this.IsCompleted = IsCompleted;
+        this.count = count;
     }
 
 
@@ -86,6 +90,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         docData.put("ScheduleModel_Color", Color);
         docData.put("ScheduleModel_Id", Id);
         docData.put("ScheduleModel_IsCompleted", IsCompleted);
+        docData.put("ScheduleModel_Count", count);
         return  docData;
     }
 
@@ -113,6 +118,9 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
     public int getColor() {
         return this.Color;
     }
+    public int getCount() {
+        return this.count;
+    }
 
     public boolean getIsCompleted() {
         return this.IsCompleted;
@@ -127,6 +135,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         Fixed_Start_Date = (Calendar) in.readSerializable();
         Color = in.readInt();
         IsCompleted = in.readByte() != 0;
+        count = in.readInt();
     }
 
     @Override
@@ -139,6 +148,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         dest.writeSerializable(Fixed_Start_Date);
         dest.writeInt(Color);
         dest.writeByte((byte) (IsCompleted ? 1 : 0));
+        dest.writeInt(count);
     }
 
     @Override

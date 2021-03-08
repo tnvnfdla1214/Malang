@@ -1145,11 +1145,11 @@ public class CalendarView extends FrameLayout {
             first_schedule.setBackgroundResource(R.drawable.calendarbar_all_girl);
         } else if (calendarObjectList.get(i).getShape() == 1) {
             first_schedule.setBackgroundResource(R.drawable.calendarbar_left_girl);
-            int count = 0;
-            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
-                count++;
-                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
-            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
+            int count = calendarObjectList.get(i).getCount();
+//            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
+//                count++;
+//                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
+//            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
             for(int k=1;k<count;k++){
                 if(viewCalendarList != null){
                     final LinearLayout mfirst_Schedule = viewCalendarList.get(position+k).findViewById(R.id.first_schedule);
@@ -1190,11 +1190,12 @@ public class CalendarView extends FrameLayout {
             second_schedule.setBackgroundResource(R.drawable.calendarbar_all_men);
         } else if (calendarObjectList.get(i).getShape() == 1) {
             second_schedule.setBackgroundResource(R.drawable.calendarbar_left_men);
-            int count = 0;
-            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
-                count++;
-                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
-            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
+            int count = calendarObjectList.get(i).getCount();
+//            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
+//                count++;
+//                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
+//            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
+            Log.d("씨받","count : " + count);
             for(int k=1;k<count;k++){
                 if(viewCalendarList != null){
                     final LinearLayout msecond_Schedule = viewCalendarList.get(position+k).findViewById(R.id.second_schedule);
@@ -1293,8 +1294,9 @@ public class CalendarView extends FrameLayout {
         private int mSecondaryColor;
         private String fireUid;
         private int mshape;
+        private int count;
 
-        public CalendarObject(String id, Calendar Marked_Date, Calendar Start_Date, Calendar End_Date, int primaryColor, int secondaryColor, String Uid, int shape) {
+        public CalendarObject(String id, Calendar Marked_Date, Calendar Start_Date, Calendar End_Date, int primaryColor, int secondaryColor, String Uid, int shape, int count) {
             mID = id;
             this.Marked_Date = Marked_Date;
             this.Start_Date = Start_Date;
@@ -1303,6 +1305,7 @@ public class CalendarView extends FrameLayout {
             mSecondaryColor = secondaryColor;
             fireUid = Uid;
             mshape = shape;
+            this.count = count;
         }
 
         public String getID() {
@@ -1333,6 +1336,10 @@ public class CalendarView extends FrameLayout {
 
         public int getShape() {
             return mshape;
+        }
+
+        public int getCount() {
+            return this.count;
         }
 
         @Override

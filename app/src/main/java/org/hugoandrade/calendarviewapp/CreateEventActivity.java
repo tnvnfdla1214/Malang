@@ -375,6 +375,12 @@ public class CreateEventActivity extends AppCompatActivity {
         String calendar_Id = mOriginalEventFirebase != null ? mUid : firebaseFirestore.collection("SCHEDULE").document().getId();
         final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
 
+        int count = 0;
+        while (!mCalendar.after(mFinalCalendar)){
+            count++;
+            mCalendar.add(Calendar.DATE,1);
+        }mCalendar.add(Calendar.DATE,-count);
+
         mEventFirebase = new Event_firebase(
                 calendar_Id,
                 id,
@@ -389,7 +395,8 @@ public class CreateEventActivity extends AppCompatActivity {
                 mCalendar.get(Calendar.MONTH),
                 mCalendar.get(Calendar.DATE),
                 mColor,
-                mIsCompleteCheckBox.isChecked()
+                mIsCompleteCheckBox.isChecked(),
+                count
         );
 
         mOriginalEventFirebase = new Event(
@@ -404,7 +411,8 @@ public class CreateEventActivity extends AppCompatActivity {
                 mFinalCalendar.get(Calendar.MONTH),
                 mFinalCalendar.get(Calendar.DATE),
                 mColor,
-                mIsCompleteCheckBox.isChecked()
+                mIsCompleteCheckBox.isChecked(),
+                count
         );
         storeUpload(documentReference, mEventFirebase);
 /////////* 저장 버튼 눌렸을 때 파이어베이스에 넣는다.*/

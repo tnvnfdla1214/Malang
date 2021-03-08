@@ -463,7 +463,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 event.getColor(),
                 event.isCompleted() ? Color.TRANSPARENT : Color.RED,
                 event.getEvent_Uid(),
-                shape);
+                shape,
+                event.getCount());
 
     }
     /*
@@ -517,7 +518,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                         Integer.parseInt(doc.getData().get("ScheduleModel_Fixed_Start_Year").toString())
                 )),
                 Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
-                Boolean.parseBoolean(doc.getData().get("ScheduleModel_IsCompleted").toString())
+                Boolean.parseBoolean(doc.getData().get("ScheduleModel_IsCompleted").toString()),
+                Integer.parseInt(doc.getData().get("ScheduleModel_Count").toString())
         );
         return e_firebase;
     }
@@ -525,7 +527,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     //코드상에 사용하는 event로 변환하는 함수(Event_firebase -> Event)
     Event convert_event(Event_firebase event_firebase){
         Event C_event = new Event(event_firebase.getEvent_Uid(),event_firebase.getId(),event_firebase.getTitle(),
-                event_firebase.getStart_Date(),event_firebase.getStart_Date(),event_firebase.getEnd_Date(),event_firebase.getColor(),event_firebase.getIsCompleted());
+                event_firebase.getStart_Date(),event_firebase.getStart_Date(),event_firebase.getEnd_Date(),event_firebase.getColor(),event_firebase.getIsCompleted(),event_firebase.getCount());
         return C_event;
     }
 
@@ -535,7 +537,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         Calendar date = YMDCalendar.toCalendar(new YMDCalendar(day.get(Calendar.DATE), day.get(Calendar.MONTH), day.get(Calendar.YEAR)));
         Event_firebase f_event=new Event_firebase(event_firebase.getEvent_Uid(),event_firebase.getId(),event_firebase.getTitle(),
                 startday,event_firebase.getEnd_Date(),startday,
-                event_firebase.getColor(),event_firebase.getIsCompleted());
+                event_firebase.getColor(),event_firebase.getIsCompleted(), event_firebase.getCount());
         Event c_event = new Event(); //초기화
         c_event =convert_event(f_event);   //민규가 만든 event_firebase -> evnet 바꾸는 함수
 
