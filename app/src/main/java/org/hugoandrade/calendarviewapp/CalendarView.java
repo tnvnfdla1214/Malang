@@ -41,8 +41,6 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 
-import org.hugoandrade.calendarviewapp.data.Event;
-import org.hugoandrade.calendarviewapp.data.Event_firebase;
 import org.hugoandrade.calendarviewapp.helpers.FrameLinearLayout;
 import org.hugoandrade.calendarviewapp.helpers.SelectedTextView;
 import org.hugoandrade.calendarviewapp.helpers.YMDCalendar;
@@ -603,6 +601,7 @@ public class CalendarView extends FrameLayout {
             final SelectedTextView tvDay = view.findViewById(R.id.tv_calendar_day);
             final LinearLayout first_schedule = view.findViewById(R.id.first_schedule);
             final LinearLayout second_schedule = view.findViewById(R.id.second_schedule);
+            final LinearLayout third_schedule = view.findViewById(R.id.third_schedule);
             //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
 
 
@@ -651,14 +650,11 @@ public class CalendarView extends FrameLayout {
                     /* 오늘일정[i]랑 전날 일정들 중 같은게 없으면 빈 칸에 오늘일정[i]를 칠한다. */
                     if(judge == 1){
                         if (first_schedule.getBackground() == null) {
-                            Log.d("킹받","A : ");
                             ColorMint(calendarObjectList, i, first_schedule, viewCalendarList, position);
                         }else if(second_schedule.getBackground() == null){
-                            Log.d("씨받","무 : " + calendarObjectList.get(i).getStart_Date());
-                            Log.d("씨받","야 : " + calendarObjectList.get(i).getEnd_Date());
-                            Log.d("씨받","호 : " + calendarObjectList.get(i).getMarked_Date());
-                            //Log.d("씨받","호 : ");
                             ColorOrange(calendarObjectList, i, second_schedule, viewCalendarList, position);
+                        }else if(third_schedule.getBackground() == null){
+                            ColorPink(calendarObjectList, i, third_schedule, viewCalendarList, position);
                         }
                     }
                 }
@@ -666,11 +662,11 @@ public class CalendarView extends FrameLayout {
                 /* 전날일정이 하나도 없으면 그냥 해당 칸에 일정바를 칠한다.*/
                 else{
                     if(i==0){
-                        Log.d("킹받","C : ");
                         ColorMint(calendarObjectList, i, first_schedule, viewCalendarList, position);
                     }else if(i==1) {
-                        Log.d("킹받","D : ");
                         ColorOrange(calendarObjectList, i, second_schedule, viewCalendarList, position);
+                    }else if(i==2){
+                        ColorPink(calendarObjectList, i, third_schedule, viewCalendarList, position);
                     }
                 }
             }
@@ -1142,97 +1138,63 @@ public class CalendarView extends FrameLayout {
 
     private void ColorMint(List<CalendarObject> calendarObjectList, int i, LinearLayout first_schedule, List<View> viewCalendarList, int position){
         if (calendarObjectList.get(i).getShape() == 0) {
-            first_schedule.setBackgroundResource(R.drawable.calendarbar_all_girl);
+            first_schedule.setBackgroundResource(R.drawable.calendarbar_all_mint);
         } else if (calendarObjectList.get(i).getShape() == 1) {
-            first_schedule.setBackgroundResource(R.drawable.calendarbar_left_girl);
+            first_schedule.setBackgroundResource(R.drawable.calendarbar_left_mint);
             int count = calendarObjectList.get(i).getCount();
-//            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
-//                count++;
-//                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
-//            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
             for(int k=1;k<count;k++){
                 if(viewCalendarList != null){
                     final LinearLayout mfirst_Schedule = viewCalendarList.get(position+k).findViewById(R.id.first_schedule);
                     if((k+1) == count){
-                        mfirst_Schedule.setBackgroundResource(R.drawable.calendarbar_right_girl);
+                        mfirst_Schedule.setBackgroundResource(R.drawable.calendarbar_right_mint);
                     }
                     else{
-                        mfirst_Schedule.setBackgroundResource(R.color.girl);
+                        mfirst_Schedule.setBackgroundResource(R.color.Mint);
                     }
                 }
             }
         }
     }
-//     private void ColorMint(List<CalendarObject> calendarObjectList, int i, LinearLayout first_schedule, List<View> viewCalendarList, int position){
-//        if (calendarObjectList.get(i).getShape() == 0) {
-//            first_schedule.setBackgroundResource(R.drawable.calendarbar_all_girl);
-//        } else if (calendarObjectList.get(i).getShape() == 1) {
-//            first_schedule.setBackgroundResource(R.drawable.calendarbar_left_girl);
-//            int count = 0;
-//            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
-//                count++;
-//                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
-//            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
-//            for(int k=1;k<count;k++){
-//                if(viewCalendarList != null){
-//                    final LinearLayout mfirst_Schedule = viewCalendarList.get(position+k).findViewById(R.id.first_schedule);
-//                    mfirst_Schedule.setBackgroundResource(R.color.girl);
-//                }
-//            }
-//            if(viewCalendarList != null){
-//                final LinearLayout fdayfirst_Schedule = viewCalendarList.get(position+count).findViewById(R.id.first_schedule);
-//                fdayfirst_Schedule.setBackgroundResource(R.drawable.calendarbar_right_girl);
-//            }
-//        }
-//    }
+
     private void ColorOrange(List<CalendarObject> calendarObjectList, int i, LinearLayout second_schedule, List<View> viewCalendarList, int position){
         if (calendarObjectList.get(i).getShape() == 0) {
-            second_schedule.setBackgroundResource(R.drawable.calendarbar_all_men);
+            second_schedule.setBackgroundResource(R.drawable.calendarbar_all_orange);
         } else if (calendarObjectList.get(i).getShape() == 1) {
-            second_schedule.setBackgroundResource(R.drawable.calendarbar_left_men);
+            second_schedule.setBackgroundResource(R.drawable.calendarbar_left_orange);
             int count = calendarObjectList.get(i).getCount();
-//            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
-//                count++;
-//                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
-//            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
-            Log.d("씨받","count : " + count);
             for(int k=1;k<count;k++){
                 if(viewCalendarList != null){
                     final LinearLayout msecond_Schedule = viewCalendarList.get(position+k).findViewById(R.id.second_schedule);
                     if((k+1) == count){
-                        msecond_Schedule.setBackgroundResource(R.drawable.calendarbar_right_men);
+                        msecond_Schedule.setBackgroundResource(R.drawable.calendarbar_right_orange);
                     }
                     else{
-                        Log.d("씨받","B : ");
-                        msecond_Schedule.setBackgroundResource(R.color.men);
+                        msecond_Schedule.setBackgroundResource(R.color.Orange);
                     }
                 }
             }
         }
     }
-//     private void ColorOrange(List<CalendarObject> calendarObjectList, int i, LinearLayout second_schedule, List<View> viewCalendarList, int position){
-//        if (calendarObjectList.get(i).getShape() == 0) {
-//            second_schedule.setBackgroundResource(R.drawable.calendarbar_all_men);
-//        } else if (calendarObjectList.get(i).getShape() == 1) {
-//            second_schedule.setBackgroundResource(R.drawable.calendarbar_left_men);
-//            int count = 0;
-//            while (!calendarObjectList.get(i).getStart_Date().after(calendarObjectList.get(i).getEnd_Date())){
-//                count++;
-//                Log.d("정은짱짱짱짱짱짱짱짱짱짱","count : " + count);
-//                calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,1);
-//            }calendarObjectList.get(i).getStart_Date().add(Calendar.DATE,-count);
-//            for(int k=1;k<count;k++){
-//                if(viewCalendarList != null){
-//                    final LinearLayout msecond_Schedule = viewCalendarList.get(position+k).findViewById(R.id.second_schedule);
-//                        msecond_Schedule.setBackgroundResource(R.color.men);
-//                }
-//            }
-//            if(viewCalendarList != null){
-//                final LinearLayout fdaysecond_Schedule = viewCalendarList.get(position+count).findViewById(R.id.second_schedule);
-//                fdaysecond_Schedule.setBackgroundResource(R.drawable.calendarbar_right_men);
-//            }
-//        }
-//    }
+
+    private void ColorPink(List<CalendarObject> calendarObjectList, int i, LinearLayout second_schedule, List<View> viewCalendarList, int position){
+        if (calendarObjectList.get(i).getShape() == 0) {
+            second_schedule.setBackgroundResource(R.drawable.calendarbar_all_pink);
+        } else if (calendarObjectList.get(i).getShape() == 1) {
+            second_schedule.setBackgroundResource(R.drawable.calendarbar_left_pink);
+            int count = calendarObjectList.get(i).getCount();
+            for(int k=1;k<count;k++){
+                if(viewCalendarList != null){
+                    final LinearLayout msecond_Schedule = viewCalendarList.get(position+k).findViewById(R.id.third_schedule);
+                    if((k+1) == count){
+                        msecond_Schedule.setBackgroundResource(R.drawable.calendarbar_right_pink);
+                    }
+                    else{
+                        msecond_Schedule.setBackgroundResource(R.color.Pink);
+                    }
+                }
+            }
+        }
+    }
 
     private static class MyDragShadowBuilder extends View.DragShadowBuilder {
 

@@ -375,11 +375,18 @@ public class CreateEventActivity extends AppCompatActivity {
         String calendar_Id = mOriginalEventFirebase != null ? mUid : firebaseFirestore.collection("SCHEDULE").document().getId();
         final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
 
+        Log.d("씨받받","mCalendar : " + mCalendar);
+        Log.d("씨받받","mFinalCalendar : " + mFinalCalendar);
         int count = 0;
         while (!mCalendar.after(mFinalCalendar)){
+            Log.d("씨받받","mCalendar22: " + mCalendar);
+            Log.d("씨받받","mFinalCalendar22 : " + mFinalCalendar);
+            Log.d("씨받받","count : " + count);
             count++;
             mCalendar.add(Calendar.DATE,1);
         }mCalendar.add(Calendar.DATE,-count);
+        Log.d("씨받받","mCalendar33: " + mCalendar);
+        Log.d("씨받받","mFinalCalendar33 : " + mFinalCalendar);
 
         mEventFirebase = new Event_firebase(
                 calendar_Id,

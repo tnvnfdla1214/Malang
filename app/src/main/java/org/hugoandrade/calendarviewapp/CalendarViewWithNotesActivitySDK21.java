@@ -236,6 +236,29 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
 //                                }
 //                            }
                         }
+
+                        for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
+                             /* [1]. oldEvent에다가 Uid가 같은 일정 객체를 전부 담는다.
+                                oldEvent = List<Event> */
+                            for (Event ef : mEventList) {
+                                if (Objects.equals(Sorted_Event_FirebaseList.get(i).getEvent_Uid(), ef.getEvent_Uid())) {
+                                    oldEvent.add(ef);
+                                }
+                            }
+                        }
+
+                        /* [2]. oldEvent가 비어 있지 않다면 한번 싹지운다.
+                         *       그리고 난 후 oldEvent는 초기화 해준다*/
+                        if (!oldEvent.equals(new ArrayList<>())) {
+                            int count = oldEvent.size();
+                            for(int j = 0; j < count ; j++){
+                                mEventList.remove(oldEvent.get(j));
+                                mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(j)));
+                            }oldEvent = new ArrayList<>();
+                        }
+
+
+
                         Collections.sort(Sorted_Event_FirebaseList);
 
                         for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
@@ -244,24 +267,6 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                             Calendar day = Sorted_Event_FirebaseList.get(i).getStart_Date();
                             Calendar endday = Sorted_Event_FirebaseList.get(i).getEnd_Date();
                             Calendar startday = Sorted_Event_FirebaseList.get(i).getFixed_Start_Date();
-
-                            /* [1]. oldEvent에다가 Uid가 같은 일정 객체를 전부 담는다.
-                                oldEvent = List<Event> */
-                            for (Event ef : mEventList) {
-                                if (Objects.equals(Sorted_Event_FirebaseList.get(i).getId(), ef.getId())) {
-                                    oldEvent.add(ef);
-                                }
-                            }
-
-                            /* [2]. oldEvent가 비어 있지 않다면 한번 싹지운다.
-                             *       그리고 난 후 oldEvent는 초기화 해준다*/
-                            if (!oldEvent.equals(new ArrayList<>())) {
-                                int count = oldEvent.size();
-                                for(int j = 0; j < count ; j++){
-                                    mEventList.remove(oldEvent.get(j));
-                                    mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(j)));
-                                }oldEvent = new ArrayList<>();
-                            }
 
                             /* [3]. 날짜 객체를 채워준다. */
                             if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE)) && day.get(Calendar.MONTH) == (endday.get(Calendar.MONTH))){
