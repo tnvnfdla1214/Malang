@@ -341,17 +341,20 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
 
 
 
-    private void onEventSelected(Event event_firebase) {
+    private void onEventSelected(Event event) {
         Activity context = CalendarViewWithNotesActivitySDK21.this;
-        Intent intent = CreateEventActivity.makeIntent(context, event_firebase);
+        //Intent intent = CreateEventActivity.makeIntent(context, event_firebase);
+        Log.d("asdasd","asdasdasdqweqwewqeqw");
 
+        Intent intent = Create_Schadule.Revise_Schadle_Intent(context, event);
         startActivityForResult(intent, CREATE_EVENT_REQUEST_CODE);
         overridePendingTransition( R.anim.slide_in_up, R.anim.stay );
     }
 
     private void createEvent(Calendar selectedDate) {
         Activity context = CalendarViewWithNotesActivitySDK21.this;
-        Intent intent = CreateEventActivity.makeIntent(context, selectedDate);
+        //Intent intent = CreateEventActivity.makeIntent(context, selectedDate);
+        Intent intent = Create_Schadule.Create_Schadle_Intent(context, selectedDate);
 
         startActivityForResult(intent, CREATE_EVENT_REQUEST_CODE);
         overridePendingTransition( R.anim.slide_in_up, R.anim.stay );

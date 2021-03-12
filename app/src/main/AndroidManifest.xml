@@ -49,6 +49,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.hugoandrade.calendarviewapp.CreateEventActivity" />
         </activity>
+
+        <activity
+            android:name=".Create_Schadule"
+            android:parentActivityName=".CalendarViewWithNotesActivitySDK21"
+            android:theme="@style/AppTheme.NoActionBar.Transition">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
+        </activity>
+
     </application>
 
 </manifest>
