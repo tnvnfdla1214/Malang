@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:153248216854:android:ef4bd1b1c077cb5fba8237",
+        "android_client_info": {
+          "package_name": "bias.hugoandrade.calendarviewapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153248216854-qeq5ll8a60ufj5rc73carekksuklvnvb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bias.hugoandrade.calendarviewapp",
+            "certificate_hash": "f46837e3e52e595462ec1de50f3615ada79e98e3"
+          }
+        },
+        {
+          "client_id": "153248216854-oji6oijpa80ee667ul5mhlrn4rgfp88c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmfTXDuGxMdZ1R2XFTij0wCP5p33bRr88"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153248216854-oji6oijpa80ee667ul5mhlrn4rgfp88c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:153248216854:android:09de9c0a2d808c54ba8237",
         "android_client_info": {
           "package_name": "org.hugoandrade.calendarviewapp"
@@ -19,6 +56,14 @@
           "android_info": {
             "package_name": "org.hugoandrade.calendarviewapp",
             "certificate_hash": "f46837e3e52e595462ec1de50f3615ada79e98e3"
+          }
+        },
+        {
+          "client_id": "153248216854-uhgq9e371k8rfchgmel7ue63j0934lph.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.hugoandrade.calendarviewapp",
+            "certificate_hash": "ef2780bf68631b43563e4640948bafa427b735c9"
           }
         },
         {

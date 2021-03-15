@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.hugoandrade.calendarviewapp">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="bias.hugoandrade.calendarviewapp">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
+        android:name=".GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
         <activity
-            android:name=".MainActivity"
+            android:name="bias.hugoandrade.calendarviewapp.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,48 +25,50 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="bias.hugoandrade.calendarviewapp.LoginActivity" android:screenOrientation="portrait">
+
+        </activity>
+<!--        <activity-->
+<!--            android:name=".CalendarViewWithNotesActivity"-->
+<!--            android:parentActivityName="bias.hugoandrade.calendarviewapp.MainActivity"-->
+<!--            android:theme="@style/AppTheme.NoActionBar">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value="org.hugoandrade.calendarviewapp.bias.hugoandrade.calendarviewapp.MainActivity" />-->
+<!--        </activity>-->
         <activity
-            android:name=".CalendarViewWithNotesActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21"
+            android:parentActivityName="bias.hugoandrade.calendarviewapp.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.hugoandrade.calendarviewapp.MainActivity" />
+                android:value="bias.hugoandrade.calendarviewapp.MainActivity" />
         </activity>
         <activity
-            android:name=".CalendarViewWithNotesActivitySDK21"
-            android:parentActivityName=".MainActivity"
+            android:name="bias.hugoandrade.calendarviewapp.CreateEventActivity"
+            android:parentActivityName="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.hugoandrade.calendarviewapp.MainActivity" />
+                android:value="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
         </activity>
         <activity
-            android:name=".CreateEventActivity"
-            android:parentActivityName=".CalendarViewWithNotesActivitySDK21"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
-        </activity>
-        <activity
-            android:name=".SelectDateAndTimeActivity"
-            android:parentActivityName=".CreateEventActivity"
+            android:name="bias.hugoandrade.calendarviewapp.SelectDateAndTimeActivity"
+            android:parentActivityName="bias.hugoandrade.calendarviewapp.CreateEventActivity"
             android:theme="@style/AppTheme.NoActionBar.Transition">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.hugoandrade.calendarviewapp.CreateEventActivity" />
+                android:value="bias.hugoandrade.calendarviewapp.CreateEventActivity" />
         </activity>
 
         <activity
-            android:name=".Create_Schadule"
-            android:parentActivityName=".CalendarViewWithNotesActivitySDK21"
+            android:name="bias.hugoandrade.calendarviewapp.Create_Schadule"
+            android:parentActivityName="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21"
             android:theme="@style/AppTheme.NoActionBar.Transition">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
+                android:value="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
         </activity>
-
     </application>
 
 </manifest>
