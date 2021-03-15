@@ -81,6 +81,8 @@ public class CalendarDialog {
 
     private Handler mHandler;
 
+    private ClipData dragData;
+
     CalendarDialog(Context context) {
         mContext = context;
         mHandler = new Handler();
@@ -341,6 +343,7 @@ public class CalendarDialog {
     private class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdapter.ViewHolder> implements ItemTouchHelperListener {
 
         private final List<Event> mCalendarEvents;
+        private int pos = 0;
 
         CalendarEventAdapter(List<Event> events) {
             mCalendarEvents = events;
@@ -357,6 +360,7 @@ public class CalendarDialog {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             Event event = mCalendarEvents.get(position);
+            pos = position;
 
             String defaultTitle = holder.itemView.getContext().getString(R.string.event_default_title);
             String title = event.getTitle() == null ? defaultTitle : event.getTitle();
@@ -401,32 +405,70 @@ public class CalendarDialog {
                 tvEventName = view.findViewById(R.id.tv_calendar_event_name);
                 tvEventStatus = view.findViewById(R.id.tv_calendar_event_status);
                 view.setOnClickListener(this);
-                view.setOnLongClickListener(new View.OnLongClickListener(){
+
+                view.setLongClickable(true);
+                view.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public boolean onLongClick(View v) {
-                        // Create a new ClipData.
-                        // This is done in two steps to provide clarity. The convenience method
-                        // ClipData.newPlainText() can create a plain text ClipData in one step.
+                    public boolean onLongClick(View view) {
+
+                        Event eventt = mCalendarEvents.get(pos);
+                        /*드래그 앤드롭*/
                         // Create a new ClipData.Item from the ImageView object's tag
-                        ClipData.Item item = new ClipData.Item((String)v.getTag());
+                        ClipData.Item item = new ClipData.Item((CharSequence) view.getTag());
 
                         // Create a new ClipData using the tag as a label, the plain text MIME type, and
                         // the already-created item. This will create a new ClipDescription object within the
                         // ClipData, and set its MIME type entry to "text/plain"
-                        ClipData dragData = new ClipData((CharSequence) v.getTag(), new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
+                        dragData = new ClipData(
+                                (CharSequence) view.getTag(),
+                                new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN, eventt.getStart_Date().toString() },
+                                item);
 
                         // Instantiates the drag shadow builder.
                         View.DragShadowBuilder myShadow = new MyDragShadowBuilder(view);
 
                         // Starts the drag
-                        v.startDrag(dragData,  // the data to be dragged
+
+                        view.startDrag(dragData,  // the data to be dragged
                                 myShadow,  // the drag shadow builder
                                 null,      // no need to use local data
                                 0          // flags (not currently used, set to 0)
                         );
-                        dismissDialog();
 
 
+                        /*드래그 리스너
+                         * https://mainia.tistory.com/2674*/
+                        view.setOnDragListener(new View.OnDragListener() {
+                            @Override
+                            public boolean onDrag(View view, DragEvent dragEvent) {
+                                //이벤트를 받음
+
+                                switch(dragEvent.getAction()){
+
+                                    //드래그가 시작되면
+                                    case DragEvent.ACTION_DRAG_STARTED:
+                                        Log.d("창환짱짱","dragData : " + dragData);
+                                        return true;
+
+                                    //드래그가 뷰의 경계안으로 들어오면
+                                    case DragEvent.ACTION_DRAG_ENTERED:
+                                        return true;
+
+                                    //드래그가 뷰의 경계밖을 나가면
+                                    case DragEvent.ACTION_DRAG_EXITED:
+                                        //mListener.onDraged(eventt);
+                                        Log.d("창환짱짱","dragData2222222 : " + dragData);
+                                        dismissDialog();
+                                        return true;
+
+                                    //드래그가 드롭되면
+                                    case DragEvent.ACTION_DROP:
+                                        Log.d("창환짱짱","111111111111111111 : " );
+                                        return true;
+                                }
+                                return true;
+                            }
+                        });
                         return true;
                     }
                 });
@@ -442,7 +484,7 @@ public class CalendarDialog {
     }
 
 
-    private static class MyDragShadowBuilder extends View.DragShadowBuilder {
+    private static class MyDragShadowBuilder extends View.DragShadowBuilder{
 
         // The drag shadow image, defined as a drawable thing
         private static Drawable shadow;
@@ -491,6 +533,7 @@ public class CalendarDialog {
             // Draws the ColorDrawable in the Canvas passed in from the system.
             shadow.draw(canvas);
         }
+
     }
 
     /* 일정이 클릭되는 것, 일정이 만들어지는 것 리스너*/

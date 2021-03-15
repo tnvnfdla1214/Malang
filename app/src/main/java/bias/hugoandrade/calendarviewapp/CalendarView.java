@@ -899,11 +899,12 @@ public class CalendarView extends FrameLayout {
                 });
 ///////////
 
-                /*
+/*
                 schedule.animate().rotationYBy(90f).setDuration(2000).start();
                     schedule.animate().rotationXBy(180f).setDuration(10).start();
                     schedule.animate().rotationBy(180f).setDuration(10).start();
-                * */
+                    
+ */
 
 
                 container.setOnClickListener(new OnClickListener() {
