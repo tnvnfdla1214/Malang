@@ -435,6 +435,7 @@ public class CalendarDialog {
                                     @Override
                                     public boolean onDragStart(View v, DragStartHelper helper) {
                                         int flags = View.DRAG_FLAG_GLOBAL | View.DRAG_FLAG_GLOBAL_URI_READ;
+                                        Log.d("끼륙륙","CalendarDialog 438번째 줄 : 드래그 나감" );
                                         return v.startDragAndDrop(dragData, myShadow, null, flags);
                                     }
                                 };
@@ -448,7 +449,7 @@ public class CalendarDialog {
 
                                     //드래그가 뷰의 경계밖을 나가면
                                     case DragEvent.ACTION_DRAG_EXITED:
-                                        Log.d("끼륙륙","3333333333333333 : " );
+                                        Log.d("끼륙륙","CalendarDialog 452번째 줄 : 드래그 나감" );
                                         dismissDialog();
                                         return true;
                                 }

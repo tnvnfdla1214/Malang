@@ -920,7 +920,7 @@ public class CalendarView extends FrameLayout {
                             case DragEvent.ACTION_DROP:
                                 final YMDCalendar previousDate = mSelectedDate.clone();
                                 ClipData.Item imageItem = dragEvent.getClipData().getItemAt(0);
-                                Log.d("끼륙륙","2222222223333333333333333 : " + day.year + "." + day.month + "." +day.day);
+                                Log.d("끼륙륙","CalendarView 923번째 줄 손가락이 위치해 있는 날짜 : day.year + day.month + day.day = " + day.year + "." + day.month + "." +day.day);
 //                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(0));
 //                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(1));
                                 //Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipData().getItemAt(1));

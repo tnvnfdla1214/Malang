@@ -158,7 +158,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                       Calendar selectedDate) {
 
                 this.selected = selectedDate;
-                Log.d("끼륙륙","selectedDate.get(Calendar.DATE) : " + selected.get(Calendar.DATE));
+                Log.d("끼륙륙","SDK21 161번째 줄 손가락이 위치해 있는 날짜 SDK21에서 받아온 것: selectedDate.get(Calendar.DATE) = " + selected.get(Calendar.DATE));
             }
         });
 //        monthview = calendarPagerAdapter.getMonthView();
