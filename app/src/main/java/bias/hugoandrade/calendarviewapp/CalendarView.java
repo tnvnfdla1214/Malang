@@ -1,6 +1,7 @@
 package bias.hugoandrade.calendarviewapp;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Handler;
 
 import androidx.annotation.AttrRes;
@@ -29,6 +31,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
+import android.view.DragAndDropPermissions;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -909,7 +913,30 @@ public class CalendarView extends FrameLayout {
                     schedule.animate().rotationBy(180f).setDuration(10).start();
                     
  */
+                container.setOnDragListener(new View.OnDragListener() {
+                    @Override
+                    public boolean onDrag(View view, DragEvent dragEvent) {
+                        switch (dragEvent.getAction()) {
+                            case DragEvent.ACTION_DROP:
+                                final YMDCalendar previousDate = mSelectedDate.clone();
+                                ClipData.Item imageItem = dragEvent.getClipData().getItemAt(0);
+                                Log.d("끼륙륙","2222222223333333333333333 : " + day.year + "." + day.month + "." +day.day);
+//                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(0));
+//                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(1));
+                                //Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipData().getItemAt(1));
 
+                                runListener(calendarObjectList,
+                                        YMDCalendar.toCalendar(previousDate),
+                                        YMDCalendar.toCalendar(day));
+                                return true;
+                        }
+                        return true;
+                    }
+                    private void runListener(List<CalendarObject> calendarObjectList, Calendar previousDate, Calendar selectedDate) {
+                        if (mTListener != null)
+                            mTListener.onItemTouched(calendarObjectList, previousDate, selectedDate);
+                    }
+                });
 
                 container.setOnClickListener(new OnClickListener() {
                     @Override
@@ -947,8 +974,7 @@ public class CalendarView extends FrameLayout {
                     private void runListener(List<CalendarObject> calendarObjectList, Calendar previousDate, Calendar selectedDate) {
                         if (mListener != null)
                             mListener.onItemClicked(calendarObjectList, previousDate, selectedDate);
-                        if (mTListener != null)
-                            mTListener.onItemTouched(calendarObjectList, previousDate, selectedDate);
+
 
                     }
                 });

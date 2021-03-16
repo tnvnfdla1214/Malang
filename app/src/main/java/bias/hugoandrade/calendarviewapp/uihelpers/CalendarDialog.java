@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
+import androidx.core.view.DragStartHelper;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -398,6 +399,7 @@ public class CalendarDialog {
             View rclEventIcon;
             TextView tvEventName;
             TextView tvEventStatus;
+            DragStartHelper.OnDragStartListener listener;
 
             ViewHolder(View view) {
                 super(view);
@@ -421,23 +423,22 @@ public class CalendarDialog {
                         // ClipData, and set its MIME type entry to "text/plain"
                         dragData = new ClipData(
                                 (CharSequence) view.getTag(),
-                                new String[] { ClipDescription.MIMETYPE_TEXT_PLAIN, eventt.getStart_Date().toString() },
+                                new String[] { eventt.getTitle(), String.valueOf(eventt.getCount()) },
                                 item);
 
                         // Instantiates the drag shadow builder.
                         View.DragShadowBuilder myShadow = new MyDragShadowBuilder(view);
 
-                        // Starts the drag
-
-                        view.startDrag(dragData,  // the data to be dragged
-                                myShadow,  // the drag shadow builder
-                                null,      // no need to use local data
-                                0          // flags (not currently used, set to 0)
-                        );
 
 
-                        /*드래그 리스너
-                         * https://mainia.tistory.com/2674*/
+                        listener = new DragStartHelper.OnDragStartListener() {
+                                    @Override
+                                    public boolean onDragStart(View v, DragStartHelper helper) {
+                                        int flags = View.DRAG_FLAG_GLOBAL | View.DRAG_FLAG_GLOBAL_URI_READ;
+                                        return v.startDragAndDrop(dragData, myShadow, null, flags);
+                                    }
+                                };
+
                         view.setOnDragListener(new View.OnDragListener() {
                             @Override
                             public boolean onDrag(View view, DragEvent dragEvent) {
@@ -445,33 +446,23 @@ public class CalendarDialog {
 
                                 switch(dragEvent.getAction()){
 
-                                    //드래그가 시작되면
-                                    case DragEvent.ACTION_DRAG_STARTED:
-                                        Log.d("창환짱짱","dragData : " + dragData);
-                                        return true;
-
-                                    //드래그가 뷰의 경계안으로 들어오면
-                                    case DragEvent.ACTION_DRAG_ENTERED:
-                                        return true;
-
                                     //드래그가 뷰의 경계밖을 나가면
                                     case DragEvent.ACTION_DRAG_EXITED:
-                                        //mListener.onDraged(eventt);
-                                        Log.d("창환짱짱","dragData2222222 : " + dragData);
+                                        Log.d("끼륙륙","3333333333333333 : " );
                                         dismissDialog();
-                                        return true;
-
-                                    //드래그가 드롭되면
-                                    case DragEvent.ACTION_DROP:
-                                        Log.d("창환짱짱","111111111111111111 : " );
                                         return true;
                                 }
                                 return true;
                             }
                         });
+                        DragStartHelper helper = new DragStartHelper(view, listener);
+                        helper.attach();
                         return true;
+
+
                     }
                 });
+
             }
 
             @Override

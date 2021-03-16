@@ -1,12 +1,14 @@
 package bias.hugoandrade.calendarviewapp;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -26,6 +28,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.util.Base64;
 import android.util.Log;
+import android.view.DragAndDropPermissions;
+import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -77,6 +81,18 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //Log.d("끼륙륙","onRestart() 호출 : ");
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Log.d("끼륙륙","onResume() 호출 : ");
+    }
+
+
     private void initializeUI() {
 
         setContentView(R.layout.activity_calendar_view_with_notes_sdk_21);
@@ -111,39 +127,26 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 }
             }
         });
-        /*
-        GestureDetector detector;
-        detector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                Log.d("끼륙","onDown() 호출 : ");
-                return true;
-            }
-            @Override
-            public void onShowPress(MotionEvent e) {
-                Log.d("끼륙","onShowPress() 호출 : ");
-            }
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                Log.d("끼륙","onSingleTapUp() 호출 : ");
-                return true;
-            }
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                Log.d("끼륙","onScroll() 호출 : "+distanceX + ", "+distanceY);
-                return true;
-            }
-            @Override
-            public void onLongPress(MotionEvent e) {
-                Log.d("끼륙","onLongPress() 호출 : ");
-            }
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                Log.d("끼륙","onFling() 호출 : "+velocityX + ", " + velocityY);
-                return true;
-            }
-        });
-        * */
+/* mCalendarView.setOnDragListener(new View.OnDragListener() {
+                    @Override
+                    public boolean onDrag(View view, DragEvent dragEvent) {
+                        switch (dragEvent.getAction()) {
+                            case DragEvent.ACTION_DROP:
+                                ClipData.Item imageItem =
+                                        dragEvent.getClipData().getItemAt(0);
+                                Uri uri = imageItem.getUri();
+                                Log.d("끼륙륙","11111112222222211111111111 : " );
+
+                                DragAndDropPermissions dropPermissions = requestDragAndDropPermissions(dragEvent);
+
+                                dropPermissions.release();
+                                return true;
+                        }
+                        return true;
+                    }
+                });
+* */
+
 
         /* 달력에서 일정의 유무에 다른 날짜 클릭 리스너*/
         mCalendarView.setOnItemTouchedListener(new CalendarView.OnItemTouchListener() {
@@ -155,29 +158,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                       Calendar selectedDate) {
 
                 this.selected = selectedDate;
-                Log.d("끼륙","selectedDate.get(Calendar.DATE) : " + selected.get(Calendar.DATE));
-            }
-            /*
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                detector.onTouchEvent(event);
-                return true;
-            }
-            * */
-
-
-            public boolean onTouchEvent(MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        //Log.d("끼륙","selectedDate.get(Calendar.DATE)11 : " + selected.get(Calendar.DATE));
-                        return true;
-                    case MotionEvent.ACTION_MOVE:
-                        //Log.d("끼륙","selectedDate.get(Calendar.DATE)22 : " + selected.get(Calendar.DATE));
-                        return true;
-                }
-                return false;
+                Log.d("끼륙륙","selectedDate.get(Calendar.DATE) : " + selected.get(Calendar.DATE));
             }
         });
 //        monthview = calendarPagerAdapter.getMonthView();
