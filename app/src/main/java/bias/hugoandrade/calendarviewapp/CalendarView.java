@@ -109,6 +109,7 @@ public class CalendarView extends FrameLayout {
      * Listener for item click
      */
     private OnItemClickListener mListener;
+    private OnItemTouchListener mTListener;
 
     /**
      * Listener for month changed
@@ -314,6 +315,9 @@ public class CalendarView extends FrameLayout {
 
     public void setOnItemClickedListener(OnItemClickListener listener) {
         mListener = listener;
+    }
+    public void setOnItemTouchedListener(OnItemTouchListener Tlistnener) {
+        mTListener = Tlistnener;
     }
 
     public void setOnMonthChangedListener(OnMonthChangedListener listener) {
@@ -943,6 +947,9 @@ public class CalendarView extends FrameLayout {
                     private void runListener(List<CalendarObject> calendarObjectList, Calendar previousDate, Calendar selectedDate) {
                         if (mListener != null)
                             mListener.onItemClicked(calendarObjectList, previousDate, selectedDate);
+                        if (mTListener != null)
+                            mTListener.onItemTouched(calendarObjectList, previousDate, selectedDate);
+
                     }
                 });
             }
@@ -1529,6 +1536,10 @@ public class CalendarView extends FrameLayout {
             P.onItemClickListener = onItemClickListener;
             return this;
         }
+        public Builder setOnItemTouchedListener(OnItemTouchListener onItemTouchListener) {
+            P.onItemTouchListener = onItemTouchListener;
+            return this;
+        }
 
         public CalendarView create() {
             CalendarView calendarView = new CalendarView(P.mContext);
@@ -1536,6 +1547,7 @@ public class CalendarView extends FrameLayout {
             P.apply(calendarView.mAttributes);
 
             calendarView.setOnItemClickedListener(P.onItemClickListener);
+            calendarView.setOnItemTouchedListener(P.onItemTouchListener);
             calendarView.setCalendarObjectList(P.calendarObjectList);
 
             return calendarView;
@@ -1547,6 +1559,7 @@ public class CalendarView extends FrameLayout {
         Context mContext;
         List<CalendarObject> calendarObjectList;
         OnItemClickListener onItemClickListener;
+        OnItemTouchListener onItemTouchListener;
 
         // Attributes
         int weekHeaderBackgroundColor;
@@ -1579,6 +1592,9 @@ public class CalendarView extends FrameLayout {
 
     public interface OnItemClickListener {
         void onItemClicked(List<CalendarObject> calendarObjects, Calendar previousDate, Calendar selectedDate);
+    }
+    public interface OnItemTouchListener {
+        void onItemTouched(List<CalendarObject> calendarObjects, Calendar previousDate, Calendar selectedDate);
     }
 
     public interface OnMonthChangedListener {
