@@ -19,13 +19,13 @@
         <activity
             android:name="bias.hugoandrade.calendarviewapp.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name="bias.hugoandrade.calendarviewapp.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name="bias.hugoandrade.calendarviewapp.LoginActivity" android:screenOrientation="portrait">
 
         </activity>
 <!--        <activity-->
@@ -69,6 +69,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
         </activity>
+
+        <activity
+            android:name="bias.hugoandrade.calendarviewapp.DragCreate_Schedule"
+            android:parentActivityName="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21"
+            android:theme="@style/AppTheme.NoActionBar.Transition">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
+        </activity>
+
     </application>
 
 </manifest>

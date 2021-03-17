@@ -619,7 +619,7 @@ public class CalendarView extends FrameLayout {
             /* getDayViewList 날짜 촤르르륵 */
             List<View> viewList = getDayViewList(monthContainer);
             List<YMDCalendar> dayList = getDayList((Calendar) mInitialMonth.clone());
-             return dayList.size();
+            return dayList.size();
         }
 
         private void onBindView(int position,
@@ -677,7 +677,7 @@ public class CalendarView extends FrameLayout {
                 if(!yesterdayObjectList.isEmpty()){
 
                     /* 오늘일정[i]랑 전날 일정들이랑 비교하면서 같은게 있기만하면 추가로 비교하지 않고
-                       *   오늘일정[i]에 대한 일정바 칠하기는 넘어간다.*/
+                     *   오늘일정[i]에 대한 일정바 칠하기는 넘어간다.*/
                     for (int j = 0; j < yesterdayObjectList.size(); j++) {
                         if(calendarObjectList.get(i).getID().equals(yesterdayObjectList.get(j).getID())){
                             judge = 0;
@@ -911,7 +911,7 @@ public class CalendarView extends FrameLayout {
                 schedule.animate().rotationYBy(90f).setDuration(2000).start();
                     schedule.animate().rotationXBy(180f).setDuration(10).start();
                     schedule.animate().rotationBy(180f).setDuration(10).start();
-                    
+
  */
                 container.setOnDragListener(new View.OnDragListener() {
                     @Override
@@ -921,27 +921,28 @@ public class CalendarView extends FrameLayout {
                                 final YMDCalendar previousDate = mSelectedDate.clone();
                                 ClipData.Item imageItem = dragEvent.getClipData().getItemAt(0);
                                 Log.d("끼륙륙","CalendarView 923번째 줄 손가락이 위치해 있는 날짜 : day.year + day.month + day.day = " + day.year + "." + day.month + "." +day.day);
-//                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(0));
-//                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(1));
+                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(0));
+                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(1));
+                                Log.d("asdasdf","viewcount : " + dragEvent.getClipDescription().getMimeType(1));
                                 //Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipData().getItemAt(1));
 
-                                runListener(calendarObjectList,
-                                        YMDCalendar.toCalendar(previousDate),
+                                runListener(dragEvent.getClipDescription().getMimeType(0),
+                                        Integer.parseInt(dragEvent.getClipDescription().getMimeType(1)),
                                         YMDCalendar.toCalendar(day));
                                 return true;
                         }
                         return true;
                     }
-                    private void runListener(List<CalendarObject> calendarObjectList, Calendar previousDate, Calendar selectedDate) {
+                    private void runListener(String title, int count, Calendar selectedDate) {
                         if (mTListener != null)
-                            mTListener.onItemTouched(calendarObjectList, previousDate, selectedDate);
+                            mTListener.onItemTouched(title, count, selectedDate, selectedDate);
                     }
                 });
 
                 container.setOnClickListener(new OnClickListener() {
                     @Override
                     /*https://gus0000123.medium.com/android-viewpropertyanimator%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-animation-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0-2efb25397035
-                    * https://github.com/ybq/Android-SpinKit*/
+                     * https://github.com/ybq/Android-SpinKit*/
                     public void onClick(View v) {
 
 
@@ -1019,7 +1020,7 @@ public class CalendarView extends FrameLayout {
             nextMonth.add(Calendar.MONTH, 1);
             updateViewDayOfMonth(nextMonth, day, objectList);
         }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void updateViewDayOfMonth(Calendar month, YMDCalendar day, List<CalendarObject> eventList) {
             View monthView = mInstantiatedMonthViewList.get(getDateCode(month, 1));
             if (monthView != null) {
@@ -1620,7 +1621,7 @@ public class CalendarView extends FrameLayout {
         void onItemClicked(List<CalendarObject> calendarObjects, Calendar previousDate, Calendar selectedDate);
     }
     public interface OnItemTouchListener {
-        void onItemTouched(List<CalendarObject> calendarObjects, Calendar previousDate, Calendar selectedDate);
+        void onItemTouched(String title, int count, Calendar selectedDate, Calendar startDate);
     }
 
     public interface OnMonthChangedListener {

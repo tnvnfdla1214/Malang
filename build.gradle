@@ -7,7 +7,10 @@ buildscript {
         google()
         jcenter()
         maven {url " https://jitpack.io "
-        }
+            }
+        maven { url "https://maven.google.com"
+            }
+        maven { url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
