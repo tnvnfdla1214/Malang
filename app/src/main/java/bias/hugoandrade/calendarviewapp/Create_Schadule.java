@@ -257,7 +257,9 @@ public class Create_Schadule extends AppCompatActivity {
 
         String couple_Id = firebaseFirestore.collection("CALENDAR").document().getId();
 
-        final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document(couple_Id);
+        //final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document(couple_Id);
+        final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK");
+
         final DocumentReference Gender_Docu = Calendar_Docu.collection("CALENDAR_MAN").document("202103");
 
         String calendar_Id= Gender_Docu.collection("202103").document().getId();

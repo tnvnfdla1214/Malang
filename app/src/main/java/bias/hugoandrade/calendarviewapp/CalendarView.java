@@ -679,7 +679,7 @@ public class CalendarView extends FrameLayout {
                     /* 오늘일정[i]랑 전날 일정들이랑 비교하면서 같은게 있기만하면 추가로 비교하지 않고
                      *   오늘일정[i]에 대한 일정바 칠하기는 넘어간다.*/
                     for (int j = 0; j < yesterdayObjectList.size(); j++) {
-                        if(calendarObjectList.get(i).getID().equals(yesterdayObjectList.get(j).getID())){
+                        if(calendarObjectList.get(i).getfireUid().equals(yesterdayObjectList.get(j).getfireUid())){
                             judge = 0;
                             break;
                         }else{

@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     String KakaoPassword = "1234567890";                                    //카카오 패스워드
 
     private static final int RC_SIGN_IN = 9001;
+    private final static int MOVE_FROM_LOGIN_REQUEST_CODE = 200;
 
 
     @Override
@@ -117,7 +118,8 @@ public class LoginActivity extends AppCompatActivity {
     //유저 로그인 되어있는지 체크하는 함수
     public void User_login_Check(){
         if (currentUser != null) {
-            Intent intent = new Intent(getApplication(), CalendarViewWithNotesActivitySDK21.class);
+            Intent intent = new Intent(this, CalendarViewWithNotesActivitySDK21.class);
+            intent.putExtra("MOVE_FROM_LOGIN_REQUEST_CODE", MOVE_FROM_LOGIN_REQUEST_CODE);
             startActivity(intent);
             finish();
         }
@@ -357,6 +359,7 @@ public class LoginActivity extends AppCompatActivity {
 //                }
 //            });
             Intent intent = new Intent(this, CalendarViewWithNotesActivitySDK21.class);
+            intent.putExtra("MOVE_FROM_LOGIN_REQUEST_CODE", MOVE_FROM_LOGIN_REQUEST_CODE);
             startActivity(intent);
             finish();
 //        }
