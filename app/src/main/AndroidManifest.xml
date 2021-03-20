@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="bias.hugoandrade.calendarviewapp">
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
@@ -16,6 +21,15 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="bias.hugoandrade.calendarviewapp.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
         <activity
             android:name="bias.hugoandrade.calendarviewapp.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -45,21 +59,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="bias.hugoandrade.calendarviewapp.MainActivity" />
         </activity>
-        <activity
-            android:name="bias.hugoandrade.calendarviewapp.CreateEventActivity"
-            android:parentActivityName="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
-        </activity>
+
         <activity
             android:name="bias.hugoandrade.calendarviewapp.SelectDateAndTimeActivity"
-            android:parentActivityName="bias.hugoandrade.calendarviewapp.CreateEventActivity"
             android:theme="@style/AppTheme.NoActionBar.Transition">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="bias.hugoandrade.calendarviewapp.CreateEventActivity" />
         </activity>
 
         <activity
@@ -79,7 +82,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21" />
         </activity>
-
+        <activity android:name="bias.hugoandrade.calendarviewapp.GalleryActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="bias.hugoandrade.calendarviewapp.MemberInitActivity" android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

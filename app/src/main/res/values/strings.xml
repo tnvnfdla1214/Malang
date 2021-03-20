@@ -19,4 +19,5 @@
     <string name="not_available">not available</string>
     <string name="previous_month">previous month</string>
     <string name="next_month">next month</string>
+    <string name="please_grant_permission">권한을 허용해 주세요.</string>
 </resources>
