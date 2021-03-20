@@ -1330,19 +1330,15 @@ public class CalendarView extends FrameLayout {
         private Calendar Marked_Date;
         private Calendar Start_Date;
         private Calendar End_Date;
-        private int mPrimaryColor;
-        private int mSecondaryColor;
         private String fireUid;
         private int mshape;
         private int count;
 
-        public CalendarObject(String id, Calendar Marked_Date, Calendar Start_Date, Calendar End_Date, int primaryColor, int secondaryColor, String Uid, int shape, int count) {
+        public CalendarObject(String id, Calendar Marked_Date, Calendar Start_Date, Calendar End_Date, String Uid, int shape, int count) {
             mID = id;
             this.Marked_Date = Marked_Date;
             this.Start_Date = Start_Date;
             this.End_Date = End_Date;
-            mPrimaryColor = primaryColor;
-            mSecondaryColor = secondaryColor;
             fireUid = Uid;
             mshape = shape;
             this.count = count;
@@ -1364,14 +1360,6 @@ public class CalendarView extends FrameLayout {
         }
         public Calendar getEnd_Date() {
             return this.End_Date;
-        }
-
-        public int getPrimaryColor() {
-            return mPrimaryColor;
-        }
-
-        public int getSecondaryColor() {
-            return mSecondaryColor;
         }
 
         public int getShape() {

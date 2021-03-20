@@ -2,7 +2,6 @@ package bias.hugoandrade.calendarviewapp.uihelpers;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -313,7 +312,7 @@ public class CalendarDialog {
         private List<Event> getCalendarEventsOfDay(Calendar day) {
             List<Event> eventList = new ArrayList<>();
             for (Event e : mEventList) {
-                if (diffYMD(e.getMarked_Date(), day) == 0)
+                if (diffYMD(e.getCALENDAR_FixDate(), day) == 0)
 
                     eventList.add(e);
             }
@@ -364,11 +363,11 @@ public class CalendarDialog {
             pos = position;
 
             String defaultTitle = holder.itemView.getContext().getString(R.string.event_default_title);
-            String title = event.getTitle() == null ? defaultTitle : event.getTitle();
+            String title = event.getCALENDAR_Schedule() == null ? defaultTitle : event.getCALENDAR_Schedule();
 
             holder.tvEventName.setText(title);
-            holder.rclEventIcon.setBackgroundColor(event.getColor());
-            holder.tvEventStatus.setText(timeFormat.format(event.getMarked_Date().getTime()));
+            //holder.rclEventIcon.setBackgroundColor(event.getColor());
+            holder.tvEventStatus.setText(timeFormat.format(event.getCALENDAR_FixDate().getTime()));
 
         }
 
@@ -391,7 +390,7 @@ public class CalendarDialog {
 
         @Override
         public void onDragandDrop(int position, RecyclerView.ViewHolder viewHolder) {
-            String a = mCalendarEvents.get(position).getTitle();
+            String a = mCalendarEvents.get(position).getCALENDAR_Schedule();
         }
 
 
@@ -423,7 +422,7 @@ public class CalendarDialog {
                         // ClipData, and set its MIME type entry to "text/plain"
                         dragData = new ClipData(
                                 (CharSequence) view.getTag(),
-                                new String[] { eventt.getTitle(), String.valueOf(eventt.getCount()) },
+                                new String[] { eventt.getCALENDAR_Schedule(), String.valueOf(eventt.getCALENDAR_DateCount()) },
                                 item);
 
                         // Instantiates the drag shadow builder.

@@ -15,59 +15,56 @@ import java.util.Map;
 public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
 
 
-    private String Event_Uid;
-    private String Id;
-    private String Title;
-    private Calendar Start_Date;
-    private Calendar End_Date;
-    private Calendar Fixed_Start_Date;
-    private int Color;
-    private boolean IsCompleted;
+    private String CALENDAR_UID;
+    private String CALENDAR_id;
+    private String CALENDAR_Schedule;
 
-    private int Start_Year;
-    private int Start_Month;
-    private int Start_Day;
+    private Calendar CALENDAR_StrartDate;
+    private Calendar CALENDAR_EndDate;
+    private Calendar CALENDAR_FixDate;
+//    private int Color;
+//    private boolean IsCompleted;
 
-    private int Fixed_Start_Year;
-    private int Fixed_Start_Month;
-    private int Fixed_Start_Day;
+    private int CALENDAR_StartY;
+    private int CALENDAR_StartM;
+    private int CALENDAR_StartD;
 
-    private int End_Year;
-    private int End_Month;
-    private int End_Day;
+    private int CALENDAR_FixY;
+    private int CALENDAR_FixM;
+    private int CALENDAR_FixD;
 
-    private int count;
+    private int CALENDAR_EndY;
+    private int CALENDAR_EndM;
+    private int CALENDAR_EndD;
+
+    private int CALENDAR_DateCount;
 
     public Event_firebase(){}
 
-    public Event_firebase(String Event_Uid, String Id, String Title, Calendar Start_Date, Calendar End_Date, Calendar Fixed_Start_Date, int Color, boolean IsCompleted, int count) {
-        this.Event_Uid = Event_Uid;
-        this.Id = Id;
-        this.Title = Title;
-        this.Start_Date = Start_Date;
-        this.End_Date = End_Date;
-        this.Fixed_Start_Date = Fixed_Start_Date;
-        this.Color = Color;
-        this.IsCompleted = IsCompleted;
-        this.count = count;
+    public Event_firebase(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, Calendar CALENDAR_StrartDate, Calendar CALENDAR_EndDate, Calendar CALENDAR_FixDate, int CALENDAR_DateCount) {
+        this.CALENDAR_UID = CALENDAR_UID;
+        this.CALENDAR_id = CALENDAR_id;
+        this.CALENDAR_Schedule = CALENDAR_Schedule;
+        this.CALENDAR_StrartDate = CALENDAR_StrartDate;
+        this.CALENDAR_EndDate = CALENDAR_EndDate;
+        this.CALENDAR_FixDate = CALENDAR_FixDate;
+        this.CALENDAR_DateCount = CALENDAR_DateCount;
     }
 
-    public Event_firebase(String Event_Uid, String Id, String Title, int Start_Year, int Start_Month, int Start_Day, int End_Year, int End_Month, int End_Day, int Fixed_Start_Year, int Fixed_Start_Month, int Fixed_Start_Day, int Color, boolean IsCompleted, int count) {
-        this.Event_Uid = Event_Uid;
-        this.Id = Id;
-        this.Title = Title;
-        this.Start_Year = Start_Year;
-        this.Start_Month = Start_Month;
-        this.Start_Day = Start_Day;
-        this.End_Year = End_Year;
-        this.End_Month = End_Month;
-        this.End_Day = End_Day;
-        this.Fixed_Start_Year = Fixed_Start_Year;
-        this.Fixed_Start_Month = Fixed_Start_Month;
-        this.Fixed_Start_Day = Fixed_Start_Day;
-        this.Color = Color;
-        this.IsCompleted = IsCompleted;
-        this.count = count;
+    public Event_firebase(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, int CALENDAR_StartY, int CALENDAR_StartM, int CALENDAR_StartD, int CALENDAR_EndY, int CALENDAR_EndM, int CALENDAR_EndD, int CALENDAR_FixY, int CALENDAR_FixM, int CALENDAR_FixD, int CALENDAR_DateCount) {
+        this.CALENDAR_UID = CALENDAR_UID;
+        this.CALENDAR_id = CALENDAR_id;
+        this.CALENDAR_Schedule = CALENDAR_Schedule;
+        this.CALENDAR_StartY = CALENDAR_StartY;
+        this.CALENDAR_StartM = CALENDAR_StartM;
+        this.CALENDAR_StartD = CALENDAR_StartD;
+        this.CALENDAR_EndY = CALENDAR_EndY;
+        this.CALENDAR_EndM = CALENDAR_EndM;
+        this.CALENDAR_EndD = CALENDAR_EndD;
+        this.CALENDAR_FixY = CALENDAR_FixY;
+        this.CALENDAR_FixM = CALENDAR_FixM;
+        this.CALENDAR_FixD = CALENDAR_FixD;
+        this.CALENDAR_DateCount = CALENDAR_DateCount;
     }
 
 
@@ -75,79 +72,66 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
 
     public Map<String, Object> getScheduleInfo(){
         Map<String, Object> docData = new HashMap<>();
-        docData.put("ScheduleModel_Uid", Event_Uid);
-        docData.put("ScheduleModel_Title", Title);
-        docData.put("ScheduleModel_Start_Year", Start_Year);
-        docData.put("ScheduleModel_Start_Month", Start_Month);
-        docData.put("ScheduleModel_Start_Day", Start_Day);
-        docData.put("ScheduleModel_Final_Year", End_Year);
-        docData.put("ScheduleModel_Final_Month", End_Month);
-        docData.put("ScheduleModel_Final_Day", End_Day);
-        docData.put("ScheduleModel_Fixed_Start_Year", Fixed_Start_Year);
-        docData.put("ScheduleModel_Fixed_Start_Month", Fixed_Start_Month);
-        docData.put("ScheduleModel_Fixed_Start_Day", Fixed_Start_Day);
-        docData.put("ScheduleModel_Color", Color);
-        docData.put("ScheduleModel_Id", Id);
-        docData.put("ScheduleModel_IsCompleted", IsCompleted);
-        docData.put("ScheduleModel_Count", count);
+        docData.put("CALENDAR_UID", CALENDAR_UID);
+        docData.put("CALENDAR_Schedule", CALENDAR_Schedule);
+        docData.put("CALENDAR_StartY", CALENDAR_StartY);
+        docData.put("CALENDAR_StartM", CALENDAR_StartM);
+        docData.put("CALENDAR_StartD", CALENDAR_StartD);
+        docData.put("CALENDAR_EndY", CALENDAR_EndY);
+        docData.put("CALENDAR_EndM", CALENDAR_EndM);
+        docData.put("CALENDAR_EndD", CALENDAR_EndD);
+        docData.put("CALENDAR_FixY", CALENDAR_FixY);
+        docData.put("CALENDAR_FixM", CALENDAR_FixM);
+        docData.put("CALENDAR_FixD", CALENDAR_FixD);
+        docData.put("CALENDAR_id", CALENDAR_id);
+        docData.put("CALENDAR_DateCount", CALENDAR_DateCount);
         return  docData;
     }
 
-
-    public String getId() {
-        return this.Id;
+    public String getCALENDAR_id() {
+        return this.CALENDAR_id;
     }
 
-    public String getTitle() {
-        return this.Title;
+    public String getCALENDAR_Schedule() {
+        return this.CALENDAR_Schedule;
     }
 
-    public Calendar getStart_Date() {
-        return this.Start_Date;
+    public Calendar getCALENDAR_StrartDate() {
+        return this.CALENDAR_StrartDate;
     }
-    public void setStart_Date(Calendar Start_Date) {
-        this.Start_Date = Start_Date;
+    public void setCALENDAR_StrartDate(Calendar CALENDAR_StrartDate) { this.CALENDAR_StrartDate = CALENDAR_StrartDate; }
+
+    public Calendar getCALENDAR_EndDate() {
+        return this.CALENDAR_EndDate;
     }
-    public Calendar getEnd_Date() {
-        return this.End_Date;
-    }
-    public Calendar getFixed_Start_Date() {
-        return this.Fixed_Start_Date;
-    }
-    public int getColor() {
-        return this.Color;
-    }
-    public int getCount() {
-        return this.count;
+    public Calendar getCALENDAR_FixDate() {
+        return this.CALENDAR_FixDate;
     }
 
-    public boolean getIsCompleted() {
-        return this.IsCompleted;
+    public int getCALENDAR_DateCount() {
+        return this.CALENDAR_DateCount;
     }
+
 
     protected Event_firebase(Parcel in) {
-        Event_Uid = in.readString();
-        Id = in.readString();
-        Title = in.readString();
-        Start_Date = (Calendar) in.readSerializable();
-        End_Date = (Calendar) in.readSerializable();
-        Fixed_Start_Date = (Calendar) in.readSerializable();
-        Color = in.readInt();
-        IsCompleted = in.readByte() != 0;
-        count = in.readInt();
+        CALENDAR_UID = in.readString();
+        CALENDAR_id = in.readString();
+        CALENDAR_Schedule = in.readString();
+        CALENDAR_StrartDate = (Calendar) in.readSerializable();
+        CALENDAR_EndDate = (Calendar) in.readSerializable();
+        CALENDAR_FixDate = (Calendar) in.readSerializable();
+        CALENDAR_DateCount = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(Event_Uid);
-        dest.writeString(Id);
-        dest.writeString(Title);
-        dest.writeSerializable(Start_Date);
-        dest.writeSerializable(End_Date);
-        dest.writeSerializable(Fixed_Start_Date);
-        dest.writeInt(Color);
-        dest.writeByte((byte) (IsCompleted ? 1 : 0));
-        dest.writeInt(count);
+        dest.writeString(CALENDAR_UID);
+        dest.writeString(CALENDAR_id);
+        dest.writeString(CALENDAR_Schedule);
+        dest.writeSerializable(CALENDAR_StrartDate);
+        dest.writeSerializable(CALENDAR_EndDate);
+        dest.writeSerializable(CALENDAR_FixDate);
+        dest.writeInt(CALENDAR_DateCount);
     }
 
     @Override
@@ -167,19 +151,19 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         }
     };
 
-    public String getEvent_Uid() {
-        return this.Event_Uid;
+    public String getCALENDAR_UID() {
+        return this.CALENDAR_UID;
     }
 
-    public void setEvent_Uid(String Event_Uid) {
-        this.Event_Uid = Event_Uid;
+    public void setCALENDAR_UID(String Event_Uid) {
+        this.CALENDAR_UID = Event_Uid;
     }
 
     @Override
     public int compareTo(Event_firebase s) {
-        if (this.Start_Date.before(s.getStart_Date())) {
+        if (this.CALENDAR_StrartDate.before(s.getCALENDAR_StrartDate())) {
             return -1;
-        } else if (this.Start_Date.after(s.getStart_Date())) {
+        } else if (this.CALENDAR_StrartDate.after(s.getCALENDAR_StrartDate())) {
             return 1;
         }
         return 0;

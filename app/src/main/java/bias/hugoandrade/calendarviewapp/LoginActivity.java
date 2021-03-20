@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
     //유저 로그인 되어있는지 체크하는 함수
     public void User_login_Check(){
         if (currentUser != null) {
-            Intent intent = new Intent(getApplication(), MainActivity.class);
+            Intent intent = new Intent(getApplication(), CalendarViewWithNotesActivitySDK21.class);
             startActivity(intent);
             finish();
         }
@@ -356,7 +356,7 @@ public class LoginActivity extends AppCompatActivity {
 //
 //                }
 //            });
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, CalendarViewWithNotesActivitySDK21.class);
             startActivity(intent);
             finish();
 //        }

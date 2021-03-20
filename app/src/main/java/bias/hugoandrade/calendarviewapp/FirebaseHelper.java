@@ -23,7 +23,7 @@ public class FirebaseHelper {
 
 
     public void Schedule_Delete(final Event event){                                                 // part16: 스토리지의 삭제 (13')
-        final String Event_Uid = event.getEvent_Uid();
+        final String Event_Uid = event.getCALENDAR_UID();
         Log.d("파이어", " Event_Uid 헬퍼 : " + Event_Uid);
         FirebaseFirestore Firebasefirestore = FirebaseFirestore.getInstance();
         Firebasefirestore.collection("SCHEDULE").document(Event_Uid)

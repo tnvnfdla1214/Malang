@@ -19,6 +19,7 @@
         <activity
             android:name="bias.hugoandrade.calendarviewapp.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
         <activity android:name="bias.hugoandrade.calendarviewapp.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>

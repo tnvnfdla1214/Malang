@@ -213,8 +213,6 @@ public class DragCreate_Schedule  extends AppCompatActivity {
                 Start_Calendar.get(Calendar.YEAR),
                 Start_Calendar.get(Calendar.MONTH),
                 Start_Calendar.get(Calendar.DATE),
-                mColor,
-                mIsCompleteCheckBox,
                 count
         );
 
@@ -248,9 +246,8 @@ public class DragCreate_Schedule  extends AppCompatActivity {
                 count++;
                 Start_Calendar.add(Calendar.DATE, 1);
             }Start_Calendar.add(Calendar.DATE, -count);
-        }else{
-            count = count +1;
         }
+        count = count +1;
 
 
         return count;

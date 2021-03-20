@@ -136,11 +136,10 @@ public class Create_Schadule extends AppCompatActivity {
     }
 
     private void Revise_S(){
-        Start_Calendar = event.getStart_Date();
-        End_Calendar = event.getEnd_Date();
-        Schedlue_Uid = event.getEvent_Uid();
-        mColor = event.getColor();
-        Schadule = event.getTitle();
+        Start_Calendar = event.getCALENDAR_StrartDate();
+        End_Calendar = event.getCALENDAR_EndDate();
+        Schedlue_Uid = event.getCALENDAR_UID();
+        Schadule = event.getCALENDAR_Schedule();
 
         //시작 날짜 기입 및 클릭 시 날짜를 선택할 수 있게 된다.
         start_date.setText(dateFormat.format(Start_Calendar.getTime()));
@@ -245,7 +244,7 @@ public class Create_Schadule extends AppCompatActivity {
 
         //Event 정보가 있을경우는 수정 정보를 메인으로 넘겨주고 없을경우 생성 정보를 21에 넘겨준다.
         int action = event != null ? ACTION_EDIT : ACTION_CREATE;
-        String id = event != null ? event.getId() : generateID();
+        String id = event != null ? event.getCALENDAR_id() : generateID();
         Schadule = event_Schadule.getText().toString().trim();
 
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -275,8 +274,6 @@ public class Create_Schadule extends AppCompatActivity {
                 Start_Calendar.get(Calendar.YEAR),
                 Start_Calendar.get(Calendar.MONTH),
                 Start_Calendar.get(Calendar.DATE),
-                mColor,
-                mIsCompleteCheckBox,
                 count
         );
 
@@ -321,9 +318,8 @@ public class Create_Schadule extends AppCompatActivity {
                 count++;
                 Start_Calendar.add(Calendar.DATE, 1);
             }Start_Calendar.add(Calendar.DATE, -count);
-        }else{
-            count = count +1;
         }
+        count = count +1;
         return count;
     }
 

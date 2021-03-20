@@ -1,14 +1,9 @@
 package bias.hugoandrade.calendarviewapp;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -26,24 +21,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Base64;
 import android.util.Log;
-import android.view.DragAndDropPermissions;
-import android.view.DragEvent;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-
-import bias.hugoandrade.calendarviewapp.R;
 
 import bias.hugoandrade.calendarviewapp.data.Event;
 import bias.hugoandrade.calendarviewapp.data.Event_firebase;
 import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import bias.hugoandrade.calendarviewapp.uihelpers.CalendarDialog;
 
-import java.security.MessageDigest;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -157,85 +144,6 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 //Log.d("끼륙륙","SDK21 161번째 줄 손가락이 위치해 있는 날짜 SDK21에서 받아온 것: selectedDate.get(Calendar.DATE) = " + selected.get(Calendar.DATE));
             }
         });
-//        monthview = calendarPagerAdapter.getMonthView();
-//        sizex = calendarPagerAdapter.getdayListsize();
-//        for(int a=0; a<sizex;a++){
-//            monthview.get(a);
-//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.layout_fragment, ExampleFragment.newInstance(ExampleFragment.NODIR));
-//            ft.commit();
-//        }
-
-//
-///////////*일정 나열*/
-//        listenerUsers = Firestore.collection("SCHEDULE")
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onEvent(@Nullable QuerySnapshot value,
-//                                        @Nullable FirebaseFirestoreException e) {
-//                        if (e != null) { return; }
-//
-//                        ArrayList<Event> oldEvent = new ArrayList<>();
-//                        for (QueryDocumentSnapshot doc : value) {
-//                            Event_firebase event_firebase = create_event_firebase(doc);//민규가 만든 파이어베이스에서 정보 받아온걸로 이벤트 파이어베이스모델에 넣는 함수
-//                            Calendar day = event_firebase.getStart_Date();
-//                            Calendar endday = event_firebase.getEnd_Date();
-//                            Calendar startday = YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Start_Day").toString()),
-//                                    Integer.parseInt(doc.getData().get("ScheduleModel_Start_Month").toString()),
-//                                    Integer.parseInt(doc.getData().get("ScheduleModel_Start_Year").toString())
-//                            ));
-//
-//                            /* [1]. oldEvent에다가 Uid가 같은 일정 객체를 전부 담는다.
-//                                oldEvent = List<Event> */
-//                            for (Event ef : mEventList) {
-//                                if (Objects.equals(event_firebase.getId(), ef.getId())) {
-//                                    oldEvent.add(ef);
-//                                }
-//                            }
-//
-//                            /* [2]. oldEvent가 비어 있지 않다면 한번 싹지운다.
-//                            *       그리고 난 후 oldEvent는 초기화 해준다*/
-//                            if (!oldEvent.equals(new ArrayList<>())) {
-//                                int count = oldEvent.size();
-//                                for(int i = 0; i < count ; i++){
-//                                    mEventList.remove(oldEvent.get(i));
-//                                    mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(i)));
-//                                }oldEvent = new ArrayList<>();
-//                            }
-//
-//                            /* [3]. 날짜 객체를 채워준다. */
-//                            if(startday.get(Calendar.DATE) == (endday.get(Calendar.DATE)) && startday.get(Calendar.MONTH) == (endday.get(Calendar.MONTH))){
-//                                shape = 0;
-//                                Event c_event = new Event(); //초기화
-//                                c_event = convert_event(event_firebase, startday, startday);   //민규가 만든 event_firebase -> evnet 바꾸는 함수
-//                                mEventList.add(c_event);
-//                                mCalendarView.addCalendarObject(parseCalendarObject(c_event));
-//                            } else{
-//                                while (!day.after(endday)){
-//                                    Log.d("창환짱","day.get(Calendar.DATE) : " + day.get(Calendar.DATE));
-//                                    Log.d("창환짱","endday.get(Calendar.DATE) : " + endday.get(Calendar.DATE));
-//                                    Log.d("창환짱","startday.get(Calendar.DATE) : " + startday.get(Calendar.DATE));
-//                                    if(startday.get(Calendar.DATE) == (day.get(Calendar.DATE))){    //첫째날
-//                                        shape = 1;
-//                                        Log.d("창환짱","  1  : ");
-//                                    } else if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE))){   //끝날
-//                                        shape = 2;
-//                                        Log.d("창환짱","  2  : ");
-//                                    }else{
-//                                        shape = 3;
-//                                        Log.d("창환짱","  3  : ");
-//                                    }
-//                                    Event c_event = new Event(); //초기화..
-//                                    c_event = convert_event(event_firebase,day,startday); //변경된 day를 넣어주는 함수
-//                                    mEventList.add(c_event);
-//                                    mCalendarView.addCalendarObject(parseCalendarObject(c_event));
-//                                    day.add(Calendar.DATE,1);
-//                                }
-//                            }
-//                        }
-//                        mCalendarDialog.setEventList(mEventList);
-//                    }
-//                });
 
 /////////*일정 나열*/
         listenerUsers = Firestore.collection("SCHEDULE")
@@ -248,71 +156,21 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                         for (QueryDocumentSnapshot doc : value) {
                             Event_firebase event_firebase = create_event_firebase(doc);//민규가 만든 파이어베이스에서 정보 받아온걸로 이벤트 파이어베이스모델에 넣는 함수
                             Sorted_Event_FirebaseList.add(event_firebase);
-                            Log.d("정은짱짱짱","event_firebaseList : " + Sorted_Event_FirebaseList);
-//                            Log.d("정은짱짱짱","event_firebaseList : " + event_firebaseList);
-//                            Calendar day = event_firebase.getStart_Date();
-//                            Calendar endday = event_firebase.getEnd_Date();
-//                            Calendar startday = YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Start_Day").toString()),
-//                                    Integer.parseInt(doc.getData().get("ScheduleModel_Start_Month").toString()),
-//                                    Integer.parseInt(doc.getData().get("ScheduleModel_Start_Year").toString())));
-//
-//                            /* [1]. oldEvent에다가 Uid가 같은 일정 객체를 전부 담는다.
-//                                oldEvent = List<Event> */
-//                            for (Event ef : mEventList) {
-//                                if (Objects.equals(event_firebase.getId(), ef.getId())) {
-//                                    oldEvent.add(ef);
-//                                }
-//                            }
-//
-//                            /* [2]. oldEvent가 비어 있지 않다면 한번 싹지운다.
-//                             *       그리고 난 후 oldEvent는 초기화 해준다*/
-//                            if (!oldEvent.equals(new ArrayList<>())) {
-//                                int count = oldEvent.size();
-//                                for(int i = 0; i < count ; i++){
-//                                    mEventList.remove(oldEvent.get(i));
-//                                    mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(i)));
-//                                }oldEvent = new ArrayList<>();
-//                            }
-//
-//                            /* [3]. 날짜 객체를 채워준다. */
-//                            if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE)) && day.get(Calendar.MONTH) == (endday.get(Calendar.MONTH))){
-//                                shape = 0;
-//                                Event c_event = new Event(); //초기화
-//                                c_event =convert_event(event_firebase);   //민규가 만든 event_firebase -> evnet 바꾸는 함수
-//                                mEventList.add(c_event);
-//                                mCalendarView.addCalendarObject(parseCalendarObject(c_event));
-//                            } else{
-//                                int count = 0;
-//                                while (!day.after(endday)){
-//                                    if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE))){    //끝에날
-//                                        shape = 2;
-//                                    } else{   //중긴
-//                                        if(count == 0){
-//                                            shape = 1;
-//                                        }else{
-//                                            shape = 3;
-//                                        }
-//                                    }
-//                                    count++;
-//                                    Event c_event = new Event(); //초기화
-//                                    c_event = day_convert_event(event_firebase,day,startday); //변경된 day를 넣어주는 함수
-//                                    mEventList.add(c_event);
-//                                    mCalendarView.addCalendarObject(parseCalendarObject(c_event));
-//                                    day.add(Calendar.DATE,1);
-//                                }
-//                            }
+                            Log.d("오와리다","Sorted_Event_FirebaseList : " + Sorted_Event_FirebaseList);
                         }
 
                         for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
                              /* [1]. oldEvent에다가 Uid가 같은 일정 객체를 전부 담는다.
                                 oldEvent = List<Event> */
                             for (Event ef : mEventList) {
-                                if (Objects.equals(Sorted_Event_FirebaseList.get(i).getEvent_Uid(), ef.getEvent_Uid())) {
+                                if (Objects.equals(Sorted_Event_FirebaseList.get(i).getCALENDAR_UID(), ef.getCALENDAR_UID())) {
                                     oldEvent.add(ef);
+                                    //Log.d("오와리다요","ef.getStart_Date() : " + ef.getStart_Date());
                                 }
                             }
                         }
 
+                        Log.d("오와리다","mEventList 4455 : " + mEventList);
                         /* [2]. oldEvent가 비어 있지 않다면 한번 싹지운다.
                          *       그리고 난 후 oldEvent는 초기화 해준다*/
                         if (!oldEvent.equals(new ArrayList<>())) {
@@ -328,11 +186,11 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                         Collections.sort(Sorted_Event_FirebaseList);
 
                         for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
-                            Log.d("정은짱짱짱","event_firebaseList22 : " + Sorted_Event_FirebaseList.get(i).getStart_Date());
+                            Log.d("정은짱짱짱","event_firebaseList22 : " + Sorted_Event_FirebaseList.get(i).getCALENDAR_StrartDate());
 
-                            Calendar day = Sorted_Event_FirebaseList.get(i).getStart_Date();
-                            Calendar endday = Sorted_Event_FirebaseList.get(i).getEnd_Date();
-                            Calendar startday = Sorted_Event_FirebaseList.get(i).getFixed_Start_Date();
+                            Calendar day = Sorted_Event_FirebaseList.get(i).getCALENDAR_StrartDate();
+                            Calendar endday = Sorted_Event_FirebaseList.get(i).getCALENDAR_EndDate();
+                            Calendar startday = Sorted_Event_FirebaseList.get(i).getCALENDAR_FixDate();
 
                             /* [3]. 날짜 객체를 채워준다. */
                             if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE)) && day.get(Calendar.MONTH) == (endday.get(Calendar.MONTH))){
@@ -340,7 +198,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                 Event c_event = new Event(); //초기화
                                 c_event =convert_event(Sorted_Event_FirebaseList.get(i));   //민규가 만든 event_firebase -> evnet 바꾸는 함수
                                 mEventList.add(c_event);
-                                Log.d("오와리다","mEventList 33 : " + mEventList.size());
+                                Log.d("오와리다","mEventList 33 : " + c_event.getCALENDAR_StrartDate().get(Calendar.DATE));
                                 mCalendarView.addCalendarObject(parseCalendarObject(c_event));
                             } else{
                                 int count = 0;
@@ -358,7 +216,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                     Event c_event = new Event(); //초기화
                                     c_event = day_convert_event(Sorted_Event_FirebaseList.get(i),day,startday); //변경된 day를 넣어주는 함수
                                     mEventList.add(c_event);
-                                    Log.d("오와리다","mEventList 44 : " + mEventList.size());
+                                    Log.d("오와리다","mEventList 44 : " + c_event.getCALENDAR_StrartDate());
                                     mCalendarView.addCalendarObject(parseCalendarObject(c_event));
                                     day.add(Calendar.DATE,1);
                                 }
@@ -460,6 +318,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     }
 
     /* 다른 액티비티에서 행동의 결과에 따른*/
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CREATE_EVENT_REQUEST_CODE) {
@@ -508,7 +367,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                     case CreateEventActivity.ACTION_DELETE: {
                         ArrayList<Event> oldEvent = new ArrayList<>();
                         for (Event e : mEventList) {
-                            if (Objects.equals(event.getEvent_Uid(), e.getEvent_Uid())) {
+                            if (Objects.equals(event.getCALENDAR_UID(), e.getCALENDAR_UID())) {
                                 oldEvent.add(e);
                             }
                         }
@@ -527,6 +386,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+    * */
+
 
     /* 클릭한 날짜와 이전의 날짜를 비교*/
     public static int diffYMD(Calendar date1, Calendar date2) {
@@ -542,80 +403,44 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     171번째 줄  mCalendarView.addCalendarObject(parseCalendarObject(event));
     로 달력에 반영*/
     private static CalendarView.CalendarObject parseCalendarObject(Event event) {
-        int a = event.isCompleted() ? Color.TRANSPARENT : Color.RED;
         return new CalendarView.CalendarObject(
-                event.getId(),
-                event.getMarked_Date(),
-                event.getStart_Date(),
-                event.getEnd_Date(),
-                event.getColor(),
-                event.isCompleted() ? Color.TRANSPARENT : Color.RED,
-                event.getEvent_Uid(),
+                event.getCALENDAR_id(),
+                event.getCALENDAR_FixDate(),
+                event.getCALENDAR_StrartDate(),
+                event.getCALENDAR_EndDate(),
+                event.getCALENDAR_UID(),
                 shape,
-                event.getCount());
+                event.getCALENDAR_DateCount());
 
     }
-    /*
+
     //Event_firebase 를 생성하는 함수
     Event_firebase create_event_firebase(QueryDocumentSnapshot doc){
         Event_firebase e_firebase = new Event_firebase(
-                doc.getData().get("ScheduleModel_Uid").toString(),
-                doc.getData().get("ScheduleModel_Id").toString(),
-                doc.getData().get("ScheduleModel_Title").toString(),
-                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Start_Day").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Start_Month").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Start_Year").toString())
+                doc.getData().get("CALENDAR_UID").toString(),
+                doc.getData().get("CALENDAR_id").toString(),
+                doc.getData().get("CALENDAR_Schedule").toString(),
+                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("CALENDAR_StartD").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_StartM").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_StartY").toString())
                 )),
-                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Final_Day").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Final_Month").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Final_Year").toString())
+                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("CALENDAR_EndD").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_EndM").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_EndY").toString())
                 )),
-                Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
-                Boolean.parseBoolean(doc.getData().get("ScheduleModel_IsCompleted").toString())
-        );
-        return e_firebase;
-    }
-
-    //코드상에 사용하는 event로 변환하는 함수(Event_firebase -> Event)
-    Event convert_event(Event_firebase event_firebase, Calendar day, Calendar startday){
-        Event C_event = new Event(event_firebase.getEvent_Uid(),event_firebase.getId(),event_firebase.getTitle(),
-                day, startday, event_firebase.getEnd_Date(),event_firebase.getColor(),event_firebase.getIsCompleted());
-        Log.d("재성짱","C_event.getMarked_Date().get(Calendar.DATE) : " + C_event.getMarked_Date().get(Calendar.DATE));
-        Log.d("재성짱","C_event.getStart_Date().get(Calendar.DATE) : " + C_event.getStart_Date().get(Calendar.DATE));
-        Log.d("재성짱","C_event.getEnd_Date().get(Calendar.DATE : " + C_event.getEnd_Date().get(Calendar.DATE));
-        return C_event;
-    }
-
-     */
-    //Event_firebase 를 생성하는 함수
-    Event_firebase create_event_firebase(QueryDocumentSnapshot doc){
-        Event_firebase e_firebase = new Event_firebase(
-                doc.getData().get("ScheduleModel_Uid").toString(),
-                doc.getData().get("ScheduleModel_Id").toString(),
-                doc.getData().get("ScheduleModel_Title").toString(),
-                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Start_Day").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Start_Month").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Start_Year").toString())
+                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("CALENDAR_FixD").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_FixM").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_FixY").toString())
                 )),
-                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Final_Day").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Final_Month").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Final_Year").toString())
-                )),
-                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("ScheduleModel_Fixed_Start_Day").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Fixed_Start_Month").toString()),
-                        Integer.parseInt(doc.getData().get("ScheduleModel_Fixed_Start_Year").toString())
-                )),
-                Integer.parseInt(doc.getData().get("ScheduleModel_Color").toString()),
-                Boolean.parseBoolean(doc.getData().get("ScheduleModel_IsCompleted").toString()),
-                Integer.parseInt(doc.getData().get("ScheduleModel_Count").toString())
+                Integer.parseInt(doc.getData().get("CALENDAR_DateCount").toString())
         );
         return e_firebase;
     }
 
     //코드상에 사용하는 event로 변환하는 함수(Event_firebase -> Event)
     Event convert_event(Event_firebase event_firebase){
-        Event C_event = new Event(event_firebase.getEvent_Uid(),event_firebase.getId(),event_firebase.getTitle(),
-                event_firebase.getStart_Date(),event_firebase.getStart_Date(),event_firebase.getEnd_Date(),event_firebase.getColor(),event_firebase.getIsCompleted(),event_firebase.getCount());
+        Event C_event = new Event(event_firebase.getCALENDAR_UID(),event_firebase.getCALENDAR_id(),event_firebase.getCALENDAR_Schedule(),
+                event_firebase.getCALENDAR_StrartDate(),event_firebase.getCALENDAR_StrartDate(),event_firebase.getCALENDAR_EndDate(),event_firebase.getCALENDAR_DateCount());
         return C_event;
     }
 
@@ -623,13 +448,12 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     //받은 day를 Event_firebase에 date에 넣은 후 convert_event로 변환 해준다.
     Event day_convert_event(Event_firebase event_firebase, Calendar day, Calendar startday){
         Calendar date = YMDCalendar.toCalendar(new YMDCalendar(day.get(Calendar.DATE), day.get(Calendar.MONTH), day.get(Calendar.YEAR)));
-        Event_firebase f_event=new Event_firebase(event_firebase.getEvent_Uid(),event_firebase.getId(),event_firebase.getTitle(),
-                startday,event_firebase.getEnd_Date(),startday,
-                event_firebase.getColor(),event_firebase.getIsCompleted(), event_firebase.getCount());
+        Event_firebase f_event=new Event_firebase(event_firebase.getCALENDAR_UID(),event_firebase.getCALENDAR_id(),event_firebase.getCALENDAR_Schedule(),
+                startday,event_firebase.getCALENDAR_EndDate(),startday, event_firebase.getCALENDAR_DateCount());
         Event c_event = new Event(); //초기화
         c_event =convert_event(f_event);   //민규가 만든 event_firebase -> evnet 바꾸는 함수
 
-        c_event.setMarked_Date(date);
+        c_event.setCALENDAR_FixDate(date);
 
         return c_event;
     }
