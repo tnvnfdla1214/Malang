@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import bias.hugoandrade.calendarviewapp.data.Event;
 import bias.hugoandrade.calendarviewapp.data.Event_firebase;
+import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import bias.hugoandrade.calendarviewapp.utils.ColorUtils;
 
 import java.text.SimpleDateFormat;
@@ -74,6 +75,10 @@ public class Create_Schadule extends AppCompatActivity {
 
     public static Event extractEventFromIntent(Intent intent) {
         return intent.getParcelableExtra(INTENT_EXTRA_EVENT);
+    }
+
+    public static int extractActionFromIntent(Intent intent) {
+        return intent.getIntExtra(INTENT_EXTRA_ACTION, 0);
     }
 
     public static Calendar extractCalendarFromIntent(Intent data) {
@@ -136,7 +141,7 @@ public class Create_Schadule extends AppCompatActivity {
     }
 
     private void Revise_S(){
-        Start_Calendar = event.getCALENDAR_StrartDate();
+        Start_Calendar = event.getCALENDAR_StartDate();
         End_Calendar = event.getCALENDAR_EndDate();
         Schedlue_Uid = event.getCALENDAR_UID();
         Schadule = event.getCALENDAR_Schedule();
@@ -249,8 +254,16 @@ public class Create_Schadule extends AppCompatActivity {
 
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-        String calendar_Id = event != null ? Schedlue_Uid : firebaseFirestore.collection("SCHEDULE").document().getId();
-        final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
+
+        String couple_Id = firebaseFirestore.collection("CALENDAR").document().getId();
+
+        final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document(couple_Id);
+        final DocumentReference Gender_Docu = Calendar_Docu.collection("CALENDAR_MAN").document("202103");
+
+        String calendar_Id= Gender_Docu.collection("202103").document().getId();
+
+        final DocumentReference documentReference =Gender_Docu.collection("202103").document(calendar_Id);
+
 
         mColor = ColorUtils.mColors[0];  //이거로 남자 여자 구분하기
         boolean mIsCompleteCheckBox = false;  //이거 뺴야 함
@@ -277,12 +290,22 @@ public class Create_Schadule extends AppCompatActivity {
                 count
         );
 
+        Event mOriginalEventFirebase = new Event(
+                calendar_Id,
+                id,
+                Schadule.isEmpty() ? null : Schadule,
+                YMDCalendar.toCalendar(new YMDCalendar(Start_Calendar.get(Calendar.DATE),Start_Calendar.get(Calendar.MONTH),Start_Calendar.get(Calendar.YEAR))),
+                YMDCalendar.toCalendar(new YMDCalendar(Start_Calendar.get(Calendar.DATE),Start_Calendar.get(Calendar.MONTH),Start_Calendar.get(Calendar.YEAR))),
+                YMDCalendar.toCalendar(new YMDCalendar(End_Calendar.get(Calendar.DATE),End_Calendar.get(Calendar.MONTH),End_Calendar.get(Calendar.YEAR))),
+                count
+        );
+
         storeUpload(documentReference, EventFirebase);
 /////////* 저장 버튼 눌렸을 때 파이어베이스에 넣는다.*/
 
-        //setResult(RESULT_OK, new Intent()
-        //        .putExtra(INTENT_EXTRA_ACTION, action)
-        //        .putExtra(INTENT_EXTRA_EVENT, EventFirebase));
+        setResult(RESULT_OK, new Intent()
+                .putExtra(INTENT_EXTRA_ACTION, action)
+                .putExtra(INTENT_EXTRA_EVENT, mOriginalEventFirebase));
         finish();
 
         //if (action == ACTION_CREATE)

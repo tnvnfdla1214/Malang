@@ -14,7 +14,7 @@ public class Event implements Parcelable{
     //private boolean IsCompleted;
 
     private Calendar CALENDAR_FixDate;
-    private Calendar CALENDAR_StrartDate;
+    private Calendar CALENDAR_StartDate;
     private Calendar CALENDAR_EndDate;
 
     private int CALENDAR_FixY;
@@ -33,16 +33,17 @@ public class Event implements Parcelable{
 
     public Event(){}
 
-    public Event(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, Calendar CALENDAR_FixDate, Calendar CALENDAR_StrartDate, Calendar CALENDAR_EndDate, int CALENDAR_DateCount) {
+    public Event(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, Calendar CALENDAR_FixDate, Calendar CALENDAR_StartDate, Calendar CALENDAR_EndDate, int CALENDAR_DateCount) {
         this.CALENDAR_UID = CALENDAR_UID;
         this.CALENDAR_id = CALENDAR_id;
         this.CALENDAR_Schedule = CALENDAR_Schedule;
         this.CALENDAR_FixDate = CALENDAR_FixDate;
-        this.CALENDAR_StrartDate = CALENDAR_StrartDate;
+        this.CALENDAR_StartDate = CALENDAR_StartDate;
         this.CALENDAR_EndDate = CALENDAR_EndDate;
         this.CALENDAR_DateCount = CALENDAR_DateCount;
     }
 
+    /*
     public Event(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, int CALENDAR_FixY, int CALENDAR_FixM, int CALENDAR_FixD,
                  int CALENDAR_StartY, int CALENDAR_StartM, int CALENDAR_StartD, int CALENDAR_EndY, int CALENDAR_EndM, int CALENDAR_EndD, int CALENDAR_DateCount) {
         this.CALENDAR_UID = CALENDAR_UID;
@@ -59,13 +60,17 @@ public class Event implements Parcelable{
         this.CALENDAR_EndD = CALENDAR_EndD;
         this.CALENDAR_DateCount = CALENDAR_DateCount;
     }
+    *
+    * */
+
+
 
     protected Event(Parcel in) {
         CALENDAR_UID = in.readString();
         CALENDAR_id = in.readString();
         CALENDAR_Schedule = in.readString();
         CALENDAR_FixDate = (Calendar) in.readSerializable();
-        CALENDAR_StrartDate = (Calendar) in.readSerializable();
+        CALENDAR_StartDate = (Calendar) in.readSerializable();
         CALENDAR_EndDate = (Calendar) in.readSerializable();
         CALENDAR_DateCount = in.readInt();
     }
@@ -76,7 +81,7 @@ public class Event implements Parcelable{
         dest.writeString(CALENDAR_id);
         dest.writeString(CALENDAR_Schedule);
         dest.writeSerializable(CALENDAR_FixDate);
-        dest.writeSerializable(CALENDAR_StrartDate);
+        dest.writeSerializable(CALENDAR_StartDate);
         dest.writeSerializable(CALENDAR_EndDate);
         dest.writeInt(CALENDAR_DateCount);
     }
@@ -142,8 +147,8 @@ public class Event implements Parcelable{
         this.CALENDAR_FixD = CALENDAR_FixD;
     }
 
-    public Calendar getCALENDAR_StrartDate() { return this.CALENDAR_StrartDate; }
-    public void setCALENDAR_StrartDate(Calendar CALENDAR_StrartDate) { this.CALENDAR_StrartDate = CALENDAR_StrartDate; }
+    public Calendar getCALENDAR_StartDate() { return this.CALENDAR_StartDate; }
+    public void setCALENDAR_StartDate(Calendar CALENDAR_StartDate) { this.CALENDAR_StartDate = CALENDAR_StartDate; }
     public int getCALENDAR_StartY() { return this.CALENDAR_StartY; }
     public void setCALENDAR_StartY(int CALENDAR_StartY) { this.CALENDAR_StartY = CALENDAR_StartY; }
     public int getCALENDAR_StartM() { return this.CALENDAR_StartM; }

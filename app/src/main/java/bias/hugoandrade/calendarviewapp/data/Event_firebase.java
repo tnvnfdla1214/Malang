@@ -19,7 +19,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
     private String CALENDAR_id;
     private String CALENDAR_Schedule;
 
-    private Calendar CALENDAR_StrartDate;
+    private Calendar CALENDAR_StartDate;
     private Calendar CALENDAR_EndDate;
     private Calendar CALENDAR_FixDate;
 //    private int Color;
@@ -41,11 +41,11 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
 
     public Event_firebase(){}
 
-    public Event_firebase(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, Calendar CALENDAR_StrartDate, Calendar CALENDAR_EndDate, Calendar CALENDAR_FixDate, int CALENDAR_DateCount) {
+    public Event_firebase(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, Calendar CALENDAR_StartDate, Calendar CALENDAR_EndDate, Calendar CALENDAR_FixDate, int CALENDAR_DateCount) {
         this.CALENDAR_UID = CALENDAR_UID;
         this.CALENDAR_id = CALENDAR_id;
         this.CALENDAR_Schedule = CALENDAR_Schedule;
-        this.CALENDAR_StrartDate = CALENDAR_StrartDate;
+        this.CALENDAR_StartDate = CALENDAR_StartDate;
         this.CALENDAR_EndDate = CALENDAR_EndDate;
         this.CALENDAR_FixDate = CALENDAR_FixDate;
         this.CALENDAR_DateCount = CALENDAR_DateCount;
@@ -96,10 +96,10 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         return this.CALENDAR_Schedule;
     }
 
-    public Calendar getCALENDAR_StrartDate() {
-        return this.CALENDAR_StrartDate;
+    public Calendar getCALENDAR_StartDate() {
+        return this.CALENDAR_StartDate;
     }
-    public void setCALENDAR_StrartDate(Calendar CALENDAR_StrartDate) { this.CALENDAR_StrartDate = CALENDAR_StrartDate; }
+    public void setCALENDAR_StartDate(Calendar CALENDAR_StartDate) { this.CALENDAR_StartDate = CALENDAR_StartDate; }
 
     public Calendar getCALENDAR_EndDate() {
         return this.CALENDAR_EndDate;
@@ -117,7 +117,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         CALENDAR_UID = in.readString();
         CALENDAR_id = in.readString();
         CALENDAR_Schedule = in.readString();
-        CALENDAR_StrartDate = (Calendar) in.readSerializable();
+        CALENDAR_StartDate = (Calendar) in.readSerializable();
         CALENDAR_EndDate = (Calendar) in.readSerializable();
         CALENDAR_FixDate = (Calendar) in.readSerializable();
         CALENDAR_DateCount = in.readInt();
@@ -128,7 +128,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         dest.writeString(CALENDAR_UID);
         dest.writeString(CALENDAR_id);
         dest.writeString(CALENDAR_Schedule);
-        dest.writeSerializable(CALENDAR_StrartDate);
+        dest.writeSerializable(CALENDAR_StartDate);
         dest.writeSerializable(CALENDAR_EndDate);
         dest.writeSerializable(CALENDAR_FixDate);
         dest.writeInt(CALENDAR_DateCount);
@@ -161,9 +161,9 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
 
     @Override
     public int compareTo(Event_firebase s) {
-        if (this.CALENDAR_StrartDate.before(s.getCALENDAR_StrartDate())) {
+        if (this.CALENDAR_StartDate.before(s.getCALENDAR_StartDate())) {
             return -1;
-        } else if (this.CALENDAR_StrartDate.after(s.getCALENDAR_StrartDate())) {
+        } else if (this.CALENDAR_StartDate.after(s.getCALENDAR_StartDate())) {
             return 1;
         }
         return 0;

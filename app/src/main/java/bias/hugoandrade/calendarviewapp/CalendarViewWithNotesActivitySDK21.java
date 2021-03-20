@@ -3,7 +3,6 @@ package bias.hugoandrade.calendarviewapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -186,9 +185,9 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                         Collections.sort(Sorted_Event_FirebaseList);
 
                         for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
-                            Log.d("정은짱짱짱","event_firebaseList22 : " + Sorted_Event_FirebaseList.get(i).getCALENDAR_StrartDate());
+                            Log.d("정은짱짱짱","event_firebaseList22 : " + Sorted_Event_FirebaseList.get(i).getCALENDAR_StartDate());
 
-                            Calendar day = Sorted_Event_FirebaseList.get(i).getCALENDAR_StrartDate();
+                            Calendar day = Sorted_Event_FirebaseList.get(i).getCALENDAR_StartDate();
                             Calendar endday = Sorted_Event_FirebaseList.get(i).getCALENDAR_EndDate();
                             Calendar startday = Sorted_Event_FirebaseList.get(i).getCALENDAR_FixDate();
 
@@ -198,7 +197,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                 Event c_event = new Event(); //초기화
                                 c_event =convert_event(Sorted_Event_FirebaseList.get(i));   //민규가 만든 event_firebase -> evnet 바꾸는 함수
                                 mEventList.add(c_event);
-                                Log.d("오와리다","mEventList 33 : " + c_event.getCALENDAR_StrartDate().get(Calendar.DATE));
+                                Log.d("오와리다","mEventList 33 : " + c_event.getCALENDAR_StartDate().get(Calendar.DATE));
                                 mCalendarView.addCalendarObject(parseCalendarObject(c_event));
                             } else{
                                 int count = 0;
@@ -216,7 +215,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                     Event c_event = new Event(); //초기화
                                     c_event = day_convert_event(Sorted_Event_FirebaseList.get(i),day,startday); //변경된 day를 넣어주는 함수
                                     mEventList.add(c_event);
-                                    Log.d("오와리다","mEventList 44 : " + c_event.getCALENDAR_StrartDate());
+                                    Log.d("오와리다","mEventList 44 : " + c_event.getCALENDAR_StartDate());
                                     mCalendarView.addCalendarObject(parseCalendarObject(c_event));
                                     day.add(Calendar.DATE,1);
                                 }
@@ -318,22 +317,52 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     }
 
     /* 다른 액티비티에서 행동의 결과에 따른*/
-    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CREATE_EVENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                int action = CreateEventActivity.extractActionFromIntent(data);
-                Event event = CreateEventActivity.extractEventFromIntent(data);
+                int action = Create_Schadule.extractActionFromIntent(data);
+                Event event = Create_Schadule.extractEventFromIntent(data);
 
+                Log.d("asdasdasd","event : " + event);
                 switch (action) {
-                    case CreateEventActivity.ACTION_CREATE: {
+                    case Create_Schadule.ACTION_CREATE: {
 //                        mEventList.add(event);
+//                        Log.d("asdasdasd","mEventList : " + mEventList);
 //                        mCalendarView.addCalendarObject(parseCalendarObject(event));
-//                        mCalendarDialog.setEventList(mEventList);
+
+                        Calendar day = event.getCALENDAR_StartDate();
+                        Calendar endday = event.getCALENDAR_EndDate();
+                        Calendar startday = event.getCALENDAR_FixDate();
+                        if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE)) && day.get(Calendar.MONTH) == (endday.get(Calendar.MONTH))){
+                            shape = 0;
+                            mEventList.add(event);
+                            mCalendarView.addCalendarObject(parseCalendarObject(event));
+                        } else{
+                            int count = 0;
+                            while (!day.after(endday)){
+                                if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE))){    //끝에날
+                                    shape = 2;
+                                } else{   //중긴
+                                    if(count == 0){
+                                        shape = 1;
+                                    }else{
+                                        shape = 3;
+                                    }
+                                }
+                                count++;
+                                //event.setCALENDAR_FixDate(startday);
+                                mEventList.add(event);
+                                mCalendarView.addCalendarObject(parseCalendarObject(event));
+                                day.add(Calendar.DATE,1);
+                            }
+                        }
+
+
+                        mCalendarDialog.setEventList(mEventList);
                         break;
                     }
-                    case CreateEventActivity.ACTION_EDIT: {
+                    case Create_Schadule.ACTION_EDIT: {
 //                        Event oldEvent = null;
 //                        for (Event e : mEventList) {
 //                            if (Objects.equals(event.getID(), e.getID())) {
@@ -364,29 +393,28 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
 //                        }
                         break;
                     }
-                    case CreateEventActivity.ACTION_DELETE: {
-                        ArrayList<Event> oldEvent = new ArrayList<>();
-                        for (Event e : mEventList) {
-                            if (Objects.equals(event.getCALENDAR_UID(), e.getCALENDAR_UID())) {
-                                oldEvent.add(e);
-                            }
-                        }
-                        int count = oldEvent.size();
-                        for(int i = 0; i < count ; i++){
-                            mEventList.remove(oldEvent.get(i));
-                            mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(i)));
-                        }
-                        mCalendarDialog.setEventList(mEventList);
-
-                        break;
-                    }
+//                    case CreateEventActivity.ACTION_DELETE: {
+//                        ArrayList<Event> oldEvent = new ArrayList<>();
+//                        for (Event e : mEventList) {
+//                            if (Objects.equals(event.getCALENDAR_UID(), e.getCALENDAR_UID())) {
+//                                oldEvent.add(e);
+//                            }
+//                        }
+//                        int count = oldEvent.size();
+//                        for(int i = 0; i < count ; i++){
+//                            mEventList.remove(oldEvent.get(i));
+//                            mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(i)));
+//                        }
+//                        mCalendarDialog.setEventList(mEventList);
+//
+//                        break;
+//                    }
                 }
             }
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-    * */
 
 
     /* 클릭한 날짜와 이전의 날짜를 비교*/
@@ -406,7 +434,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         return new CalendarView.CalendarObject(
                 event.getCALENDAR_id(),
                 event.getCALENDAR_FixDate(),
-                event.getCALENDAR_StrartDate(),
+                event.getCALENDAR_StartDate(),
                 event.getCALENDAR_EndDate(),
                 event.getCALENDAR_UID(),
                 shape,
@@ -440,7 +468,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     //코드상에 사용하는 event로 변환하는 함수(Event_firebase -> Event)
     Event convert_event(Event_firebase event_firebase){
         Event C_event = new Event(event_firebase.getCALENDAR_UID(),event_firebase.getCALENDAR_id(),event_firebase.getCALENDAR_Schedule(),
-                event_firebase.getCALENDAR_StrartDate(),event_firebase.getCALENDAR_StrartDate(),event_firebase.getCALENDAR_EndDate(),event_firebase.getCALENDAR_DateCount());
+                event_firebase.getCALENDAR_StartDate(),event_firebase.getCALENDAR_StartDate(),event_firebase.getCALENDAR_EndDate(),event_firebase.getCALENDAR_DateCount());
         return C_event;
     }
 
