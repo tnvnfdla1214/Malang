@@ -50,7 +50,7 @@ import java.security.NoSuchAlgorithmException;
 import bias.hugoandrade.calendarviewapp.R;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class    LoginActivity extends AppCompatActivity {
     private SessionCallback sessionCallback;
 
     private FirebaseAuth Firebaseauth =null;
@@ -165,38 +165,10 @@ public class LoginActivity extends AppCompatActivity {
                 public void onSuccess(MeV2Response result) {
                     UserAccount kakaoAccount = result.getKakaoAccount();
                     if (kakaoAccount != null) {
-
-                        // 이메일
-                        String email = kakaoAccount.getEmail();
-
-                        if (email != null) {
-                            Log.d("석ㄱ","000");
-                            FirebaseAuthkakaologin(result.getKakaoAccount().getEmail(), KakaoPassword);
-                            Log.d("석ㄱ","00000");
-                            Log.d("석ㄱ", "KAKAO_API: " + email);
-
-                        } else if (kakaoAccount.emailNeedsAgreement() == OptionalBoolean.TRUE) {
-                            // 동의 요청 후 이메일 획득 가능
-                            // 단, 선택 동의로 설정되어 있다면 서비스 이용 시나리오 상에서 반드시 필요한 경우에만 요청해야 합니다.
-
-                        } else {
-                            // 이메일 획득 불가
-                        }
-
-                        // 프로필
-                        Profile profile = kakaoAccount.getProfile();
-
-                        if (profile != null) {
-                            Log.d("KAKAO_API", "nickname: " + profile.getNickname());
-                            Log.d("KAKAO_API", "profile image: " + profile.getProfileImageUrl());
-                            Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
-
-                        } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
-                            // 동의 요청 후 프로필 정보 획득 가능
-
-                        } else {
-                            // 프로필 획득 불가
-                        }
+                        FirebaseAuthkakaologin(result.getKakaoAccount().getEmail(), KakaoPassword);
+                        Intent intent = new Intent(getApplicationContext(),MemberInitActivity.class);
+                        intent.putExtra("getgender",result.getKakaoAccount().getGender().toString());
+                        intent.putExtra("getbithday",result.getKakaoAccount().getBirthday());
                     }
                 }
             });
@@ -211,18 +183,13 @@ public class LoginActivity extends AppCompatActivity {
 
     //카카오 로그인
     public void FirebaseAuthkakaologin(final String email, String password) {
-        Log.d("석ㄱ","0");
-        Log.d("emailemail","email"+email);
         Firebaseauth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d("석ㄱ","1");
                             currentUser = Firebaseauth.getCurrentUser();
-                            Log.d("석ㄱ","2");
                             updateUI(currentUser);
-                            Log.d("석ㄱ","3");
                         } else {
                             String Email = email;
                             FirebaseAuthkakaosignup(Email, KakaoPassword);

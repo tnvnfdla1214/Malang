@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pager_bg"
+    android:background="@color/M_background"
     xmlns:card_view="http://schemas.android.com/tools">
 
     <include
@@ -21,7 +21,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -32,151 +31,155 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:layout_marginBottom="30dp">
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="25dp"
+                        android:text="Molong"
+                        android:textStyle="bold"
+                        android:textColor="@color/M_Malang"
+                        android:fontFamily="@font/binggraesamanco"
+                        android:shadowRadius="10.0"
+                        android:shadowDx="10.0"
+                        android:shadowDy="10.0"
+                        android:shadowColor="@color/M_Malang_shadow"
+                        />
+                </LinearLayout>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:cardBackgroundColor="@color/M_background"
                     >
 
                     <ImageView
                         android:id="@+id/Users_Profile_ImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/non_userprofile_v2" />
+                        android:src="@drawable/profile_image" />
                 </androidx.cardview.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="50dp">
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
-                            android:textSize="17dp"
-                            android:text="이름"
-                            android:textStyle="bold"
-                            />
-                    </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/Name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:hint=""
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="17dp"
+                            android:layout_marginLeft="20dp"
+                            android:textSize="25dp"
                             android:text="닉네임"
                             android:textStyle="bold"
+                            android:textColor="@color/M_Malang"
+                            android:fontFamily="@font/binggraesamanco"
                             />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:text="(선택)"
-                            android:paddingLeft="10dp"
+                        <EditText
+                            android:id="@+id/Nickname"
+                            android:layout_width="250dp"
+                            android:layout_height="30dp"
+                            android:inputType="textPersonName"
+                            android:hint="  임민규"
+                            android:background="@drawable/profile_edittext"
+                            android:fontFamily="@font/binggraesamanco"
+                            android:textSize="25dp"
                             />
                     </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="25dp">
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="25dp"
+                        android:text="이름"
+                        android:paddingLeft="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/M_Malang"
+                        android:fontFamily="@font/binggraesamanco"
+                        />
                     <EditText
-                        android:id="@+id/Nickname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
+                        android:id="@+id/Name"
+                        android:layout_width="250dp"
+                        android:layout_height="30dp"
                         android:inputType="textPersonName"
-                        android:hint=""
+                        android:hint="  주짓수일짱"
+                        android:background="@drawable/profile_edittext"
+                        android:fontFamily="@font/binggraesamanco"
+                        android:textSize="25dp"
                         />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10dp"
-                        android:text="닉네임은 최대 20자까지 입력 가능합니다."
-                        android:paddingLeft="10dp"
-                        />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingTop="4dp"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="17dp"
-                            android:text="생년월일"
-                            android:textStyle="bold"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:text="(선택)"
-                            android:paddingLeft="10dp"
-                            />
-                    </LinearLayout>
-                    <DatePicker
-                        android:id="@+id/BirthDay_Picker"
-                        android:layout_width="match_parent"
-                        android:layout_height="90dp"
-                        android:datePickerMode="spinner"
-                        android:calendarViewShown="false"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingTop="4dp"
-                    >
-
+                    android:orientation="horizontal"
+                    android:layout_marginTop="25dp">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:textSize="17dp"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="25dp"
                         android:text="성별"
                         android:textStyle="bold"
+                        android:paddingLeft="20dp"
+                        android:textColor="@color/M_Malang"
+                        android:fontFamily="@font/binggraesamanco"
                         />
-
                     <Spinner
                         android:id="@+id/Gender"
                         android:layout_centerHorizontal="true"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/M_Malang"/>
                 </LinearLayout>
 
-
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:textSize="25dp"
+                            android:text="생일"
+                            android:textStyle="bold"
+                            android:paddingLeft="20dp"
+                            android:textColor="@color/M_Malang"
+                            android:fontFamily="@font/binggraesamanco"
+                            />
+                        <DatePicker
+                            android:id="@+id/BirthDay_Picker"
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp"
+                            android:datePickerMode="spinner"
+                            android:calendarViewShown="false"/>
+                    </LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-
-
-
 </RelativeLayout>

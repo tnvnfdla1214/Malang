@@ -6,7 +6,12 @@
     <color name="Mint">#9FE1E7</color>
     <color name="Orange">#FFC107</color>
     <color name="Pink">#E91E63</color>
-    <color name="background">#4f000000</color>
+    <color name="black">#4f000000</color>
     <color name= "white">#ffffff</color>
     <color name="pager_bg">#ffffff</color>
+
+    <color name="M_background">#f3f1f0</color>
+    <color name="M_Malang">#c49b7c</color>
+    <color name="M_Malang_shadow">#f0e2d8</color>
+    <color name="M_Spinner_background">#dfcec7</color>
 </resources>
