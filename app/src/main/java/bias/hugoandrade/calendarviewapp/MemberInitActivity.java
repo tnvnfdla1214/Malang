@@ -65,9 +65,10 @@ public class MemberInitActivity extends AppCompatActivity {     // 1. 클래스 
         setContentView(R.layout.activity_user_init);
         //setToolbarTitle("");
         Intent intent = getIntent(); /*데이터 수신*/
+        String getgender = intent.getStringExtra("getgender");
+        String getbithday = intent.getStringExtra("getbithday");
 
-        String getgender = intent.getExtras().getString("getgender");
-        String getbithday = intent.getExtras().getString("getbithday");
+
 
         // 현재 사용자를 파이어베이스에서 받아옴
         CurrentUser= FirebaseAuth.getInstance().getCurrentUser();
