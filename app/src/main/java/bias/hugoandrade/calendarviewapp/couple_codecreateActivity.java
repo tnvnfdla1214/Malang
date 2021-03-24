@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -43,6 +44,7 @@ public class couple_codecreateActivity extends AppCompatActivity {
     private int COUPLE_StartD=-1;
     String couple_UId;
     TextView cople_uid_text;
+    DocumentReference docRef;
 
 
     @Override
@@ -66,26 +68,26 @@ public class couple_codecreateActivity extends AppCompatActivity {
         COUPLE_StartY = intent.getIntExtra("COUPLE_StartY",-1);
         COUPLE_StartM = intent.getIntExtra("COUPLE_StartM",-1);
         COUPLE_StartD = intent.getIntExtra("COUPLE_StartD",-1);
+        couple_UId = intent.getStringExtra("couple_UId");
 
 
-
-
-        firebaseFirestore.collection("COUPLE")
-                .whereNotEqualTo("COUPLE_GuestUID", "0")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        Intent intent = new Intent(getApplicationContext(), couple_finishActivity.class);
-                        intent.putExtra("user",user);
-                        intent.putExtra("EXTRA_MESSAGE",1);
-                        String O_Uid = couple.getCOUPLE_HostUID();
-                        intent.putExtra("O_Uid",O_Uid);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-
+        docRef = firebaseFirestore.collection("COUPLE").document(couple_UId);
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Intent intent = new Intent(getApplicationContext(), couple_finishActivity.class);
+                    intent.putExtra("user",user);
+                    intent.putExtra("EXTRA_MESSAGE",1);
+                    String O_Uid = couple.getCOUPLE_HostUID();
+                    intent.putExtra("O_Uid",O_Uid);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+            }
+        });
 
     }
 

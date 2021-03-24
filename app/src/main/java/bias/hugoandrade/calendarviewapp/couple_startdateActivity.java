@@ -86,6 +86,7 @@ public class couple_startdateActivity  extends AppCompatActivity {
 
                     Intent intent = new Intent(getApplicationContext(), couple_codecreateActivity.class);
                     intent.putExtra("user",user);
+                    intent.putExtra("couple_UId",couple_UId);
                     intent.putExtra("COUPLE_StartY",COUPLE_StartY);
                     intent.putExtra("COUPLE_StartM",COUPLE_StartM);
                     intent.putExtra("COUPLE_StartD",COUPLE_StartD);
