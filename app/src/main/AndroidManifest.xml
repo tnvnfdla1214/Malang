@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -62,6 +61,28 @@
 
         <activity
             android:name="bias.hugoandrade.calendarviewapp.SelectDateAndTimeActivity"
+            android:theme="@style/AppTheme.NoActionBar.Transition">
+        </activity>
+
+        <activity
+            android:name="bias.hugoandrade.calendarviewapp.couple_askActivity"
+            android:theme="@style/AppTheme.NoActionBar.Transition">
+        </activity>
+
+        <activity
+            android:name="bias.hugoandrade.calendarviewapp.couple_editcodeActivity"
+            android:theme="@style/AppTheme.NoActionBar.Transition">
+        </activity>
+        <activity
+            android:name="bias.hugoandrade.calendarviewapp.couple_startdateActivity"
+            android:theme="@style/AppTheme.NoActionBar.Transition">
+        </activity>
+        <activity
+            android:name="bias.hugoandrade.calendarviewapp.couple_finishActivity"
+            android:theme="@style/AppTheme.NoActionBar.Transition">
+        </activity>
+        <activity
+            android:name="bias.hugoandrade.calendarviewapp.couple_codecreateActivity"
             android:theme="@style/AppTheme.NoActionBar.Transition">
         </activity>
 

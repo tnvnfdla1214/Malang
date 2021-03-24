@@ -65,6 +65,8 @@ public class    LoginActivity extends AppCompatActivity {
     String KakaoPassword = "1234567890";                                    //카카오 패스워드
 
     private static final int RC_SIGN_IN = 9001;
+    String getgender = null;
+    String getbithday = null;
 
 
 
@@ -160,18 +162,25 @@ public class    LoginActivity extends AppCompatActivity {
                 public void onSessionClosed(ErrorResult errorResult) { //로그인 도중 세션이 비정상적인 이유로 닫혔을때
                     Toast.makeText(getApplicationContext(),"세션이 닫혔습니다. 다시 시도해 주세요: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
                 }
+                String getgender = null;
+                String getbithday = null;
+
 
                 @Override
                 public void onSuccess(MeV2Response result) {
                     UserAccount kakaoAccount = result.getKakaoAccount();
                     if (kakaoAccount != null) {
-                        FirebaseAuthkakaologin(result.getKakaoAccount().getEmail(), KakaoPassword);
                         Intent intent = new Intent(getApplicationContext(),MemberInitActivity.class);
                         intent.putExtra("getgender",result.getKakaoAccount().getGender().toString());
                         intent.putExtra("getbithday",result.getKakaoAccount().getBirthday());
+                        getgender = result.getKakaoAccount().getGender().toString();
+                        getbithday = result.getKakaoAccount().getBirthday();
+                        FirebaseAuthkakaologin(result.getKakaoAccount().getEmail(), KakaoPassword,getgender,getbithday);
                     }
                 }
+
             });
+
         }
 
         @Override
@@ -182,17 +191,17 @@ public class    LoginActivity extends AppCompatActivity {
 
 
     //카카오 로그인
-    public void FirebaseAuthkakaologin(final String email, String password) {
+    public void FirebaseAuthkakaologin(final String email, String password,String getgender,String getbithday) {
         Firebaseauth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             currentUser = Firebaseauth.getCurrentUser();
-                            updateUI(currentUser);
+                            updateUI(currentUser,getgender,getbithday);
                         } else {
                             String Email = email;
-                            FirebaseAuthkakaosignup(Email, KakaoPassword);
+                            FirebaseAuthkakaosignup(Email, KakaoPassword,getgender,getbithday);
                         }
                     }
                 });
@@ -200,7 +209,7 @@ public class    LoginActivity extends AppCompatActivity {
     }
 
     //파이어베이스 카카오 가입 함수
-    public void FirebaseAuthkakaosignup(String email, String password){
+    public void FirebaseAuthkakaosignup(String email, String password,String getgender,String getbithday){
         Firebaseauth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -210,7 +219,7 @@ public class    LoginActivity extends AppCompatActivity {
                             Log.d("태그","카카오 로그인(가입) 실패");
                         }else{
                             currentUser = Firebaseauth.getCurrentUser();
-                            updateUI(currentUser);
+                            updateUI(currentUser,getgender,getbithday);
                         }
                     }
                 });
@@ -269,10 +278,10 @@ public class    LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             //추가 -가입할때 uid,id,userm,usermsg 만들기
                             currentUser = Firebaseauth.getCurrentUser();
-                            updateUI(currentUser);
+                            updateUI(currentUser,getgender,getbithday);
                         } else {
                             // 로그인이 실패하면 사용자에게 메시지를 표시하기
-                            updateUI(null);
+                            updateUI(null,getgender,getbithday);
                             //ChatUtil.showMessage(getApplicationContext(), task.getException().getMessage());
                         }
                     }
@@ -280,7 +289,7 @@ public class    LoginActivity extends AppCompatActivity {
     }
 
 //    //이동 함수 + token 확인
-    private void updateUI(final FirebaseUser Curruntuser_uid) { //update ui code here
+    private void updateUI(final FirebaseUser Curruntuser_uid,String getgender,String getbithday) { //update ui code here
 //        if (Curruntuser_uid != null) {
 //
 //            final String CurrentUid =Curruntuser_uid.getUid();
@@ -325,6 +334,8 @@ public class    LoginActivity extends AppCompatActivity {
 //                }
 //            });
             Intent intent = new Intent(this, MemberInitActivity.class);
+            intent.putExtra("getgender",getgender);
+            intent.putExtra("getbithday",getbithday);
             startActivity(intent);
             finish();
 //        }

@@ -33,9 +33,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 import bias.hugoandrade.calendarviewapp.data.USER;
 
@@ -59,16 +56,24 @@ public class MemberInitActivity extends AppCompatActivity {     // 1. 클래스 
     private FirebaseUser CurrentUser;                       //파이어베이스 데이터 상의 현재 사용자
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_init);
         //setToolbarTitle("");
         Intent intent = getIntent(); /*데이터 수신*/
-        String getgender = intent.getStringExtra("getgender");
-        String getbithday = intent.getStringExtra("getbithday");
-
-
+        String getgender = null;
+        getgender = intent.getStringExtra("getgender");
+        String getbithday = null;
+        getbithday = intent.getStringExtra("getbithday");
+        int b_M = 0;
+        int b_D = 1;
+        if(getbithday != null){
+            int birthday = Integer.parseInt(getbithday);
+            b_M = (birthday/100)-1;
+            b_D = birthday%100;
+        }
 
         // 현재 사용자를 파이어베이스에서 받아옴
         CurrentUser= FirebaseAuth.getInstance().getCurrentUser();
@@ -84,11 +89,11 @@ public class MemberInitActivity extends AppCompatActivity {     // 1. 클래스 
         Users_Info_Send_Button.setOnClickListener(onClickListener);
 
         // 닉네임을 이메일 @앞 부분으로 HINT로 임의지정
-        Nickname_EditText.setHint(extractIDFromEmail(CurrentUser.getEmail()));
+        Nickname_EditText.setHint(" "+extractIDFromEmail(CurrentUser.getEmail()));
 
         // DatePicker를 이용해 생일 지정, 받아서 String 값으로 저장함
         DatePicker BirthDay_Picker = findViewById(R.id.BirthDay_Picker);
-        BirthDay_Picker.init(2021, 0, 1, new DatePicker.OnDateChangedListener() {
+        BirthDay_Picker.init(2021, b_M, b_D, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 //BirthDay = year + "/" + (monthOfYear+1) + "/" + dayOfMonth;
@@ -98,11 +103,16 @@ public class MemberInitActivity extends AppCompatActivity {     // 1. 클래스 
             }
         });
 
-        // Spinner를 이용해 대학교 자정
+        // Spinner를 이용해 남,녀 자정
         Spinner Gender = findViewById(R.id.Gender);
         ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.Gender, android.R.layout.simple_spinner_dropdown_item);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Gender.setAdapter(monthAdapter);
+        if(getgender.equals("MALE")){
+            Gender.setSelection(1);
+        }else{
+            Gender.setSelection(0);
+        }
         // 해당 listener로 스피너의 position으로 대학교를 결정
         Gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -241,7 +251,7 @@ public class MemberInitActivity extends AppCompatActivity {     // 1. 클래스 
                     @Override
                     public void onSuccess(Void aVoid) {
                         Util.showToast(MemberInitActivity.this, "회원정보 등록을 성공하였습니다.");
-                        Intent intent = new Intent(getApplicationContext(), COUPLEUid_check.class);
+                        Intent intent = new Intent(getApplicationContext(), couple_askActivity.class);
                         //intent.putExtra("MOVE_FROM_LOGIN_REQUEST_CODE", MOVE_FROM_LOGIN_REQUEST_CODE);
                         startActivity(intent);
                         finish();

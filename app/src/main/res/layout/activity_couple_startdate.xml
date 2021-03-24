@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/M_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/binggraesamanco"
+            android:text="연인과 처음 만난 날을"
+            android:textColor="#C59B7C"
+            android:textSize="35dp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/binggraesamanco"
+            android:text="입력해주세요!"
+            android:textColor="#C59B7C"
+            android:textSize="35dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="50dp"/>
+
+        <DatePicker
+            android:id="@+id/StartDay_Picker"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"/>
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="다음"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/binggraesamanco"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="150dp"
+            android:background="@drawable/couple_check_button"/>
+
+        <Button
+            android:id="@+id/prebtn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="다음"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/binggraesamanco"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/couple_check_button"/>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:srcCompat="@drawable/malang_logo"
+            android:layout_marginTop="20dp"/>
+
+
+    </LinearLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

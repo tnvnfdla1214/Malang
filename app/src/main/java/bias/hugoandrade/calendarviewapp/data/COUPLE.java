@@ -21,8 +21,13 @@ public class COUPLE implements Serializable {
 
     public COUPLE(){}
 
-    public COUPLE( String COUPLE_UID,int COUPLE_M_BirthY, int COUPLE_M_BirthM, int COUPLE_M_BirthD,int COUPLE_G_BirthY, int COUPLE_G_BirthM, int COUPLE_G_BirthD, String COUPLE_HostUID, String COUPLE_GuestUID){
+    public COUPLE( String COUPLE_UID,int COUPLE_StartY , int COUPLE_StartM, int COUPLE_StartD,int COUPLE_M_BirthY, int COUPLE_M_BirthM, int COUPLE_M_BirthD,int COUPLE_G_BirthY, int COUPLE_G_BirthM, int COUPLE_G_BirthD, String COUPLE_HostUID, String COUPLE_GuestUID){
         this.COUPLE_UID = COUPLE_UID;
+
+        this.COUPLE_StartY = COUPLE_StartY;
+        this.COUPLE_StartM = COUPLE_StartM;
+        this.COUPLE_StartD = COUPLE_StartD;
+
         this.COUPLE_M_BirthY = COUPLE_M_BirthY;
         this.COUPLE_M_BirthM = COUPLE_M_BirthM;
         this.COUPLE_M_BirthD = COUPLE_M_BirthD;

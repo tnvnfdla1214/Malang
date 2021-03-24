@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/M_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/binggraesamanco"
+            android:text="커플 코드를 입력해주세요!"
+            android:textColor="#C59B7C"
+            android:textSize="35dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="50dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="40dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/binggraesamanco"
+                android:text="우리의 커플 코드"
+                android:textColor="#C59B7C"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/Couple_Uid_EditText"
+                android:layout_width="280dp"
+                android:layout_height="30dp"
+                android:textColor="#252525"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:textSize="25dp"
+                style="@style/createEventItemTextView"
+                android:fontFamily="@font/binggraesamanco"
+                android:background="@drawable/profile_edittext"/>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="다음"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/binggraesamanco"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="150dp"
+            android:background="@drawable/couple_check_button"/>
+        <Button
+            android:id="@+id/prev_Btn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="이전"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/binggraesamanco"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/couple_check_button"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:srcCompat="@drawable/malang_logo"
+            android:layout_marginTop="20dp"/>
+
+
+    </LinearLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

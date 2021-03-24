@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class Create_Schadule extends AppCompatActivity {
     private InputMethodManager imm;
     private int mColor;
     private String Schadule;
+
 
     private final static SimpleDateFormat dateFormat
             = new SimpleDateFormat("EEEE, MM월dd일    HH:mm", Locale.getDefault());

@@ -6,23 +6,32 @@
     android:background="@color/M_background"
     xmlns:card_view="http://schemas.android.com/tools">
 
-    <include
-        layout="@layout/toolbar_memberinit"
-        android:id="@+id/toolbar"
+    <LinearLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="right">
 
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
+        <Button
+            android:id="@+id/Users_Info_Send_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="확인"
+            android:layout_gravity="right"
+            android:textColor="@color/M_Malang"
+            android:shadowRadius="?attr/colorPrimary"
+            android:fontFamily="@font/binggraesamanco"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:layout_below="@id/top">
 
 
             <LinearLayout
@@ -53,10 +62,9 @@
                         />
                 </LinearLayout>
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:cardBackgroundColor="@color/M_background"
                     >
 
                     <ImageView
@@ -66,7 +74,7 @@
                         android:layout_height="100dp"
                         android:adjustViewBounds="true"
                         android:src="@drawable/profile_image" />
-                </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -85,10 +93,10 @@
                             />
                         <EditText
                             android:id="@+id/Nickname"
-                            android:layout_width="250dp"
+                            android:layout_width="220dp"
                             android:layout_height="30dp"
                             android:inputType="textPersonName"
-                            android:hint="  임민규"
+                            android:hint=" 주짓수일짱"
                             android:background="@drawable/profile_edittext"
                             android:fontFamily="@font/binggraesamanco"
                             android:textSize="25dp"
@@ -113,10 +121,10 @@
                         />
                     <EditText
                         android:id="@+id/Name"
-                        android:layout_width="250dp"
+                        android:layout_width="220dp"
                         android:layout_height="30dp"
                         android:inputType="textPersonName"
-                        android:hint="  주짓수일짱"
+                        android:hint=" 임민규"
                         android:background="@drawable/profile_edittext"
                         android:fontFamily="@font/binggraesamanco"
                         android:textSize="25dp"
@@ -178,8 +186,19 @@
                             android:calendarViewShown="false"/>
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="30dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:srcCompat="@drawable/malang_logo" />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 </RelativeLayout>

@@ -10,7 +10,7 @@
     <color name= "white">#ffffff</color>
     <color name="pager_bg">#ffffff</color>
 
-    <color name="M_background">#f3f1f0</color>
+    <color name="M_background">#f3edea</color>
     <color name="M_Malang">#c49b7c</color>
     <color name="M_Malang_shadow">#f0e2d8</color>
     <color name="M_Spinner_background">#dfcec7</color>
