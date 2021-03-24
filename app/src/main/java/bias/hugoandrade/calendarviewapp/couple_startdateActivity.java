@@ -7,10 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import bias.hugoandrade.calendarviewapp.data.COUPLE;
 import bias.hugoandrade.calendarviewapp.data.USER;
 
 public class couple_startdateActivity  extends AppCompatActivity {
@@ -22,6 +27,10 @@ public class couple_startdateActivity  extends AppCompatActivity {
     private int COUPLE_StartD;
 
     Button nextBtn,prebtn;
+
+    String couple_UId;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    COUPLE couple =null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +62,28 @@ public class couple_startdateActivity  extends AppCompatActivity {
             switch (v.getId()) {
 
                 case R.id.nextBtn:
+
+                    couple_UId = firebaseFirestore.collection("COUPLE").document().getId();
+                    final DocumentReference documentReference =firebaseFirestore.collection("COUPLE").document(couple_UId);
+                    if(user.getUSER_Gender()==0){ //여자
+                        couple = new COUPLE(
+                                couple_UId, COUPLE_StartY, COUPLE_StartM, COUPLE_StartD,
+                                0, 0, 0,
+                                user.getUSER_BirthY(), user.getUSER_BirthM(), user.getUSER_BirthD(),
+                                user.getUSER_UID(), "0"
+                        );
+                    }
+                    else{ //남자
+                        couple = new COUPLE(
+                                couple_UId, COUPLE_StartY, COUPLE_StartM, COUPLE_StartD,
+                                user.getUSER_BirthY(), user.getUSER_BirthM(), user.getUSER_BirthD(),
+                                0, 0, 0,
+                                user.getUSER_UID(), "0"
+                        );
+                    }
+                    storeUpload(documentReference, couple);
+
+
                     Intent intent = new Intent(getApplicationContext(), couple_codecreateActivity.class);
                     intent.putExtra("user",user);
                     intent.putExtra("COUPLE_StartY",COUPLE_StartY);
@@ -68,4 +99,18 @@ public class couple_startdateActivity  extends AppCompatActivity {
             }
         }
     };
+
+    /*/*등록 함수*/
+    private void storeUpload(DocumentReference documentReference, final COUPLE couple) {
+        documentReference.set(couple.getCoupleInfo())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
 }

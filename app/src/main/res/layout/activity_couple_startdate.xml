@@ -55,7 +55,7 @@
             android:id="@+id/prebtn"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:text="다음"
+            android:text="이전"
             android:textSize="30dp"
             android:textColor="@color/white"
             android:fontFamily="@font/binggraesamanco"
