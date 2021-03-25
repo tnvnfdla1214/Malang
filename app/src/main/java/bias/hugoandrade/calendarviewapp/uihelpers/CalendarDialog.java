@@ -101,7 +101,16 @@ public class CalendarDialog {
         mEventList = eventList;
         mViewPagerAdapter.notifyDataSetChanged();
     }
-
+    public void addEventList(List<Event> eventList,Event event) {
+        eventList.add(event);
+        mEventList = eventList;
+        mViewPagerAdapter.notifyDataSetChanged();
+    }
+    public void deleteEventList(List<Event> eventList,Event event) {
+        eventList.remove(event);
+        mEventList = eventList;
+        mViewPagerAdapter.notifyDataSetChanged();
+    }
     void setOnCalendarDialogListener(OnCalendarDialogListener listener) {
         mListener = listener;
     }
@@ -343,7 +352,7 @@ public class CalendarDialog {
     private class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdapter.ViewHolder> implements ItemTouchHelperListener {
 
         private final List<Event> mCalendarEvents;
-        private int pos = 0;
+        private int pos;
 
         CalendarEventAdapter(List<Event> events) {
             mCalendarEvents = events;
@@ -422,7 +431,7 @@ public class CalendarDialog {
                         // ClipData, and set its MIME type entry to "text/plain"
                         dragData = new ClipData(
                                 (CharSequence) view.getTag(),
-                                new String[] { eventt.getCALENDAR_Schedule(), String.valueOf(eventt.getCALENDAR_DateCount()) },
+                                new String[] { eventt.getCALENDAR_Schedule(), String.valueOf(eventt.getCALENDAR_DateCount()), eventt.getCALENDAR_UID() },
                                 item);
 
                         // Instantiates the drag shadow builder.
@@ -431,13 +440,13 @@ public class CalendarDialog {
 
 
                         listener = new DragStartHelper.OnDragStartListener() {
-                                    @Override
-                                    public boolean onDragStart(View v, DragStartHelper helper) {
-                                        int flags = View.DRAG_FLAG_GLOBAL | View.DRAG_FLAG_GLOBAL_URI_READ;
-                                        Log.d("끼륙륙","CalendarDialog 438번째 줄 : 드래그 나감" );
-                                        return v.startDragAndDrop(dragData, myShadow, null, flags);
-                                    }
-                                };
+                            @Override
+                            public boolean onDragStart(View v, DragStartHelper helper) {
+                                int flags = View.DRAG_FLAG_GLOBAL | View.DRAG_FLAG_GLOBAL_URI_READ;
+                                Log.d("끼륙륙","CalendarDialog 438번째 줄 : 드래그 나감" );
+                                return v.startDragAndDrop(dragData, myShadow, null, flags);
+                            }
+                        };
 
                         view.setOnDragListener(new View.OnDragListener() {
                             @Override

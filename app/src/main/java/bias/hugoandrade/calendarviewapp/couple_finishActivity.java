@@ -41,8 +41,8 @@ public class couple_finishActivity extends AppCompatActivity {
         Intent intent = getIntent();
         user = (USER) intent.getSerializableExtra("user");
         EXTRA_MESSAGE = intent.getIntExtra("EXTRA_MESSAGE",-1);
-        O_Uid = intent.getStringExtra("O_Uid");
-        getUserModel(O_Uid);
+//        O_Uid = intent.getStringExtra("O_Uid");
+//        getUserModel(O_Uid);
 
 
 

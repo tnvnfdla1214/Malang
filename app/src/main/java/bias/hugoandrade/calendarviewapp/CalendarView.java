@@ -45,8 +45,15 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import bias.hugoandrade.calendarviewapp.R;
 
+import bias.hugoandrade.calendarviewapp.data.Event;
+import bias.hugoandrade.calendarviewapp.data.Event_firebase;
 import bias.hugoandrade.calendarviewapp.helpers.FrameLinearLayout;
 import bias.hugoandrade.calendarviewapp.helpers.SelectedTextView;
 import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
@@ -208,6 +215,11 @@ public class CalendarView extends FrameLayout {
                 a.getColor(R.styleable.CalendarView_selected_day_background_color, Color.TRANSPARENT));
         mAttributes.put(Attr.selectedDayBorderColor,
                 a.getColor(R.styleable.CalendarView_selected_day_border_color, colorPrimary));
+
+
+        mAttributes.put(Attr.dragselectedDayBorderColor,
+                a.getColor(R.styleable.CalendarView_selected_day_background_color, Color.GRAY));
+
 
         mAttributes.put(Attr.dayOffset,
                 a.getInt(R.styleable.CalendarView_offset_day, Calendar.SUNDAY));
@@ -913,29 +925,95 @@ public class CalendarView extends FrameLayout {
                     schedule.animate().rotationBy(180f).setDuration(10).start();
 
  */
+
+
+
+
+
+
                 container.setOnDragListener(new View.OnDragListener() {
                     @Override
                     public boolean onDrag(View view, DragEvent dragEvent) {
+
                         switch (dragEvent.getAction()) {
                             case DragEvent.ACTION_DROP:
-                                final YMDCalendar previousDate = mSelectedDate.clone();
-                                ClipData.Item imageItem = dragEvent.getClipData().getItemAt(0);
-                                Log.d("끼륙륙","CalendarView 923번째 줄 손가락이 위치해 있는 날짜 : day.year + day.month + day.day = " + day.year + "." + day.month + "." +day.day);
-                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(0));
-                                Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipDescription().getMimeType(1));
-                                Log.d("asdasdf","viewcount : " + dragEvent.getClipDescription().getMimeType(1));
-                                //Log.d("끼륙륙","2222222223333333333333333 : " + dragEvent.getClipData().getItemAt(1));
+
+
+
+//                                Calendar cal= YMDCalendar.toCalendar(new YMDCalendar(day.day+15,day.month,day.year));
+//                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+//                                final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK");
+//                                final DocumentReference Gender_Docu = Calendar_Docu.collection("CALENDAR_MAN").document("202103");
+//                                final DocumentReference documentReference =Gender_Docu.collection("202103").document(dragEvent.getClipDescription().getMimeType(2));
+//
+//                                int day_count = !dragEvent.getClipDescription().getMimeType(1).equals("") ? Integer.parseInt(dragEvent.getClipDescription().getMimeType(1))-1 : 0;
+//                                Calendar startDate = YMDCalendar.toCalendar(new YMDCalendar(day.day+day_count,day.month,day.year));
+//
+//                                String id = generateID();
+//                                Event_firebase EventFirebase = new Event_firebase(
+//                                        dragEvent.getClipDescription().getMimeType(2),
+//                                        id,
+//                                        dragEvent.getClipDescription().getMimeType(0),
+//                                        day.year,
+//                                        day.month,
+//                                        day.day,
+//                                        startDate.get(Calendar.YEAR),
+//                                        startDate.get(Calendar.MONTH),
+//                                        startDate.get(Calendar.DATE),
+//                                        day.year,
+//                                        day.month,
+//                                        day.day,
+//                                        Integer.parseInt(dragEvent.getClipDescription().getMimeType(1))
+//                                );
+//
+//                                Event mOriginalEventFirebase = new Event(
+//                                        dragEvent.getClipDescription().getMimeType(2),
+//                                        id,
+//                                        dragEvent.getClipDescription().getMimeType(0),
+//                                        YMDCalendar.toCalendar(new YMDCalendar(day.day,day.month,day.year)),
+//                                        YMDCalendar.toCalendar(new YMDCalendar(day.day,day.month,day.year)),
+//                                        YMDCalendar.toCalendar(new YMDCalendar(startDate.get(Calendar.DATE),startDate.get(Calendar.MONTH),startDate.get(Calendar.YEAR))),
+//                                        Integer.parseInt(dragEvent.getClipDescription().getMimeType(1))
+//                                );
+//
+//                                storeUpload(documentReference, EventFirebase);
 
                                 runListener(dragEvent.getClipDescription().getMimeType(0),
                                         Integer.parseInt(dragEvent.getClipDescription().getMimeType(1)),
-                                        YMDCalendar.toCalendar(day));
+                                        YMDCalendar.toCalendar(day), dragEvent.getClipDescription().getMimeType(2));
+
+
+                                return true;
+                            case DragEvent.ACTION_DRAG_ENTERED:
+                                int count = Integer.parseInt(dragEvent.getClipDescription().getMimeType(1));
+                                if(count > 0){
+                                    for(int k=0;k<count;k++){
+                                        final LinearLayout Schedule = viewCalendarList.get(position+k).findViewById(R.id.schedule);
+                                        Schedule.setBackgroundResource(R.color.M_Malang_shadow);
+                                    }
+                                }
+                                return true;
+
+                            case DragEvent.ACTION_DRAG_LOCATION:
+
+                                // Ignore the event
+                                return true;
+
+                            case DragEvent.ACTION_DRAG_EXITED:
+                                int countt = Integer.parseInt(dragEvent.getClipDescription().getMimeType(1));
+                                if(countt > 0){
+                                    for(int k=0;k<countt;k++){
+                                        final LinearLayout Schedule = viewCalendarList.get(position+k).findViewById(R.id.schedule);
+                                        Schedule.setBackgroundResource(R.color.white);
+                                    }
+                                }
                                 return true;
                         }
                         return true;
                     }
-                    private void runListener(String title, int count, Calendar selectedDate) {
+                    private void runListener(String title, int count, Calendar selectedDate, String Uid) {
                         if (mTListener != null)
-                            mTListener.onItemTouched(title, count, selectedDate, selectedDate);
+                            mTListener.onItemTouched(title, count, selectedDate, selectedDate, Uid);
                     }
                 });
 
@@ -1214,6 +1292,22 @@ public class CalendarView extends FrameLayout {
         }
     }
 
+    private static String generateID() {
+        return Long.toString(System.currentTimeMillis());
+    }
+
+    private void storeUpload(DocumentReference documentReference, final Event_firebase mOriginalEventFirebase) {
+        documentReference.set(mOriginalEventFirebase.getScheduleInfo())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
     private void ColorMint(List<CalendarObject> calendarObjectList, int i, LinearLayout first_schedule, List<View> viewCalendarList, int position){
         if (calendarObjectList.get(i).getShape() == 0) {
             first_schedule.setBackgroundResource(R.drawable.calendarbar_all_mint);
@@ -1609,7 +1703,7 @@ public class CalendarView extends FrameLayout {
         void onItemClicked(List<CalendarObject> calendarObjects, Calendar previousDate, Calendar selectedDate);
     }
     public interface OnItemTouchListener {
-        void onItemTouched(String title, int count, Calendar selectedDate, Calendar startDate);
+        void onItemTouched(String title, int count, Calendar selectedDate, Calendar startDate, String Uid);
     }
 
     public interface OnMonthChangedListener {
@@ -1648,6 +1742,8 @@ public class CalendarView extends FrameLayout {
         static final int selectedDayTextColor = 13;
         static final int selectedDayBackgroundColor = 14;
         static final int selectedDayBorderColor = 15;
+
+        static final int dragselectedDayBorderColor = 15;
     }
 
     //

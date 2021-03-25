@@ -26,15 +26,19 @@ import java.util.Locale;
 
 import bias.hugoandrade.calendarviewapp.data.Event;
 import bias.hugoandrade.calendarviewapp.data.Event_firebase;
+import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import bias.hugoandrade.calendarviewapp.utils.ColorUtils;
 
 public class DragCreate_Schedule  extends AppCompatActivity {
 
     //21로 보내주는 변수
-    public static final int ACTION_CREATE = 3;
+    public static final int ACTION_DRAG = 1;
+    public static final int RESULT_DRAG = 1000;
 
     private static final String INTENT_DRAG_CALENDAR = "DragEndDate";
     private static final String INTENT_START_CALENDAR = "DragStartDate";
+    private static final String INTENT_EXTRA_EVENT = "intent_extra_event";
+    private static final String INTENT_EXTRA_ACTION = "intent_extra_action";
 
     private ImageView schadule_cancel_button;
     private ImageView schadule_check_button;
@@ -48,6 +52,7 @@ public class DragCreate_Schedule  extends AppCompatActivity {
     private int mColor;
     private String Schedule;
     private int count;
+    private String Draged_Uid;
 
     private final static SimpleDateFormat dateFormat
             = new SimpleDateFormat("EEEE, MM월dd일    HH:mm", Locale.getDefault());
@@ -70,7 +75,13 @@ public class DragCreate_Schedule  extends AppCompatActivity {
     public static Calendar extractEndCalendarFromIntent(Intent data) {
         return (Calendar) data.getSerializableExtra(INTENT_DRAG_CALENDAR);
     }
+    public static Event extractEventFromIntent(Intent intent) {
+        return intent.getParcelableExtra(INTENT_EXTRA_EVENT);
+    }
 
+    public static int extractActionFromIntent(Intent intent) {
+        return intent.getIntExtra(INTENT_EXTRA_ACTION, 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +89,7 @@ public class DragCreate_Schedule  extends AppCompatActivity {
         setContentView(R.layout.activity_create_schedule);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         count = getIntent().getIntExtra("DragCount",0)-1;
-
+        Draged_Uid = getIntent().getStringExtra("DragUid");
         Schedule = getIntent().getStringExtra("DragTitle");
 
         initializeUI();
@@ -186,14 +197,19 @@ public class DragCreate_Schedule  extends AppCompatActivity {
     private void save() {
 
         //Event 정보가 있을경우는 수정 정보를 메인으로 넘겨주고 없을경우 생성 정보를 21에 넘겨준다.
-        int action = ACTION_CREATE;
+        int action = ACTION_DRAG;
         String id = generateID();
         Schedule = event_Schadule.getText().toString().trim();
 
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-        String calendar_Id = event != null ? Schedlue_Uid : firebaseFirestore.collection("SCHEDULE").document().getId();
-        final DocumentReference documentReference =firebaseFirestore.collection("SCHEDULE").document(calendar_Id);
+        final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK");
+
+        final DocumentReference Gender_Docu = Calendar_Docu.collection("CALENDAR_MAN").document("202103");
+
+        //String calendar_Id= Gender_Docu.collection("202103").document().getId();
+
+        final DocumentReference documentReference =Gender_Docu.collection("202103").document(Draged_Uid);
 
         mColor = ColorUtils.mColors[0];  //이거로 남자 여자 구분하기
         boolean mIsCompleteCheckBox = false;  //이거 뺴야 함
@@ -201,7 +217,7 @@ public class DragCreate_Schedule  extends AppCompatActivity {
         int count = Date_Count(Start_Calendar,End_Calendar);
 
         Event_firebase EventFirebase = new Event_firebase(
-                calendar_Id,
+                Draged_Uid,
                 id,
                 Schedule.isEmpty() ? null : Schedule,
                 Start_Calendar.get(Calendar.YEAR),
@@ -216,7 +232,20 @@ public class DragCreate_Schedule  extends AppCompatActivity {
                 count
         );
 
+        Event mOriginalEventFirebase = new Event(
+                Draged_Uid,
+                id,
+                Schedule.isEmpty() ? null : Schedule,
+                YMDCalendar.toCalendar(new YMDCalendar(Start_Calendar.get(Calendar.DATE),Start_Calendar.get(Calendar.MONTH),Start_Calendar.get(Calendar.YEAR))),
+                YMDCalendar.toCalendar(new YMDCalendar(Start_Calendar.get(Calendar.DATE),Start_Calendar.get(Calendar.MONTH),Start_Calendar.get(Calendar.YEAR))),
+                YMDCalendar.toCalendar(new YMDCalendar(End_Calendar.get(Calendar.DATE),End_Calendar.get(Calendar.MONTH),End_Calendar.get(Calendar.YEAR))),
+                count
+        );
+
         storeUpload(documentReference, EventFirebase);
+        setResult(RESULT_DRAG, new Intent()
+                .putExtra(INTENT_EXTRA_ACTION, action)
+                .putExtra(INTENT_EXTRA_EVENT, mOriginalEventFirebase));
         finish();
     }
 
@@ -246,9 +275,9 @@ public class DragCreate_Schedule  extends AppCompatActivity {
                 count++;
                 Start_Calendar.add(Calendar.DATE, 1);
             }Start_Calendar.add(Calendar.DATE, -count);
+        }else{
+            count = count +1;
         }
-        count = count +1;
-
 
         return count;
     }

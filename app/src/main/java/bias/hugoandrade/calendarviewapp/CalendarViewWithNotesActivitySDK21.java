@@ -11,9 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -127,10 +130,68 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         /* 달력에서 일정의 유무에 다른 날짜 클릭 리스너*/
         mCalendarView.setOnItemTouchedListener(new CalendarView.OnItemTouchListener() {
             @Override
-            public void onItemTouched(String title, int count, Calendar selectedDate, Calendar startDate) {
-                Log.d("asdasdf","21count : " + count);
-                DragcreateEvent(title, count, selectedDate);
-                //Log.d("끼륙륙","SDK21 161번째 줄 손가락이 위치해 있는 날짜 SDK21에서 받아온 것: selectedDate.get(Calendar.DATE) = " + selected.get(Calendar.DATE));
+            public void onItemTouched(String title, int count, Calendar selectedDate, Calendar startDate, String Uid) {
+
+
+
+                CollectionReference collectionReference_man = FirebaseFirestore.getInstance().collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_MAN").document("202103").collection("202103");                // 파이어베이스의 posts에서
+                collectionReference_man.whereEqualTo("CALENDAR_UID",Uid).get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Event_firebase event_firebase = create_event_firebase(document);
+                                        Event event = convert_event(event_firebase);
+                                        Drag_Insert_Calendar(event);
+                                    }
+                                }
+                            }
+                        });
+                //Calendar cal= YMDCalendar.toCalendar(new YMDCalendar(selectedDate.day+15,day.month,day.year));
+                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK");
+                final DocumentReference Gender_Docu = Calendar_Docu.collection("CALENDAR_MAN").document("202103");
+                final DocumentReference documentReference =Gender_Docu.collection("202103").document(Uid);
+
+                //int day_count = !dragEvent.getClipDescription().getMimeType(1).equals("") ? Integer.parseInt(dragEvent.getClipDescription().getMimeType(1))-1 : 0;
+                Calendar endDate = YMDCalendar.toCalendar(new YMDCalendar(selectedDate.get(Calendar.DATE)+count-1,selectedDate.get(Calendar.MONTH), selectedDate.get(Calendar.YEAR)));
+
+                String id = generateID();
+                Event_firebase EventFirebase = new Event_firebase(
+                        Uid,
+                        id,
+                        title,
+                        startDate.get(Calendar.YEAR),
+                        startDate.get(Calendar.MONTH),
+                        startDate.get(Calendar.DATE),
+                        endDate.get(Calendar.YEAR),
+                        endDate.get(Calendar.MONTH),
+                        endDate.get(Calendar.DATE),
+                        startDate.get(Calendar.YEAR),
+                        startDate.get(Calendar.MONTH),
+                        startDate.get(Calendar.DATE),
+                        count
+                );
+
+                Event mOriginalEventFirebase = new Event(
+                        Uid,
+                        id,
+                        title,
+                        YMDCalendar.toCalendar(new YMDCalendar(startDate.get(Calendar.DATE),startDate.get(Calendar.MONTH),startDate.get(Calendar.YEAR))),
+                        YMDCalendar.toCalendar(new YMDCalendar(startDate.get(Calendar.DATE),startDate.get(Calendar.MONTH),startDate.get(Calendar.YEAR))),
+                        YMDCalendar.toCalendar(new YMDCalendar(endDate.get(Calendar.DATE),endDate.get(Calendar.MONTH),endDate.get(Calendar.YEAR))),
+                        count
+                );
+
+                storeUpload(documentReference, EventFirebase);
+                Log.d("asdasdfasd","mOriginalEventFirebase : " + mOriginalEventFirebase.getCALENDAR_StartDate());
+                Log.d("asdasdfasd","mOriginalEventFirebase : " + mOriginalEventFirebase.getCALENDAR_FixDate());
+                Log.d("asdasdfasd","mOriginalEventFirebase : " + mOriginalEventFirebase.getCALENDAR_EndDate());
+
+                //DragcreateEvent(title, count, selectedDate, Uid);
+                Insert_Calendar(mOriginalEventFirebase);
+                mCalendarDialog.setEventList(mEventList);
             }
         });
 
@@ -142,7 +203,6 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                         @Nullable FirebaseFirestoreException e) {
                         if (e != null) { return; }
                         Toast.makeText(getApplicationContext(), "새로운 일정이 왔다", Toast.LENGTH_LONG).show();
-                        ArrayList<Event> oldEvent = new ArrayList<>();
                         int check = 0;
                         Event_firebase new_eventF = null;
                         for (QueryDocumentSnapshot doc : value) {
@@ -200,6 +260,23 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 .create();
     }
 
+    private static String generateID() {
+        return Long.toString(System.currentTimeMillis());
+    }
+
+    private void storeUpload(DocumentReference documentReference, final Event_firebase mOriginalEventFirebase) {
+        documentReference.set(mOriginalEventFirebase.getScheduleInfo())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
+
     private void onEventSelected(Event event) {
         Activity context = CalendarViewWithNotesActivitySDK21.this;
         Intent intent = Create_Schadule.Revise_Schadle_Intent(context, event);
@@ -214,12 +291,13 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         overridePendingTransition( R.anim.slide_in_up, R.anim.stay );
     }
 
-    private void DragcreateEvent(String title, int count, Calendar selectedDate) {
+    private void DragcreateEvent(String title, int count, Calendar selectedDate, String Uid) {
         Activity context = CalendarViewWithNotesActivitySDK21.this;
         Intent intent = DragCreate_Schedule.DragCreate_Schedle_Intent(context, selectedDate);
         intent.putExtra("DragTitle", title);
         intent.putExtra("DragCount", count);
         intent.putExtra("DragEndDate", selectedDate);
+        intent.putExtra("DragUid", Uid);
         startActivityForResult(intent, CREATE_EVENT_REQUEST_CODE);
         overridePendingTransition( R.anim.slide_in_up, R.anim.stay );
     }
@@ -246,16 +324,17 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CREATE_EVENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                int action = Create_Schadule.extractActionFromIntent(data);
-                Event event = Create_Schadule.extractEventFromIntent(data);
+                int Create_action = Create_Schadule.extractActionFromIntent(data);
+                Event Create_event = Create_Schadule.extractEventFromIntent(data);
 
-                Log.d("asdasdasd","event : " + event);
-                switch (action) {
+                Log.d("asdasdasd","event : " + Create_event);
+                switch (Create_action) {
                     case Create_Schadule.ACTION_CREATE: {
-                        Insert_Calendar(event);
+                        Insert_Calendar(Create_event);
                         mCalendarDialog.setEventList(mEventList);
                         break;
                     }
+
                     case Create_Schadule.ACTION_EDIT: {
 //                        Event oldEvent = null;
 //                        for (Event e : mEventList) {
@@ -303,6 +382,16 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
 //
 //                        break;
 //                    }
+                }
+            }else if (resultCode == DragCreate_Schedule.RESULT_DRAG) {
+                int Drag_action = DragCreate_Schedule.extractActionFromIntent(data);
+                Event Drag_event = DragCreate_Schedule.extractEventFromIntent(data);
+                switch (Drag_action) {
+                    case DragCreate_Schedule.ACTION_DRAG: {
+                        Insert_Calendar(Drag_event);
+                        mCalendarDialog.setEventList(mEventList);
+                        break;
+                    }
                 }
             }
             return;
@@ -409,55 +498,85 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 mEventList.add(c_event);
                 mCalendarView.addCalendarObject(parseCalendarObject(c_event));
                 day.add(Calendar.DATE,1);
-            }
+            }day.add(Calendar.DATE,-count);
+        }
+    }
+
+    void Drag_Insert_Calendar(Event event){
+        Calendar day = event.getCALENDAR_StartDate();
+        Calendar endday = event.getCALENDAR_EndDate();
+        Calendar startday = event.getCALENDAR_FixDate();
+        if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE)) && day.get(Calendar.MONTH) == (endday.get(Calendar.MONTH))){
+            shape = 0;
+            mEventList.remove(event);
+            mCalendarView.removeCalendarObjectByID(parseCalendarObject(event));
+            mCalendarDialog.deleteEventList(mEventList,event);
+        } else{
+            int count = 0;
+            while (!day.after(endday)){
+                if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE))){    //끝에날
+                    shape = 2;
+                } else{   //중긴
+                    if(count == 0){
+                        shape = 1;
+                    }else{
+                        shape = 3;
+                    }
+                }
+                count++;
+                Event c_event = new Event(); //초기화
+                c_event = event_convert_event(event,day,startday); //변경된 day를 넣어주는 함수
+                mEventList.remove(c_event);
+                mCalendarView.removeCalendarObjectByID(parseCalendarObject(c_event));
+                mCalendarDialog.deleteEventList(mEventList,c_event);
+                day.add(Calendar.DATE,1);
+            }day.add(Calendar.DATE,-count);
         }
     }
 
     void From_Login(){
         int logincheck = getIntent().getIntExtra("MOVE_FROM_LOGIN_REQUEST_CODE",0);
-        if(MOVE_FROM_LOGIN_REQUEST_CODE == logincheck){
-            CollectionReference collectionReference_man = FirebaseFirestore.getInstance().collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_MAN").document("202103").collection("202103");                // 파이어베이스의 posts에서
-            collectionReference_man.orderBy("CALENDAR_StartD", Query.Direction.ASCENDING).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
+        //if(MOVE_FROM_LOGIN_REQUEST_CODE == logincheck){
+        CollectionReference collectionReference_man = FirebaseFirestore.getInstance().collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_MAN").document("202103").collection("202103");                // 파이어베이스의 posts에서
+        collectionReference_man.orderBy("CALENDAR_StartD", Query.Direction.ASCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Event_firebase event_firebase = create_event_firebase(document);
-                                    Sorted_Event_FirebaseList.add(event_firebase);
-                                }
-                                Collections.sort(Sorted_Event_FirebaseList);
-                                for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
-                                    Insert_Calendar(convert_event(Sorted_Event_FirebaseList.get(i)));
-                                }
-                                mCalendarDialog.setEventList(mEventList);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Event_firebase event_firebase = create_event_firebase(document);
+                                Sorted_Event_FirebaseList.add(event_firebase);
                             }
+                            Collections.sort(Sorted_Event_FirebaseList);
+                            for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
+                                Insert_Calendar(convert_event(Sorted_Event_FirebaseList.get(i)));
+                            }
+                            mCalendarDialog.setEventList(mEventList);
                         }
-                    });
-            CollectionReference collectionReference_girl = FirebaseFirestore.getInstance().collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_GIRL").document("202103").collection("202103");                // 파이어베이스의 posts에서
-            collectionReference_girl.orderBy("CALENDAR_StartD", Query.Direction.ASCENDING).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
+                    }
+                });
+        CollectionReference collectionReference_girl = FirebaseFirestore.getInstance().collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_GIRL").document("202103").collection("202103");                // 파이어베이스의 posts에서
+        collectionReference_girl.orderBy("CALENDAR_StartD", Query.Direction.ASCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
 
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Event_firebase event_firebase = create_event_firebase(document);
-                                    Sorted_Event_FirebaseList.add(event_firebase);
-                                }
-                                Collections.sort(Sorted_Event_FirebaseList);
-                                for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
-                                    Insert_Calendar(convert_event(Sorted_Event_FirebaseList.get(i)));
-                                }
-                                mCalendarDialog.setEventList(mEventList);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Event_firebase event_firebase = create_event_firebase(document);
+                                Sorted_Event_FirebaseList.add(event_firebase);
                             }
+                            Collections.sort(Sorted_Event_FirebaseList);
+                            for(int i = 0; i< Sorted_Event_FirebaseList.size() ; i++){
+                                Insert_Calendar(convert_event(Sorted_Event_FirebaseList.get(i)));
+                            }
+                            mCalendarDialog.setEventList(mEventList);
                         }
-                    });
-            logincheck = 0;
-        }
+                    }
+                });
+        logincheck = 0;
+        // }
     }
-
-
 
 }
