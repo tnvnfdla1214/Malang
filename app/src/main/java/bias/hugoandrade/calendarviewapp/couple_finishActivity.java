@@ -41,19 +41,19 @@ public class couple_finishActivity extends AppCompatActivity {
         Intent intent = getIntent();
         user = (USER) intent.getSerializableExtra("user");
         EXTRA_MESSAGE = intent.getIntExtra("EXTRA_MESSAGE",-1);
-//        O_Uid = intent.getStringExtra("O_Uid");
-//        getUserModel(O_Uid);
+        O_Uid = intent.getStringExtra("O_Uid");
+        getUserModel(O_Uid);
 
 
 
         if(EXTRA_MESSAGE == 0){
-            couple_host.setText(user.getUSER_NickName());
-            couple_guest.setText(O_user.getUSER_NickName());
+            couple_host.setText(O_user.getUSER_NickName());
+            couple_guest.setText(user.getUSER_NickName());
 
         }
         else if(EXTRA_MESSAGE == 1){
-            couple_host.setText(O_user.getUSER_NickName());
-            couple_guest.setText(user.getUSER_NickName());
+            couple_host.setText(user.getUSER_NickName());
+            couple_guest.setText(O_user.getUSER_NickName());
         }
 
         app_start_button.setOnClickListener(new View.OnClickListener() {

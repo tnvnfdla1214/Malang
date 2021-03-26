@@ -21,7 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.MetadataChanges;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import bias.hugoandrade.calendarviewapp.data.COUPLE;
@@ -41,9 +41,6 @@ public class couple_codecreateActivity extends AppCompatActivity {
 
     private final static int MOVE_FROM_LOGIN_REQUEST_CODE = 200;
 
-    private int COUPLE_StartY=-1;
-    private int COUPLE_StartM=-1;
-    private int COUPLE_StartD=-1;
     String couple_UId;
     TextView cople_uid_text;
     DocumentReference docRef;
@@ -67,9 +64,6 @@ public class couple_codecreateActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         user = (USER) intent.getSerializableExtra("user");
-        COUPLE_StartY = intent.getIntExtra("COUPLE_StartY",-1);
-        COUPLE_StartM = intent.getIntExtra("COUPLE_StartM",-1);
-        COUPLE_StartD = intent.getIntExtra("COUPLE_StartD",-1);
         couple_UId = intent.getStringExtra("couple_UId");
 
 
@@ -78,16 +72,26 @@ public class couple_codecreateActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
                                 @Nullable FirebaseFirestoreException e) {
+
+                if (e != null) {
+                    Log.w("asdasd", "asdasdasd");
+                    return;
+                }
+                else if (snapshot != null && snapshot.exists()) {
                     String ab = snapshot.getString("COUPLE_GuestUID");
                     if(!ab.equals("0")){
                         Intent intent = new Intent(getApplicationContext(), couple_finishActivity.class);
                         intent.putExtra("user",user);
                         intent.putExtra("EXTRA_MESSAGE",1);
+                        intent.putExtra("O_Uid",couple.getCOUPLE_GuestUID());
                         startActivity(intent);
                         finish();
+                    }
                 }
+
             }
         });
+
     }
 
     @Override
@@ -116,6 +120,22 @@ public class couple_codecreateActivity extends AppCompatActivity {
                     break;
 
                 case R.id.prev_btn:
+
+                    firebaseFirestore.collection("COUPLE").document(couple_UId)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+
                     onBackPressed();
                     break;
             }

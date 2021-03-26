@@ -93,6 +93,10 @@ public class MemberInitActivity extends AppCompatActivity {     // 1. 클래스 
 
         // DatePicker를 이용해 생일 지정, 받아서 String 값으로 저장함
         DatePicker BirthDay_Picker = findViewById(R.id.BirthDay_Picker);
+        USER_BirthY = 2021;
+        USER_BirthM = b_M;
+        USER_BirthD = b_D;
+
         BirthDay_Picker.init(2021, b_M, b_D, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

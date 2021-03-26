@@ -45,10 +45,11 @@ public class couple_startdateActivity  extends AppCompatActivity {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 COUPLE_StartY = year;
-                COUPLE_StartM = monthOfYear;
+                COUPLE_StartM = monthOfYear+1;
                 COUPLE_StartD = dayOfMonth;
             }
         });
+
         nextBtn = findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(onClickListener);
         prebtn = findViewById(R.id.prebtn);
@@ -70,7 +71,7 @@ public class couple_startdateActivity  extends AppCompatActivity {
                                 couple_UId, COUPLE_StartY, COUPLE_StartM, COUPLE_StartD,
                                 0, 0, 0,
                                 user.getUSER_BirthY(), user.getUSER_BirthM(), user.getUSER_BirthD(),
-                                user.getUSER_UID(), "0"
+                                user.getUSER_UID(), "0",0,0
                         );
                     }
                     else{ //남자
@@ -78,7 +79,7 @@ public class couple_startdateActivity  extends AppCompatActivity {
                                 couple_UId, COUPLE_StartY, COUPLE_StartM, COUPLE_StartD,
                                 user.getUSER_BirthY(), user.getUSER_BirthM(), user.getUSER_BirthD(),
                                 0, 0, 0,
-                                user.getUSER_UID(), "0"
+                                user.getUSER_UID(), "0",0,0
                         );
                     }
                     storeUpload(documentReference, couple);
@@ -87,9 +88,6 @@ public class couple_startdateActivity  extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), couple_codecreateActivity.class);
                     intent.putExtra("user",user);
                     intent.putExtra("couple_UId",couple_UId);
-                    intent.putExtra("COUPLE_StartY",COUPLE_StartY);
-                    intent.putExtra("COUPLE_StartM",COUPLE_StartM);
-                    intent.putExtra("COUPLE_StartD",COUPLE_StartD);
                     startActivity(intent);
                     finish();
                     break;

@@ -18,10 +18,12 @@ public class COUPLE implements Serializable {
     private int COUPLE_G_BirthD;
     private String COUPLE_HostUID;
     private String COUPLE_GuestUID;
+    private int COUPLE_LEVEL_MAN;
+    private int COUPLE_LEVEL_GIRL;
 
     public COUPLE(){}
 
-    public COUPLE( String COUPLE_UID,int COUPLE_StartY , int COUPLE_StartM, int COUPLE_StartD,int COUPLE_M_BirthY, int COUPLE_M_BirthM, int COUPLE_M_BirthD,int COUPLE_G_BirthY, int COUPLE_G_BirthM, int COUPLE_G_BirthD, String COUPLE_HostUID, String COUPLE_GuestUID){
+    public COUPLE( String COUPLE_UID,int COUPLE_StartY , int COUPLE_StartM, int COUPLE_StartD,int COUPLE_M_BirthY, int COUPLE_M_BirthM, int COUPLE_M_BirthD,int COUPLE_G_BirthY, int COUPLE_G_BirthM, int COUPLE_G_BirthD, String COUPLE_HostUID, String COUPLE_GuestUID,int COUPLE_LEVEL_MAN,int COUPLE_LEVEL_GIRL){
         this.COUPLE_UID = COUPLE_UID;
 
         this.COUPLE_StartY = COUPLE_StartY;
@@ -36,6 +38,9 @@ public class COUPLE implements Serializable {
         this.COUPLE_G_BirthD = COUPLE_G_BirthD;
         this.COUPLE_HostUID = COUPLE_HostUID;
         this.COUPLE_GuestUID = COUPLE_GuestUID;
+
+        this.COUPLE_LEVEL_MAN = COUPLE_LEVEL_MAN;
+        this.COUPLE_LEVEL_GIRL = COUPLE_LEVEL_GIRL;
     }
 
     public Map<String, Object> getCoupleInfo(){
@@ -52,6 +57,8 @@ public class COUPLE implements Serializable {
         docData.put("COUPLE_G_BirthD", COUPLE_G_BirthD);
         docData.put("COUPLE_HostUID", COUPLE_HostUID);
         docData.put("COUPLE_GuestUID", COUPLE_GuestUID);
+        docData.put("COUPLE_LEVEL_MAN", COUPLE_LEVEL_MAN);
+        docData.put("COUPLE_LEVEL_GIRL", COUPLE_LEVEL_GIRL);
         return  docData;
     }
 
@@ -90,5 +97,21 @@ public class COUPLE implements Serializable {
 
     public String getCOUPLE_GuestUID() { return COUPLE_GuestUID; }
     public void setCOUPLE_GuestUID(String COUPLE_GuestUID) { this.COUPLE_GuestUID = COUPLE_GuestUID; }
+
+    public int getCOUPLE_LEVEL_MAN() {
+        return COUPLE_LEVEL_MAN;
+    }
+
+    public void setCOUPLE_LEVEL_MAN(int COUPLE_LEVEL_MAN) {
+        this.COUPLE_LEVEL_MAN = COUPLE_LEVEL_MAN;
+    }
+
+    public int getCOUPLE_LEVEL_GIRL() {
+        return COUPLE_LEVEL_GIRL;
+    }
+
+    public void setCOUPLE_LEVEL_GIRL(int COUPLE_LEVEL_GIRL) {
+        this.COUPLE_LEVEL_GIRL = COUPLE_LEVEL_GIRL;
+    }
 
 }

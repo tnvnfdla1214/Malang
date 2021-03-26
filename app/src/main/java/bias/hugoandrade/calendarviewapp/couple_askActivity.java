@@ -81,7 +81,7 @@ public class couple_askActivity extends AppCompatActivity {
                             USER test = new USER();
                             test =  document.toObject(USER.class);
                             user = new USER(test.getUSER_Name(),test.getUSER_Gender(),test.getUSER_NickName(),test.getUSER_BirthY()
-                            ,test.getUSER_BirthM(),test.getUSER_BirthD(),test.getUSER_CoupleUID(),test.getUSER_UID(),test.getUSER_Level());
+                                    ,test.getUSER_BirthM(),test.getUSER_BirthD(),test.getUSER_CoupleUID(),test.getUSER_UID(),test.getUSER_Level());
                         }
                     }
                 }
