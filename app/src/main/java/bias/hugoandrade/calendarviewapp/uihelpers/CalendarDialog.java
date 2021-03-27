@@ -30,6 +30,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -83,6 +86,8 @@ public class CalendarDialog {
 
     private ClipData dragData;
 
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
     CalendarDialog(Context context) {
         mContext = context;
         mHandler = new Handler();
@@ -101,6 +106,12 @@ public class CalendarDialog {
         mEventList = eventList;
         mViewPagerAdapter.notifyDataSetChanged();
     }
+
+    public void deleteEventList(Event event) {
+        mEventList.remove(event);
+        mViewPagerAdapter.notifyDataSetChanged();
+    }
+
     public void addEventList(List<Event> eventList,Event event) {
         eventList.add(event);
         mEventList = eventList;
@@ -393,6 +404,22 @@ public class CalendarDialog {
 
         @Override
         public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
+            String CalenderUID =mCalendarEvents.get(position).getCALENDAR_UID();
+
+            firebaseFirestore.collection("COUPLE").document(CalenderUID)
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
             mCalendarEvents.remove(position);                         // 해당 position의 리스트의 데이터도 삭제한다.
             notifyItemRemoved(position);
         }
