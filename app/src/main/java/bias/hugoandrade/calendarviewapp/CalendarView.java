@@ -648,7 +648,7 @@ public class CalendarView extends FrameLayout {
             final LinearLayout first_schedule = view.findViewById(R.id.first_schedule);
             final LinearLayout second_schedule = view.findViewById(R.id.second_schedule);
             final LinearLayout third_schedule = view.findViewById(R.id.third_schedule);
-            final LinearLayout schedule = view.findViewById(R.id.schedule);
+            //final LinearLayout schedule = view.findViewById(R.id.schedule);
             //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
 
 
@@ -936,54 +936,8 @@ public class CalendarView extends FrameLayout {
                     public boolean onDrag(View view, DragEvent dragEvent) {
 
                         switch (dragEvent.getAction()) {
-                            case DragEvent.ACTION_DROP:
 
-
-
-//                                Calendar cal= YMDCalendar.toCalendar(new YMDCalendar(day.day+15,day.month,day.year));
-//                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-//                                final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK");
-//                                final DocumentReference Gender_Docu = Calendar_Docu.collection("CALENDAR_MAN").document("202103");
-//                                final DocumentReference documentReference =Gender_Docu.collection("202103").document(dragEvent.getClipDescription().getMimeType(2));
-//
-//                                int day_count = !dragEvent.getClipDescription().getMimeType(1).equals("") ? Integer.parseInt(dragEvent.getClipDescription().getMimeType(1))-1 : 0;
-//                                Calendar startDate = YMDCalendar.toCalendar(new YMDCalendar(day.day+day_count,day.month,day.year));
-//
-//                                String id = generateID();
-//                                Event_firebase EventFirebase = new Event_firebase(
-//                                        dragEvent.getClipDescription().getMimeType(2),
-//                                        id,
-//                                        dragEvent.getClipDescription().getMimeType(0),
-//                                        day.year,
-//                                        day.month,
-//                                        day.day,
-//                                        startDate.get(Calendar.YEAR),
-//                                        startDate.get(Calendar.MONTH),
-//                                        startDate.get(Calendar.DATE),
-//                                        day.year,
-//                                        day.month,
-//                                        day.day,
-//                                        Integer.parseInt(dragEvent.getClipDescription().getMimeType(1))
-//                                );
-//
-//                                Event mOriginalEventFirebase = new Event(
-//                                        dragEvent.getClipDescription().getMimeType(2),
-//                                        id,
-//                                        dragEvent.getClipDescription().getMimeType(0),
-//                                        YMDCalendar.toCalendar(new YMDCalendar(day.day,day.month,day.year)),
-//                                        YMDCalendar.toCalendar(new YMDCalendar(day.day,day.month,day.year)),
-//                                        YMDCalendar.toCalendar(new YMDCalendar(startDate.get(Calendar.DATE),startDate.get(Calendar.MONTH),startDate.get(Calendar.YEAR))),
-//                                        Integer.parseInt(dragEvent.getClipDescription().getMimeType(1))
-//                                );
-//
-//                                storeUpload(documentReference, EventFirebase);
-
-                                runListener(dragEvent.getClipDescription().getMimeType(0),
-                                        Integer.parseInt(dragEvent.getClipDescription().getMimeType(1)),
-                                        YMDCalendar.toCalendar(day), dragEvent.getClipDescription().getMimeType(2));
-
-
-                                return true;
+                            /*경계를 들어갈 때*/
                             case DragEvent.ACTION_DRAG_ENTERED:
                                 int count = Integer.parseInt(dragEvent.getClipDescription().getMimeType(1));
                                 if(count > 0){
@@ -994,11 +948,8 @@ public class CalendarView extends FrameLayout {
                                 }
                                 return true;
 
-                            case DragEvent.ACTION_DRAG_LOCATION:
 
-                                // Ignore the event
-                                return true;
-
+                            /*경계를 나갈 때*/
                             case DragEvent.ACTION_DRAG_EXITED:
                                 int countt = Integer.parseInt(dragEvent.getClipDescription().getMimeType(1));
                                 if(countt > 0){
@@ -1008,6 +959,22 @@ public class CalendarView extends FrameLayout {
                                     }
                                 }
                                 return true;
+
+
+                            /*드래그를 드롭 했을 때*/
+                            case DragEvent.ACTION_DROP:
+                                runListener(dragEvent.getClipDescription().getMimeType(0),
+                                        Integer.parseInt(dragEvent.getClipDescription().getMimeType(1)),
+                                        YMDCalendar.toCalendar(day), dragEvent.getClipDescription().getMimeType(2));
+                                return true;
+
+
+
+                            /* case DragEvent.ACTION_DRAG_LOCATION:
+
+                                // Ignore the event
+                                return true;
+                                * */
                         }
                         return true;
                     }
@@ -1104,10 +1071,11 @@ public class CalendarView extends FrameLayout {
             if (monthView != null) {
                 // Find position
                 int position = getDayViewPositionInMonthView(month, day);
-
+                List<View> viewList = getDayViewList(monthContainer);
+                List<YMDCalendar> dayList = getDayList(month);
                 if (position != -1) {
                     View dayView = getDayView(monthView, position);
-                    onBindView(position, month, day, eventList, eventList, dayView,null,null);
+                    onBindView(position, month, day, eventList, eventList, dayView,viewList,dayList);
 
 //                    final List<View> viewCalendarList,
 //                    final List<YMDCalendar> CalendardayList
