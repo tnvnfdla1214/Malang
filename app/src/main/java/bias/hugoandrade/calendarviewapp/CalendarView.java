@@ -111,6 +111,8 @@ public class CalendarView extends FrameLayout {
     private FragmentTransaction ft;
     private FragmentActivity fragmentActivity;
     private Activity activity;
+
+
     /**
      * Map of Calendar Object by Month
      */
@@ -939,11 +941,18 @@ public class CalendarView extends FrameLayout {
 
                             /*경계를 들어갈 때*/
                             case DragEvent.ACTION_DRAG_ENTERED:
-                                int count = Integer.parseInt(dragEvent.getClipDescription().getMimeType(1));
-                                if(count > 0){
-                                    for(int k=0;k<count;k++){
-                                        final LinearLayout Schedule = viewCalendarList.get(position+k).findViewById(R.id.schedule);
-                                        Schedule.setBackgroundResource(R.color.M_Malang_shadow);
+                                int dragdayy = Integer.parseInt(dragEvent.getClipDescription().getMimeType(3));
+                                //Log.d("asdasdasdasdasd","textasdasdasdasd : " + dragdayy);
+                                Log.d("asdasdasdasdasd","1111111111111111: ");
+                                if(!(dragdayy == day.day)){
+                                    int count = Integer.parseInt(dragEvent.getClipDescription().getMimeType(1));
+                                    if(count > 0){
+                                        Log.d("asdasdasdasdasd","2222222222222: ");
+                                        for(int k=0;k<count;k++){
+
+                                            final LinearLayout Schedule = viewCalendarList.get(position+k).findViewById(R.id.schedule);
+                                            Schedule.setBackgroundResource(R.color.M_Malang_shadow);
+                                        }
                                     }
                                 }
                                 return true;
@@ -963,9 +972,21 @@ public class CalendarView extends FrameLayout {
 
                             /*드래그를 드롭 했을 때*/
                             case DragEvent.ACTION_DROP:
-                                runListener(dragEvent.getClipDescription().getMimeType(0),
-                                        Integer.parseInt(dragEvent.getClipDescription().getMimeType(1)),
-                                        YMDCalendar.toCalendar(day), dragEvent.getClipDescription().getMimeType(2));
+                                int dragday = Integer.parseInt(dragEvent.getClipDescription().getMimeType(3));
+
+                                if(!(dragday == day.day)){
+                                    //Log.d("asdasdasdasdasd","textasdasdasdasd : " );
+                                    runListener(dragEvent.getClipDescription().getMimeType(0),
+                                            Integer.parseInt(dragEvent.getClipDescription().getMimeType(1)),
+                                            YMDCalendar.toCalendar(day), dragEvent.getClipDescription().getMimeType(2));
+                                }
+                                int counttt = Integer.parseInt(dragEvent.getClipDescription().getMimeType(1));
+                                if(counttt > 0){
+                                    for(int k=0;k<counttt;k++){
+                                        final LinearLayout Schedule = viewCalendarList.get(position+k).findViewById(R.id.schedule);
+                                        Schedule.setBackgroundResource(R.color.white);
+                                    }
+                                }
                                 return true;
 
 
@@ -1071,10 +1092,12 @@ public class CalendarView extends FrameLayout {
             if (monthView != null) {
                 // Find position
                 int position = getDayViewPositionInMonthView(month, day);
-                List<View> viewList = getDayViewList(monthContainer);
+
                 List<YMDCalendar> dayList = getDayList(month);
+
                 if (position != -1) {
                     View dayView = getDayView(monthView, position);
+                    List<View> viewList = getDayViewList(monthView);
                     onBindView(position, month, day, eventList, eventList, dayView,viewList,dayList);
 
 //                    final List<View> viewCalendarList,

@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.Menu;
@@ -248,6 +249,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                     public void onCreateEvent(Calendar calendar) {
                         createEvent(calendar);
                     }
+                    @Override
+                    public void onRightClick(Event event){ Drag_Insert_Calendar(event);}
                 })
                 .create();
     }
@@ -494,7 +497,8 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         }
     }
 
-    void Drag_Insert_Calendar(Event event){
+    public void Drag_Insert_Calendar(Event event){
+        Log.d("삭제","11111111111111111 : ");
         Calendar day = event.getCALENDAR_StartDate();
         Calendar endday = event.getCALENDAR_EndDate();
         Calendar startday = event.getCALENDAR_FixDate();
@@ -504,6 +508,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
             mCalendarView.removeCalendarObjectByID(parseCalendarObject(event));
             mCalendarDialog.deleteEventList(event);
         } else{
+            Log.d("삭제","222222222222222222 : ");
             int count = 0;
             while (!day.after(endday)){
                 if(day.get(Calendar.DATE) == (endday.get(Calendar.DATE))){    //끝에날
@@ -523,6 +528,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 mCalendarDialog.deleteEventList(c_event);
                 day.add(Calendar.DATE,1);
             }day.add(Calendar.DATE,-count);
+            Log.d("삭제","33333333333333 : ");
         }
     }
 

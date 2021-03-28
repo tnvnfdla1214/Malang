@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21;
 import bias.hugoandrade.calendarviewapp.R;
 import bias.hugoandrade.calendarviewapp.data.Event;
 import bias.hugoandrade.calendarviewapp.helpers.ItemTouchHelperCallback;
@@ -396,17 +397,26 @@ public class CalendarDialog {
             return mCalendarEvents.size();
         }
 
+
+
+        @Override
+        public void onDragandDrop(int position, RecyclerView.ViewHolder viewHolder) {
+            String a = mCalendarEvents.get(position).getCALENDAR_Schedule();
+        }
         @Override
         public void onItemSwipe(int position) {
+            if (mListener != null)
+                mListener.onRightClick(mCalendarEvents.get(position));
             mCalendarEvents.remove(position);
             notifyItemRemoved(position);
+
         }
 
         @Override
         public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
             String CalenderUID =mCalendarEvents.get(position).getCALENDAR_UID();
 
-            firebaseFirestore.collection("COUPLE").document(CalenderUID)
+            firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_MAN").document("202103").collection("202103").document(CalenderUID)
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -420,16 +430,10 @@ public class CalendarDialog {
 
                         }
                     });
+//            CalendarViewWithNotesActivitySDK21.makeIntent(mContext).putExtra("")
             mCalendarEvents.remove(position);                         // 해당 position의 리스트의 데이터도 삭제한다.
             notifyItemRemoved(position);
         }
-
-        @Override
-        public void onDragandDrop(int position, RecyclerView.ViewHolder viewHolder) {
-            String a = mCalendarEvents.get(position).getCALENDAR_Schedule();
-        }
-
-
         class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             View rclEventIcon;
             TextView tvEventName;
@@ -458,7 +462,7 @@ public class CalendarDialog {
                         // ClipData, and set its MIME type entry to "text/plain"
                         dragData = new ClipData(
                                 (CharSequence) view.getTag(),
-                                new String[] { eventt.getCALENDAR_Schedule(), String.valueOf(eventt.getCALENDAR_DateCount()), eventt.getCALENDAR_UID() },
+                                new String[] { eventt.getCALENDAR_Schedule(), String.valueOf(eventt.getCALENDAR_DateCount()), eventt.getCALENDAR_UID(), String.valueOf(eventt.getCALENDAR_StartDate().get(Calendar.DATE))},
                                 item);
 
                         // Instantiates the drag shadow builder.
@@ -506,6 +510,8 @@ public class CalendarDialog {
                 if (mListener != null)
                     mListener.onEventClick(mCalendarEvents.get(getAdapterPosition()));
             }
+
+
 
         }
     }
@@ -567,6 +573,7 @@ public class CalendarDialog {
     public interface OnCalendarDialogListener {
         void onEventClick(Event event);
         void onCreateEvent(Calendar calendar);
+        void onRightClick(Event event);
     }
 
     private static int diffYMD(Calendar date1, Calendar date2) {
