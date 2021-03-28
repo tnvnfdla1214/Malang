@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import bias.hugoandrade.calendarviewapp.data.Event;
-import bias.hugoandrade.calendarviewapp.data.Event_firebase;
+import bias.hugoandrade.calendarviewapp.data.CALENDAR;
 import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import bias.hugoandrade.calendarviewapp.utils.ColorUtils;
 
@@ -216,7 +216,7 @@ public class DragCreate_Schedule  extends AppCompatActivity {
 
         int count = Date_Count(Start_Calendar,End_Calendar);
 
-        Event_firebase EventFirebase = new Event_firebase(
+        CALENDAR EventFirebase = new CALENDAR(
                 Draged_Uid,
                 id,
                 Schedule.isEmpty() ? null : Schedule,
@@ -250,7 +250,7 @@ public class DragCreate_Schedule  extends AppCompatActivity {
     }
 
     /*/*등록 함수*/
-    private void storeUpload(DocumentReference documentReference, final Event_firebase mOriginalEventFirebase) {
+    private void storeUpload(DocumentReference documentReference, final CALENDAR mOriginalEventFirebase) {
         documentReference.set(mOriginalEventFirebase.getScheduleInfo())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

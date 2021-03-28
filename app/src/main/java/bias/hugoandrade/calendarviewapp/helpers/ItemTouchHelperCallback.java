@@ -11,6 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Calendar;
+
+import bias.hugoandrade.calendarviewapp.data.Event;
+import bias.hugoandrade.calendarviewapp.uihelpers.CalendarDialog;
+
 enum ButtonsState {
     GONE,
     RIGHT_VISIBLE
@@ -18,6 +23,7 @@ enum ButtonsState {
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
     private ItemTouchHelperListener listener;
+
     private boolean swipeBack = false;
     private ButtonsState buttonsShowedState = ButtonsState.GONE;
     private static final float buttonWidth = 280;
@@ -33,6 +39,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback  {
         //return makeMovementFlags(drag_flags, swipe_flags);
         return makeMovementFlags(0, swipe_flags);
     }
+
     @Override
     public boolean isLongPressDragEnabled() {
         return true;

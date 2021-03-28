@@ -1,7 +1,6 @@
 package bias.hugoandrade.calendarviewapp;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -14,7 +13,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.Handler;
 
 import androidx.annotation.AttrRes;
@@ -31,7 +29,6 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
-import android.view.DragAndDropPermissions;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,12 +45,8 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import bias.hugoandrade.calendarviewapp.R;
-
-import bias.hugoandrade.calendarviewapp.data.Event;
-import bias.hugoandrade.calendarviewapp.data.Event_firebase;
+import bias.hugoandrade.calendarviewapp.data.CALENDAR;
 import bias.hugoandrade.calendarviewapp.helpers.FrameLinearLayout;
 import bias.hugoandrade.calendarviewapp.helpers.SelectedTextView;
 import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
@@ -1287,7 +1280,7 @@ public class CalendarView extends FrameLayout {
         return Long.toString(System.currentTimeMillis());
     }
 
-    private void storeUpload(DocumentReference documentReference, final Event_firebase mOriginalEventFirebase) {
+    private void storeUpload(DocumentReference documentReference, final CALENDAR mOriginalEventFirebase) {
         documentReference.set(mOriginalEventFirebase.getScheduleInfo())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

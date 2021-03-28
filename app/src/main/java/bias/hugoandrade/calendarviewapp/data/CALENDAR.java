@@ -12,7 +12,7 @@ import java.util.Map;
  */
 
 /* 여기에 getter setter 박고 파베랑 연동하면 쓸수 있지 않을까? */
-public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
+public class CALENDAR implements Parcelable, Comparable<CALENDAR>{
 
 
     private String CALENDAR_UID;
@@ -39,9 +39,9 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
 
     private int CALENDAR_DateCount;
 
-    public Event_firebase(){}
+    public CALENDAR(){}
 
-    public Event_firebase(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, Calendar CALENDAR_StartDate, Calendar CALENDAR_EndDate, Calendar CALENDAR_FixDate, int CALENDAR_DateCount) {
+    public CALENDAR(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, Calendar CALENDAR_StartDate, Calendar CALENDAR_EndDate, Calendar CALENDAR_FixDate, int CALENDAR_DateCount) {
         this.CALENDAR_UID = CALENDAR_UID;
         this.CALENDAR_id = CALENDAR_id;
         this.CALENDAR_Schedule = CALENDAR_Schedule;
@@ -51,7 +51,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         this.CALENDAR_DateCount = CALENDAR_DateCount;
     }
 
-    public Event_firebase(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, int CALENDAR_StartY, int CALENDAR_StartM, int CALENDAR_StartD, int CALENDAR_EndY, int CALENDAR_EndM, int CALENDAR_EndD, int CALENDAR_FixY, int CALENDAR_FixM, int CALENDAR_FixD, int CALENDAR_DateCount) {
+    public CALENDAR(String CALENDAR_UID, String CALENDAR_id, String CALENDAR_Schedule, int CALENDAR_StartY, int CALENDAR_StartM, int CALENDAR_StartD, int CALENDAR_EndY, int CALENDAR_EndM, int CALENDAR_EndD, int CALENDAR_FixY, int CALENDAR_FixM, int CALENDAR_FixD, int CALENDAR_DateCount) {
         this.CALENDAR_UID = CALENDAR_UID;
         this.CALENDAR_id = CALENDAR_id;
         this.CALENDAR_Schedule = CALENDAR_Schedule;
@@ -113,7 +113,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
     }
 
 
-    protected Event_firebase(Parcel in) {
+    protected CALENDAR(Parcel in) {
         CALENDAR_UID = in.readString();
         CALENDAR_id = in.readString();
         CALENDAR_Schedule = in.readString();
@@ -139,15 +139,15 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
         return 0;
     }
 
-    public static final Creator<Event_firebase> CREATOR = new Creator<Event_firebase>() {
+    public static final Creator<CALENDAR> CREATOR = new Creator<CALENDAR>() {
         @Override
-        public Event_firebase createFromParcel(Parcel in) {
-            return new Event_firebase(in);
+        public CALENDAR createFromParcel(Parcel in) {
+            return new CALENDAR(in);
         }
 
         @Override
-        public Event_firebase[] newArray(int size) {
-            return new Event_firebase[size];
+        public CALENDAR[] newArray(int size) {
+            return new CALENDAR[size];
         }
     };
 
@@ -160,7 +160,7 @@ public class Event_firebase implements Parcelable, Comparable<Event_firebase>{
     }
 
     @Override
-    public int compareTo(Event_firebase s) {
+    public int compareTo(CALENDAR s) {
         if (this.CALENDAR_StartDate.before(s.getCALENDAR_StartDate())) {
             return -1;
         } else if (this.CALENDAR_StartDate.after(s.getCALENDAR_StartDate())) {

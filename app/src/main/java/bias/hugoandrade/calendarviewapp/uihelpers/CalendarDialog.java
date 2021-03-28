@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21;
 import bias.hugoandrade.calendarviewapp.R;
 import bias.hugoandrade.calendarviewapp.data.Event;
 import bias.hugoandrade.calendarviewapp.helpers.ItemTouchHelperCallback;
@@ -333,7 +332,7 @@ public class CalendarDialog {
         private List<Event> getCalendarEventsOfDay(Calendar day) {
             List<Event> eventList = new ArrayList<>();
             for (Event e : mEventList) {
-                if (diffYMD(e.getCALENDAR_FixDate(), day) == 0)
+                if (diffYMD(e.getCALENDAR_MarkedDate(), day) == 0)
 
                     eventList.add(e);
             }
@@ -388,7 +387,7 @@ public class CalendarDialog {
 
             holder.tvEventName.setText(title);
             //holder.rclEventIcon.setBackgroundColor(event.getColor());
-            holder.tvEventStatus.setText(timeFormat.format(event.getCALENDAR_FixDate().getTime()));
+            holder.tvEventStatus.setText(timeFormat.format(event.getCALENDAR_MarkedDate().getTime()));
 
         }
 
@@ -405,11 +404,8 @@ public class CalendarDialog {
         }
         @Override
         public void onItemSwipe(int position) {
-            if (mListener != null)
-                mListener.onRightClick(mCalendarEvents.get(position));
             mCalendarEvents.remove(position);
             notifyItemRemoved(position);
-
         }
 
         @Override
@@ -431,6 +427,8 @@ public class CalendarDialog {
                         }
                     });
 //            CalendarViewWithNotesActivitySDK21.makeIntent(mContext).putExtra("")
+            if (mListener != null)
+                mListener.onRightClick(mCalendarEvents.get(position));
             mCalendarEvents.remove(position);                         // 해당 position의 리스트의 데이터도 삭제한다.
             notifyItemRemoved(position);
         }

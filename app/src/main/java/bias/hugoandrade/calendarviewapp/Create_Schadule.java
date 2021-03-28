@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +22,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import bias.hugoandrade.calendarviewapp.data.Event;
-import bias.hugoandrade.calendarviewapp.data.Event_firebase;
+import bias.hugoandrade.calendarviewapp.data.CALENDAR;
 import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import bias.hugoandrade.calendarviewapp.utils.ColorUtils;
 
@@ -278,7 +277,7 @@ public class Create_Schadule extends AppCompatActivity {
         Log.d("asdasd","count : " + count);
 
 
-        Event_firebase EventFirebase = new Event_firebase(
+        CALENDAR EventFirebase = new CALENDAR(
                 calendar_Id,
                 id,
                 Schadule.isEmpty() ? null : Schadule,
@@ -320,7 +319,7 @@ public class Create_Schadule extends AppCompatActivity {
     }
 
     /*/*등록 함수*/
-    private void storeUpload(DocumentReference documentReference, final Event_firebase mOriginalEventFirebase) {
+    private void storeUpload(DocumentReference documentReference, final CALENDAR mOriginalEventFirebase) {
         documentReference.set(mOriginalEventFirebase.getScheduleInfo())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
