@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
@@ -141,7 +142,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                         CALENDAR CALENDAR = create_event_firebase(document);
                                         Event event = convert_event(CALENDAR);
                                         Drag_Insert_Calendar(event);
-                                    }
+                                    }mCalendarDialog.setEventList(mEventList);
                                 }
                                 FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
                                 final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK");
@@ -248,7 +249,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                         createEvent(calendar);
                     }
                     @Override
-                    public void onRightClick(Event event){ Drag_Insert_Calendar(event);}
+                    public void onRightClick(Event event){ Drag_Insert_Calendar(event); mCalendarDialog.setEventList(mEventList);}
                 })
                 .create();
     }
@@ -504,30 +505,18 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
             shape = 0;
             mEventList.remove(event);
             mCalendarView.removeCalendarObjectByID(parseCalendarObject(event));
-            mCalendarDialog.deleteEventList(event);
-        } else{
-            Log.d("삭제","222222222222222222 : ");
-            int count = 0;
-            while (!markedday.after(endday)){
-                if(markedday.get(Calendar.DATE) == (endday.get(Calendar.DATE))){    //끝에날
-                    shape = 2;
-                } else{   //중긴
-                    if(count == 0){
-                        shape = 1;
-                    }else{
-                        shape = 3;
-                    }
-                }
-                count++;
-                Event c_event = new Event(); //초기화
-                c_event = event_convert_event(event,markedday,startday); //변경된 day를 넣어주는 함수
-                mEventList.remove(c_event);
-                mCalendarView.removeCalendarObjectByID(parseCalendarObject(c_event));
-                mCalendarDialog.deleteEventList(c_event);
-                markedday.add(Calendar.DATE,1);
-            }markedday.add(Calendar.DATE,-count);
             //mCalendarDialog.setEventList(mEventList);
-            Log.d("삭제","33333333333333 : ");
+        } else{
+            ArrayList<Event> oldEvent = new ArrayList<>();
+            for (Event e : mEventList) {
+                if (Objects.equals(event.getCALENDAR_UID(), e.getCALENDAR_UID())) {
+                    oldEvent.add(e);
+                }
+            }
+            for(int i = 0; i < oldEvent.size() ; i++){
+                mEventList.remove(oldEvent.get(i));
+                mCalendarView.removeCalendarObjectByID(parseCalendarObject(oldEvent.get(i)));
+            }
         }
     }
 
