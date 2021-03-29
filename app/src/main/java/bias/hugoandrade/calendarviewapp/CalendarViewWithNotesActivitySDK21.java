@@ -15,8 +15,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -36,6 +39,7 @@ import android.widget.Toast;
 
 import bias.hugoandrade.calendarviewapp.data.Event;
 import bias.hugoandrade.calendarviewapp.data.CALENDAR;
+import bias.hugoandrade.calendarviewapp.data.USER;
 import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import bias.hugoandrade.calendarviewapp.uihelpers.CalendarDialog;
 
@@ -62,6 +66,13 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     private static int shape;
     private List<CALENDAR> sorted_CALENDARList = new ArrayList<>();
     private CalendarView.CalendarPagerAdapter calendarPagerAdapter;
+    private USER user = new USER();
+    private String CurrentUid;
+    private FirebaseUser CurrentUser;
+    private int DataYear = 0;
+    private int DataMonth = 0;
+
+
 
     private List<View> monthview;
     private int sizex;
@@ -71,6 +82,11 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        CurrentUid =CurrentUser.getUid();
+        getUserModel(CurrentUid);
 
         mShortMonths = new DateFormatSymbols().getShortMonths();
         initializeUI();
@@ -100,8 +116,14 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
             @Override
             public void onMonthChanged(int month, int year) {
                 if (getSupportActionBar() != null) {
+
+                    DataYear = year;
+                    DataMonth = month;
+                    Log.d("asdddd","DataYear : " + DataYear);
+                    Log.d("asdddd","DataMonth : " + DataMonth);
                     getSupportActionBar().setTitle(mShortMonths[month]);
                     getSupportActionBar().setSubtitle(Integer.toString(year));
+
                 }
             }
         });
@@ -132,7 +154,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
             @Override
             public void onItemTouched(String title, int count, Calendar selectedDate, Calendar startDate, String Uid) {
 
-                CollectionReference collectionReference_man = FirebaseFirestore.getInstance().collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_MAN").document("202103").collection("202103");                // 파이어베이스의 posts에서
+                CollectionReference collectionReference_man = FirebaseFirestore.getInstance().collection("CALENDAR").document(user.getUSER_CoupleUID()).collection("CALENDAR_MAN").document("202103").collection("202103");                // 파이어베이스의 posts에서
                 collectionReference_man.whereEqualTo("CALENDAR_UID",Uid).get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -145,7 +167,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                                     }mCalendarDialog.setEventList(mEventList);
                                 }
                                 FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-                                final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK");
+                                final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document(user.getUSER_CoupleUID());
                                 final DocumentReference Gender_Docu = Calendar_Docu.collection("CALENDAR_MAN").document("202103");
                                 final DocumentReference documentReference =Gender_Docu.collection("202103").document(Uid);
 
@@ -187,13 +209,15 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         });
 
         /////////*일정 나열*/
-        listenerUsers = Firestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_GIRL").document("202103").collection("202103")
+        String s_year;
+
+        listenerUsers = Firestore.collection("CALENDAR").document(user.getUSER_CoupleUID()).collection("CALENDAR_GIRL").document(DataYear + "_" + DataMonth).collection(DataYear + "_" + DataMonth)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
                                         @Nullable FirebaseFirestoreException e) {
                         if (e != null) { return; }
-                        Toast.makeText(getApplicationContext(), "새로운 일정이 왔다", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "abcdefg", Toast.LENGTH_LONG).show();
                         int check = 0;
                         CALENDAR new_eventF = null;
                         for (QueryDocumentSnapshot doc : value) {
@@ -523,7 +547,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
     void From_Login(){
         int logincheck = getIntent().getIntExtra("MOVE_FROM_LOGIN_REQUEST_CODE",0);
         //if(MOVE_FROM_LOGIN_REQUEST_CODE == logincheck){
-        CollectionReference collectionReference_man = FirebaseFirestore.getInstance().collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_MAN").document("202103").collection("202103");                // 파이어베이스의 posts에서
+        CollectionReference collectionReference_man = FirebaseFirestore.getInstance().collection("CALENDAR").document(user.getUSER_CoupleUID()).collection("CALENDAR_MAN").document("202103").collection("202103");                // 파이어베이스의 posts에서
         collectionReference_man.orderBy("CALENDAR_StartD", Query.Direction.ASCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -542,7 +566,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                         }
                     }
                 });
-        CollectionReference collectionReference_girl = FirebaseFirestore.getInstance().collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_GIRL").document("202103").collection("202103");                // 파이어베이스의 posts에서
+        CollectionReference collectionReference_girl = FirebaseFirestore.getInstance().collection("CALENDAR").document(user.getUSER_CoupleUID()).collection("CALENDAR_GIRL").document("202103").collection("202103");                // 파이어베이스의 posts에서
         collectionReference_girl.orderBy("CALENDAR_StartD", Query.Direction.ASCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -563,6 +587,27 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
                 });
         logincheck = 0;
         // }
+    }
+
+    public void getUserModel(String CurrentUid){
+        final DocumentReference documentReference = FirebaseFirestore.getInstance().collection("USER").document(CurrentUid);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        if (document.exists()) {  //데이터의 존재여부
+                            USER test = new USER();
+                            test =  document.toObject(USER.class);
+                            user = new USER(test.getUSER_Name(),test.getUSER_Gender(),test.getUSER_NickName(),test.getUSER_BirthY()
+                                    ,test.getUSER_BirthM(),test.getUSER_BirthD(),test.getUSER_CoupleUID(),test.getUSER_UID(),test.getUSER_Level());
+                        }
+                    }
+                }
+            }
+        });
+        return;
     }
 
 }

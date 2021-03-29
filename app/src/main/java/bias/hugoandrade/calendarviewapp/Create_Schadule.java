@@ -279,11 +279,11 @@ public class Create_Schadule extends AppCompatActivity {
 
         final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document(user.getUSER_CoupleUID());
 
-        final DocumentReference Gender_Docu = Calendar_Docu.collection(Gender).document(YEAR + "/" + MONTH);
+        final DocumentReference Gender_Docu = Calendar_Docu.collection(Gender).document(YEAR + "_" + MONTH);
 
-        String calendar_Id= Gender_Docu.collection(YEAR + "/" + MONTH).document().getId();
+        String calendar_Id= Gender_Docu.collection(YEAR + "_" + MONTH).document().getId();
 
-        final DocumentReference documentReference = Gender_Docu.collection(YEAR + "/" + MONTH).document(calendar_Id);
+        final DocumentReference documentReference = Gender_Docu.collection(YEAR + "_" + MONTH).document(calendar_Id);
 
 
         mColor = ColorUtils.mColors[0];  //이거로 남자 여자 구분하기
