@@ -129,7 +129,7 @@ public class CalendarViewWithNotesActivitySDK21 extends AppCompatActivity  {
         });
 
         /*로그인 해서 들어왔을 때*/
-        From_Login();
+        //From_Login();
 
         /* 달력에서 일정의 유무에 다른 날짜 클릭 리스너*/
         mCalendarView.setOnItemClickedListener(new CalendarView.OnItemClickListener() {

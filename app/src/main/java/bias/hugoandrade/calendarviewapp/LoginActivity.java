@@ -50,7 +50,8 @@ import java.security.NoSuchAlgorithmException;
 import bias.hugoandrade.calendarviewapp.R;
 
 
-public class    LoginActivity extends AppCompatActivity {
+//나이를 받아서 년도를 계산하여 넘긴다.
+public class LoginActivity extends AppCompatActivity {
     private SessionCallback sessionCallback;
 
     private FirebaseAuth Firebaseauth =null;
@@ -83,7 +84,7 @@ public class    LoginActivity extends AppCompatActivity {
 
         User_login_Check(); //유저 로그인 되어있는지 체크하는 함수
         FirebaseAuthgoogle(); //구글 로그인 메인 함수(onCreate안의 함수)
-        getAppKeyHash();
+        //getAppKeyHash();
         login_kakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +97,7 @@ public class    LoginActivity extends AppCompatActivity {
 
     }
 
+    /*
     private void getAppKeyHash() {
             PackageInfo packageInfo = null;
             try {
@@ -115,12 +117,14 @@ public class    LoginActivity extends AppCompatActivity {
                     Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
                 }
             }
-
     }
+     */
+
     //유저 로그인 되어있는지 체크하는 함수
     public void User_login_Check(){
         if (currentUser != null) {
-            Intent intent = new Intent(this, MemberInitActivity.class);
+            Log.d("임민규","커런트 없음");
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -170,9 +174,9 @@ public class    LoginActivity extends AppCompatActivity {
                 public void onSuccess(MeV2Response result) {
                     UserAccount kakaoAccount = result.getKakaoAccount();
                     if (kakaoAccount != null) {
-                        Intent intent = new Intent(getApplicationContext(),MemberInitActivity.class);
-                        intent.putExtra("getgender",result.getKakaoAccount().getGender().toString());
-                        intent.putExtra("getbithday",result.getKakaoAccount().getBirthday());
+                        //Intent intent = new Intent(getApplicationContext(),MemberInitActivity.class);
+                        //intent.putExtra("getgender",result.getKakaoAccount().getGender().toString());
+                        //intent.putExtra("getbithday",result.getKakaoAccount().getBirthday());
                         getgender = result.getKakaoAccount().getGender().toString();
                         getbithday = result.getKakaoAccount().getBirthday();
                         FirebaseAuthkakaologin(result.getKakaoAccount().getEmail(), KakaoPassword,getgender,getbithday);
@@ -333,7 +337,7 @@ public class    LoginActivity extends AppCompatActivity {
 //
 //                }
 //            });
-            Intent intent = new Intent(this, MemberInitActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("getgender",getgender);
             intent.putExtra("getbithday",getbithday);
             startActivity(intent);

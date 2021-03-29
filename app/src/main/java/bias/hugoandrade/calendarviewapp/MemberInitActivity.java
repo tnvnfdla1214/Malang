@@ -112,11 +112,14 @@ public class MemberInitActivity extends AppCompatActivity {     // 1. 클래스 
         ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.Gender, android.R.layout.simple_spinner_dropdown_item);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Gender.setAdapter(monthAdapter);
-        if(getgender.equals("MALE")){
+        /*
+        if(!getgender.equals(null)&&getgender.equals("MALE")){
             Gender.setSelection(1);
         }else{
             Gender.setSelection(0);
         }
+
+         */
         // 해당 listener로 스피너의 position으로 대학교를 결정
         Gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

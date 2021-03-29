@@ -1,22 +1,38 @@
 package bias.hugoandrade.calendarviewapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import bias.hugoandrade.calendarviewapp.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /* 여기서는 별거 없이 안드로이드 버전만 체크한다 생각하면 될 듯*/
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +43,44 @@ public class MainActivity extends AppCompatActivity {
 
         setUKLocale(this);
 
+        // 로그인 상태, 회원정보 등록 상태, 리뷰 미작성 여부 상태를 결정하는 함수
+        Check_User_State();
+
         initializeUI();
+    }
+
+    private void Check_User_State() {
+
+        // 현재 유저에 대한 파이어베이스 유저 정보
+        final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        // if : 현재 파이어베이스 유저 정보가 없다면
+        // else : 현재 파이어베이스 유저 정보가 있음
+        if (CurrentUser == null) {
+            myStartActivity(LoginActivity.class);
+        } else {
+
+            // CurruntUser에서 CurruntUser_Uid를 가져와 documentReference
+            final String CurruntUser_Uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            final DocumentReference documentReference = FirebaseFirestore.getInstance().collection("USER").document(CurruntUser_Uid);
+
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null) {
+                            // else : CurruntUser는 있으나 CurruntUser_Uid를 Uid로 가지는 document가 존재 X
+                            if (document.exists()) {
+
+                            } else {
+                                myStartActivity(MemberInitActivity.class);
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private void initializeUI() {
@@ -147,5 +200,10 @@ public class MainActivity extends AppCompatActivity {
         String getDescription() {
             return mDescription;
         }
+    }
+
+    private void myStartActivity(Class c) {
+        Intent intent = new Intent(this, c);
+        startActivityForResult(intent, 1);
     }
 }
