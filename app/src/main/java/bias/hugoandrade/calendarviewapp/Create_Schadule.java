@@ -16,13 +16,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import bias.hugoandrade.calendarviewapp.data.Event;
 import bias.hugoandrade.calendarviewapp.data.CALENDAR;
+import bias.hugoandrade.calendarviewapp.data.USER;
 import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 import bias.hugoandrade.calendarviewapp.utils.ColorUtils;
 
@@ -53,6 +59,9 @@ public class Create_Schadule extends AppCompatActivity {
     private InputMethodManager imm;
     private int mColor;
     private String Schadule;
+    private USER user = new USER();
+    private String CurrentUid;
+    private FirebaseUser CurrentUser;
 
 
     private final static SimpleDateFormat dateFormat
@@ -93,6 +102,10 @@ public class Create_Schadule extends AppCompatActivity {
         setContentView(R.layout.activity_create_schedule);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
+        CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        CurrentUid =CurrentUser.getUid();
+        getUserModel(CurrentUid);
+
         Log.d("asdasd","qweqwe");
 
         initializeUI();
@@ -115,6 +128,7 @@ public class Create_Schadule extends AppCompatActivity {
         event_Schadule = findViewById(R.id.event_Schadule);
         start_date = findViewById(R.id.start_date);
         end_date = findViewById(R.id.end_date);
+
 
         View back_view = findViewById(R.id.back_view);
         back_view.setOnClickListener(new View.OnClickListener() {
@@ -258,14 +272,18 @@ public class Create_Schadule extends AppCompatActivity {
 
         String couple_Id = firebaseFirestore.collection("CALENDAR").document().getId();
 
-        //final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document(couple_Id);
-        final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK");
+        String Gender = user.getUSER_Gender() == 0 ? "CALENDAR_GIRL" : "CALENDAR_MAN";
 
-        final DocumentReference Gender_Docu = Calendar_Docu.collection("CALENDAR_MAN").document("202103");
+        String YEAR = String.valueOf(Start_Calendar.get(Calendar.YEAR));
+        String MONTH = String.valueOf(Start_Calendar.get(Calendar.MONTH)+1);
 
-        String calendar_Id= Gender_Docu.collection("202103").document().getId();
+        final DocumentReference Calendar_Docu =firebaseFirestore.collection("CALENDAR").document(user.getUSER_CoupleUID());
 
-        final DocumentReference documentReference =Gender_Docu.collection("202103").document(calendar_Id);
+        final DocumentReference Gender_Docu = Calendar_Docu.collection(Gender).document(YEAR + "/" + MONTH);
+
+        String calendar_Id= Gender_Docu.collection(YEAR + "/" + MONTH).document().getId();
+
+        final DocumentReference documentReference = Gender_Docu.collection(YEAR + "/" + MONTH).document(calendar_Id);
 
 
         mColor = ColorUtils.mColors[0];  //이거로 남자 여자 구분하기
@@ -349,5 +367,24 @@ public class Create_Schadule extends AppCompatActivity {
         return count;
     }
 
-
+    public void getUserModel(String CurrentUid){
+        final DocumentReference documentReference = FirebaseFirestore.getInstance().collection("USER").document(CurrentUid);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        if (document.exists()) {  //데이터의 존재여부
+                            USER test = new USER();
+                            test =  document.toObject(USER.class);
+                            user = new USER(test.getUSER_Name(),test.getUSER_Gender(),test.getUSER_NickName(),test.getUSER_BirthY()
+                                    ,test.getUSER_BirthM(),test.getUSER_BirthD(),test.getUSER_CoupleUID(),test.getUSER_UID(),test.getUSER_Level());
+                        }
+                    }
+                }
+            }
+        });
+        return;
+    }
 }

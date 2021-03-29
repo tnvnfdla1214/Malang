@@ -643,7 +643,7 @@ public class CalendarView extends FrameLayout {
             final LinearLayout first_schedule = view.findViewById(R.id.first_schedule);
             final LinearLayout second_schedule = view.findViewById(R.id.second_schedule);
             final LinearLayout third_schedule = view.findViewById(R.id.third_schedule);
-            //final LinearLayout schedule = view.findViewById(R.id.schedule);
+            final LinearLayout schedule = view.findViewById(R.id.schedule);
             //MultipleTriangleView vNotes = view.findViewById(R.id.v_notes);
 
 
@@ -914,12 +914,20 @@ public class CalendarView extends FrameLayout {
                 });
 ///////////
 
-/*
-                schedule.animate().rotationYBy(90f).setDuration(2000).start();
-                    schedule.animate().rotationXBy(180f).setDuration(10).start();
-                    schedule.animate().rotationBy(180f).setDuration(10).start();
 
- */
+                //schedule.animate().rotationYBy(90f).setDuration(2000).start();
+                schedule.animate().rotationXBy(180f).setDuration(10).start();
+                schedule.animate().rotationBy(180f).setDuration(10).start();
+
+
+                schedule.setOnClickListener(new OnClickListener() {
+                                                @Override
+                                                /*https://gus0000123.medium.com/android-viewpropertyanimator%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-animation-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0-2efb25397035
+                                                 * https://github.com/ybq/Android-SpinKit*/
+                                                public void onClick(View v) {
+                                                    Log.d("클릭", "클릭");
+                                                }
+                                            });
 
 
 

@@ -37,6 +37,11 @@
 
         </activity>
         <activity android:name="bias.hugoandrade.calendarviewapp.LoginActivity" android:screenOrientation="portrait">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
 <!--        <activity-->
 <!--            android:name=".CalendarViewWithNotesActivity"-->
@@ -50,11 +55,7 @@
             android:name="bias.hugoandrade.calendarviewapp.CalendarViewWithNotesActivitySDK21"
             android:parentActivityName="bias.hugoandrade.calendarviewapp.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="bias.hugoandrade.calendarviewapp.MainActivity" />

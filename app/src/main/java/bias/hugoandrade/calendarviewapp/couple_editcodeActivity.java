@@ -83,6 +83,7 @@ public class couple_editcodeActivity extends AppCompatActivity {
                                     intent.putExtra("EXTRA_MESSAGE",0);
                                     String O_Uid = couple.getCOUPLE_HostUID();
                                     intent.putExtra("O_Uid",O_Uid);
+                                    intent.putExtra("couple_UId",Couple_Uid);
                                     startActivity(intent);
                                     finish();
 

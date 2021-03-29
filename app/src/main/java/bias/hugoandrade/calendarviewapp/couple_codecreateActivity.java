@@ -83,7 +83,8 @@ public class couple_codecreateActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), couple_finishActivity.class);
                         intent.putExtra("user",user);
                         intent.putExtra("EXTRA_MESSAGE",1);
-                        intent.putExtra("O_Uid",couple.getCOUPLE_GuestUID());
+                        intent.putExtra("O_Uid",ab);
+                        intent.putExtra("couple_UId",couple_UId);
                         startActivity(intent);
                         finish();
                     }
