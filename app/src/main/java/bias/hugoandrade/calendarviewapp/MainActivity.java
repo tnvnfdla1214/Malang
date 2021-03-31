@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 현재 유저에 대한 파이어베이스 유저 정보
         final FirebaseUser CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String Currunt_Uid = CurrentUser.getUid();
 
         // if : 현재 파이어베이스 유저 정보가 없다면
         // else : 현재 파이어베이스 유저 정보가 있음

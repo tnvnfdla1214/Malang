@@ -30,9 +30,18 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,9 +54,12 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import bias.hugoandrade.calendarviewapp.R;
+import bias.hugoandrade.calendarviewapp.data.CALENDAR;
 import bias.hugoandrade.calendarviewapp.data.Event;
+import bias.hugoandrade.calendarviewapp.data.USER;
 import bias.hugoandrade.calendarviewapp.helpers.ItemTouchHelperCallback;
 import bias.hugoandrade.calendarviewapp.helpers.ItemTouchHelperListener;
+import bias.hugoandrade.calendarviewapp.helpers.YMDCalendar;
 
 /* 커스텀 날짜 다이얼로그 */
 /* 커스텀 날짜 다이얼로그 */
@@ -87,6 +99,16 @@ public class CalendarDialog {
     private ClipData dragData;
 
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+    private USER user = new USER();
+    private String CurrentUid;
+    private FirebaseUser CurrentUser;
+
+    String Gender = user.getUSER_Gender() == 0 ? "CALENDAR_GIRL" : "CALENDAR_MAN";
+    String O_Gender = user.getUSER_Gender() == 0 ? "CALENDAR_MAN" : "CALENDAR_GIRL";
+
+    CALENDAR del_Calendar = new CALENDAR();
+
 
     CalendarDialog(Context context) {
         mContext = context;
@@ -138,6 +160,11 @@ public class CalendarDialog {
 
     /* 날짜 창 빌드*/
     private void buildView() {
+
+        CurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        CurrentUid =CurrentUser.getUid();
+        getUserModel(CurrentUid);
+
         mView = View.inflate(mContext, R.layout.dialog_calendar, null);
         mViewPager = mView.findViewById(R.id.viewPager_calendar);
         // Disable clip to padding
@@ -411,8 +438,24 @@ public class CalendarDialog {
         @Override
         public void onRightClick(int position, RecyclerView.ViewHolder viewHolder) {
             String CalenderUID =mCalendarEvents.get(position).getCALENDAR_UID();
+            int DataYear = mCalendarEvents.get(position).getCALENDAR_StartY();
+            int DataMonth = mCalendarEvents.get(position).getCALENDAR_StartM()+1;
+            del_Calendar = new CALENDAR();
 
-            firebaseFirestore.collection("CALENDAR").document("t2hhOAN07xvtQkSQq3BK").collection("CALENDAR_MAN").document("202103").collection("202103").document(CalenderUID)
+            CollectionReference coll_Calendar = FirebaseFirestore.getInstance().collection("CALENDAR").document(user.getUSER_CoupleUID()).collection(Gender).document(DataYear + "_" + DataMonth).collection(DataYear + "_" + DataMonth);
+            coll_Calendar.whereEqualTo("CALENDAR_UID",CalenderUID).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    del_Calendar=create_event_firebase(document);
+                                }
+                            }
+                        }
+                    });
+
+            firebaseFirestore.collection("CALENDAR").document(user.getUSER_CoupleUID()).collection(Gender).document(DataYear + "_" + DataMonth).collection(DataYear + "_" + DataMonth).document(CalenderUID)
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -426,9 +469,11 @@ public class CalendarDialog {
 
                         }
                     });
+
 //            CalendarViewWithNotesActivitySDK21.makeIntent(mContext).putExtra("")
-            if (mListener != null)
-                mListener.onRightClick(mCalendarEvents.get(position));
+            if (mListener != null) {
+                mListener.onRightClick(mCalendarEvents.get(position), del_Calendar);
+            }
             mCalendarEvents.remove(position);                         // 해당 position의 리스트의 데이터도 삭제한다.
             notifyItemRemoved(position);
         }
@@ -571,7 +616,7 @@ public class CalendarDialog {
     public interface OnCalendarDialogListener {
         void onEventClick(Event event);
         void onCreateEvent(Calendar calendar);
-        void onRightClick(Event event);
+        void onRightClick(Event event, CALENDAR calendar);
     }
 
     private static int diffYMD(Calendar date1, Calendar date2) {
@@ -640,5 +685,48 @@ public class CalendarDialog {
             calendarDialog.setEventList(mEventList);
             calendarDialog.setOnCalendarDialogListener(mOnCalendarDialogListener);
         }
+    }
+
+    public void getUserModel(String CurrentUid){
+        final DocumentReference documentReference = FirebaseFirestore.getInstance().collection("USER").document(CurrentUid);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        if (document.exists()) {  //데이터의 존재여부
+                            USER test = new USER();
+                            test =  document.toObject(USER.class);
+                            user = new USER(test.getUSER_Name(),test.getUSER_Gender(),test.getUSER_NickName(),test.getUSER_BirthY()
+                                    ,test.getUSER_BirthM(),test.getUSER_BirthD(),test.getUSER_CoupleUID(),test.getUSER_UID(),test.getUSER_Level());
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    //Event_firebase 를 생성하는 함수
+    CALENDAR create_event_firebase(QueryDocumentSnapshot doc){
+        CALENDAR e_firebase = new CALENDAR(
+                doc.getData().get("CALENDAR_UID").toString(),
+                doc.getData().get("CALENDAR_id").toString(),
+                doc.getData().get("CALENDAR_Schedule").toString(),
+                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("CALENDAR_StartD").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_StartM").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_StartY").toString())
+                )),
+                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("CALENDAR_EndD").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_EndM").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_EndY").toString())
+                )),
+                YMDCalendar.toCalendar(new YMDCalendar(Integer.parseInt(doc.getData().get("CALENDAR_FixD").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_FixM").toString()),
+                        Integer.parseInt(doc.getData().get("CALENDAR_FixY").toString())
+                )),
+                Integer.parseInt(doc.getData().get("CALENDAR_DateCount").toString())
+        );
+        return e_firebase;
     }
 }

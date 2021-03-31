@@ -46,6 +46,7 @@ public class Create_Schadule extends AppCompatActivity {
     private static final String INTENT_EXTRA_CALENDAR = "intent_extra_calendar";
     private static final String INTENT_EXTRA_EVENT = "intent_extra_event";
     private static final String INTENT_EXTRA_ACTION = "intent_extra_action";
+    private static final String INTENT_EXTRA_CALENDAR_MODEL = "intent_extra_calendar_model";
 
     private Context context;
     private ImageView schadule_cancel_button;
@@ -93,6 +94,10 @@ public class Create_Schadule extends AppCompatActivity {
 
     public static Calendar extractCalendarFromIntent(Intent data) {
         return (Calendar) data.getSerializableExtra(INTENT_EXTRA_CALENDAR);
+    }
+
+    public static CALENDAR extractCalendarModelFromIntent(Intent data) {
+        return (CALENDAR) data.getSerializableExtra(INTENT_EXTRA_CALENDAR_MODEL);
     }
 
 
@@ -326,7 +331,8 @@ public class Create_Schadule extends AppCompatActivity {
 
         setResult(RESULT_OK, new Intent()
                 .putExtra(INTENT_EXTRA_ACTION, action)
-                .putExtra(INTENT_EXTRA_EVENT, mOriginalEventFirebase));
+                .putExtra(INTENT_EXTRA_EVENT, mOriginalEventFirebase)
+                .putExtra(INTENT_EXTRA_CALENDAR_MODEL, EventFirebase));
         finish();
 
         //if (action == ACTION_CREATE)
