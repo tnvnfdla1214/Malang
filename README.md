@@ -9,45 +9,62 @@
 <img src="https://user-images.githubusercontent.com/54509842/122375504-3d96af80-cf9e-11eb-864d-f60a2501f2eb.jpg" width="20%"></img>
 #### 1. 구글 로그인/ 카카오 로그인 기능 </br>
 #### 2. 자동로그인 기능 </br>
-
-2) 회원정보 화면</br>
-<img src="https://user-images.githubusercontent.com/54509842/122375655-63bc4f80-cf9e-11eb-9c70-0fdc0d0671ca.jpg" width="20%"></img>
-<img src="https://user-images.githubusercontent.com/54509842/122374715-944fb980-cf9d-11eb-96e8-e3a7122924fe.jpg" width="20%"></img>
-<img src="https://user-images.githubusercontent.com/54509842/122374715-944fb980-cf9d-11eb-96e8-e3a7122924fe.jpg" width="20%"></img>
-<img src="https://user-images.githubusercontent.com/54509842/122375285-0aecb700-cf9e-11eb-9c7e-212ae29ec158.jpg" width="20%"></img>
-#### 1. 회원정보의 입력은 사진과 닉네임과 생년월일과 학교를 받는 화면이다 </br>
-#### 2. 닉네임을 입력 받지 않을시 이메일의 앞부분으로 생성한다. </br>
-#### 3. 사진을 선택 시 선택한 사진이 미리보기로 보여진다. </br>
-
+2) 회원 정보 화면</br>
+<img src="https://user-images.githubusercontent.com/48902047/122376315-007eed00-cf9f-11eb-9a4e-3e07040f7d9c.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122376371-0e347280-cf9f-11eb-8c04-a79ca173c4bd.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122376413-18567100-cf9f-11eb-80c4-a1df93116299.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122376482-26a48d00-cf9f-11eb-9135-b4ca1298560a.jpg" width="20%"></img>
+#### 1. 회원정보의 입력은 사진, 닉네임, 이름, 생일, 성별을 받는 화면이다</br>
+####2. 닉네임을 입력 받지 않을시 이메일의 앞부분으로 생성한다.</br>
+####3. 앨범에 접근 시 접근 권한을 부여 받는다.</br>
+####4. 사진을 선택 시 선택한 사진이 미리보기로 보여진다.</br>
 3) 커플 매칭 화면</br>
+<img src="https://user-images.githubusercontent.com/48902047/122377239-ded23580-cf9f-11eb-801e-f73122fd88ba.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122349509-4a5bd900-cf87-11eb-9c38-48a2e6dc713b.jpg" width="20%"></img>
-#### 유저들의 마켓에 올린 게시물이 실시간으로 보여진다. </br>
-
+<img src="https://user-images.githubusercontent.com/48902047/122377351-f9a4aa00-cf9f-11eb-9aaf-17733a23daf8.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122377398-045f3f00-cfa0-11eb-9a8a-d1fcdc849ee6.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122377515-1ccf5980-cfa0-11eb-8bf3-8f293489335c.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122377578-2953b200-cfa0-11eb-87fe-8dc3a5886567.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122377660-3bcdeb80-cfa0-11eb-8927-19d4478d640a.jpg" width="20%"></img>
+###커플 코드를 발급 할 사람</br>
+####1. 커플 코드가 있어요.</br>
+####2. 커플 코드를 입력한다.</br>
+####3. 커플 매칭 성사 후 일정 화면으로 이동한다.</br>
+###커플 코드를 입력할 사람</br>
+####1. 커플 코드가 뭔지 몰라요 .</br>
+####2. 처음 만난 날짜를 입력 받는다. </br>
+####3. 커플 코드를 생성 받는다. > 상대방의 입력을 기다린다.</br>
+####4. 커플 매칭 성사 후 일정 화면으로 이동한다.</br>
 4) 일정 화면</br>
-<img src="https://user-images.githubusercontent.com/48902047/122349509-4a5bd900-cf87-11eb-9c38-48a2e6dc713b.jpg" width="20%"></img>
-<img src="https://user-images.githubusercontent.com/48902047/122349752-81ca8580-cf87-11eb-9d93-d7aaf99b7aa8.jpg" width="20%"></img>
-<img src="https://user-images.githubusercontent.com/48902047/122349982-c1916d00-cf87-11eb-8af3-acab22e02f75.jpg" width="20%"></img>
-#### 1. 상단 오른쪽 돋보기 버튼을 누르면 검색창으로 검색창으로 이동된다. </br>
-#### 2. 단어를 검색시 게시물의 제목의 글자를 찾아 검색결과의 리스트를 보여준다. </br>
-#### 3. 하단 카테고리버튼을 클릭시 해당 카테고리리스트를 보여준다. </br>
-
+<img src="https://user-images.githubusercontent.com/48902047/122377752-4e482500-cfa0-11eb-902a-5175ee02e5d8.jpg" width="20%"></img>
+####1. 오늘 날짜의 월 달력이 표시된다. </br>
+####2. 해당 월의 일정을 불러와 표시한다. </br>
+####3. 일정 추가 버튼으로 일정을 추가한다. </br>
 5) 일정 등록 화면</br>
-<img src="https://user-images.githubusercontent.com/48902047/122350743-72980780-cf88-11eb-84f8-c1ab0e283d8e.jpg" width="20%"></img>
-<img src="https://user-images.githubusercontent.com/48902047/122350881-93f8f380-cf88-11eb-8639-46ec51158392.jpg" width="20%"></img>
-#### 1. 유저가 올린 게시물을 클릭시 해당 게시물의 상세 정보를 보여준다. </br>
-#### 2. 게시물 창에는 게시물을 올린 유저의 사진을 5장까지 스와이핑까지 가능하다. </br>
-#### 3. 좋아요, 신고하기 기능도 있다. </br>
-#### 4. 게시물의 작성자와 채팅을 원할시 하단부에 있는 채팅하기를 누르면 채팅창으로 이동된다. </br>
-
+<img src="https://user-images.githubusercontent.com/48902047/122377814-6029c800-cfa0-11eb-8ccd-5a8a8bb885f9.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122377938-7afc3c80-cfa0-11eb-95ac-01183b02be44.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122377987-864f6800-cfa0-11eb-90db-e9b7f23fffc1.jpg" width="20%"></img>
+####1. 일정을 입력 한다. </br>
+####2. 일정의 날짜를 클릭하면 소형 달력이 나타난다.</br>
+####3. 일정의 기간을 정한다. </br>
+####4. 우상단의 체크 아이콘으로 일정을 추가한다. </br>
 6) 일정 확인 화면</br>
-<img src="https://user-images.githubusercontent.com/48902047/122353036-a1af7880-cf8a-11eb-9957-f0c3d4e7b89d.jpg" width="20%"></img>
-<img src="https://user-images.githubusercontent.com/48902047/122351223-e803d800-cf88-11eb-8205-ced76367b2d4.jpg" width="20%"></img>
-#### 1. 게시자의 프로필사진을 클릭시 게시자의 회원정보 창이 나온다. </br>
-#### 2. 게시자 회원정보 창에는 게시자의 정수와 리뷰가 나온다. </br>
+<img src="https://user-images.githubusercontent.com/48902047/122378088-9cf5bf00-cfa0-11eb-88f5-e38b252dfa4b.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122378116-a0894600-cfa0-11eb-99c2-7ea3827aef67.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122378131-a54dfa00-cfa0-11eb-92c7-b949c5408498.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122378141-a848ea80-cfa0-11eb-85f5-29825383136d.jpg" width="20%"></img>
+####1. 일정이 일정바 형태로 확인이 가능하다. </br>
+####2. 날짜를 클릭하면 해당 날짜의 다이얼로그가 생성된다. </br>
+####3. 해당 날짜에 일정이 있을 시 다이얼로그에서도 확인이 가능하다.</br> 
 
 7) 일정 수정 & 삭제 화면</br>
-<img src="https://user-images.githubusercontent.com/48902047/122351748-6b252e00-cf89-11eb-8198-cc2e545ff515.jpg" width="20%"></img>
-#### 1. 회원들이 올린 커뮤니티 리스트가 올라온다. </br>
+<img src="https://user-images.githubusercontent.com/48902047/122378283-cc0c3080-cfa0-11eb-82aa-0f81a539c199.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122378293-cf072100-cfa0-11eb-95dc-043300fb058b.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122378308-d3cbd500-cfa0-11eb-9901-f757d8b21cdb.jpg" width="20%"></img>
+####1. 다이얼로그에서 일정을 클릭하여 일정 수정 화면으로 이동한다. </br>
+####2. 수정 사항을 입력하고 우상단의 체크 아이콘으로 수정을 한다. </br>
+####3. 다이얼로그에서 일정을 오른쪽에서 왼쪽으로 스와이핑이 가능하다.</br>
+####4. 삭제하기 버튼을 클릭하면 삭제가 가능하다. </br>
 
 
 
