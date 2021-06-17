@@ -15,9 +15,9 @@
 <img src="https://user-images.githubusercontent.com/48902047/122376413-18567100-cf9f-11eb-80c4-a1df93116299.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122376482-26a48d00-cf9f-11eb-9135-b4ca1298560a.jpg" width="20%"></img>
 #### 1. 회원정보의 입력은 사진, 닉네임, 이름, 생일, 성별을 받는 화면이다</br>
-####2. 닉네임을 입력 받지 않을시 이메일의 앞부분으로 생성한다.</br>
-####3. 앨범에 접근 시 접근 권한을 부여 받는다.</br>
-####4. 사진을 선택 시 선택한 사진이 미리보기로 보여진다.</br>
+#### 2. 닉네임을 입력 받지 않을시 이메일의 앞부분으로 생성한다.</br>
+#### 3. 앨범에 접근 시 접근 권한을 부여 받는다.</br>
+#### 4. 사진을 선택 시 선택한 사진이 미리보기로 보여진다.</br>
 3) 커플 매칭 화면</br>
 <img src="https://user-images.githubusercontent.com/48902047/122377239-ded23580-cf9f-11eb-801e-f73122fd88ba.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122349509-4a5bd900-cf87-11eb-9c38-48a2e6dc713b.jpg" width="20%"></img>
@@ -26,47 +26,47 @@
 <img src="https://user-images.githubusercontent.com/48902047/122377515-1ccf5980-cfa0-11eb-8bf3-8f293489335c.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122377578-2953b200-cfa0-11eb-87fe-8dc3a5886567.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122377660-3bcdeb80-cfa0-11eb-8927-19d4478d640a.jpg" width="20%"></img>
-###커플 코드를 발급 할 사람</br>
-####1. 커플 코드가 뭔지 몰라요. 클릭</br>
-####2. 처음 만난 날짜를 입력 받는다. </br>
-####3. 커플 코드를 생성 받는다. > 상대방의 입력을 기다린다.</br>
-####4. 커플 매칭 성사 후 일정 화면으로 이동한다.</br>
+### 커플 코드를 발급 할 사람</br>
+#### 1. 커플 코드가 뭔지 몰라요. 클릭</br>
+#### 2. 처음 만난 날짜를 입력 받는다. </br>
+#### 3. 커플 코드를 생성 받는다. > 상대방의 입력을 기다린다.</br>
+#### 4. 커플 매칭 성사 후 일정 화면으로 이동한다.</br>
 
-###커플 코드를 입력할 사람</br>
-####1. 커플 코드가 있어요. 클릭</br>
-####2. 커플 코드를 입력한다.</br>
-####3. 커플 매칭 성사 후 일정 화면으로 이동한다.</br>
+### 커플 코드를 입력할 사람</br>
+#### 1. 커플 코드가 있어요. 클릭</br>
+#### 2. 커플 코드를 입력한다.</br>
+#### 3. 커플 매칭 성사 후 일정 화면으로 이동한다.</br>
 
 4) 일정 화면</br>
 <img src="https://user-images.githubusercontent.com/48902047/122377752-4e482500-cfa0-11eb-902a-5175ee02e5d8.jpg" width="20%"></img>
-####1. 오늘 날짜의 월 달력이 표시된다. </br>
-####2. 해당 월의 일정을 불러와 표시한다. </br>
-####3. 일정 추가 버튼으로 일정을 추가한다. </br>
+#### 1. 오늘 날짜의 월 달력이 표시된다. </br>
+#### 2. 해당 월의 일정을 불러와 표시한다. </br>
+#### 3. 일정 추가 버튼으로 일정을 추가한다. </br>
 5) 일정 등록 화면</br>
 <img src="https://user-images.githubusercontent.com/48902047/122377814-6029c800-cfa0-11eb-8ccd-5a8a8bb885f9.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122377938-7afc3c80-cfa0-11eb-95ac-01183b02be44.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122377987-864f6800-cfa0-11eb-90db-e9b7f23fffc1.jpg" width="20%"></img>
-####1. 일정을 입력 한다. </br>
-####2. 일정의 날짜를 클릭하면 소형 달력이 나타난다.</br>
-####3. 일정의 기간을 정한다. </br>
-####4. 우상단의 체크 아이콘으로 일정을 추가한다. </br>
+#### 1. 일정을 입력 한다. </br>
+#### 2. 일정의 날짜를 클릭하면 소형 달력이 나타난다.</br>
+#### 3. 일정의 기간을 정한다. </br>
+#### 4. 우상단의 체크 아이콘으로 일정을 추가한다. </br>
 6) 일정 확인 화면</br>
 <img src="https://user-images.githubusercontent.com/48902047/122378088-9cf5bf00-cfa0-11eb-88f5-e38b252dfa4b.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122378116-a0894600-cfa0-11eb-99c2-7ea3827aef67.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122378131-a54dfa00-cfa0-11eb-92c7-b949c5408498.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122378141-a848ea80-cfa0-11eb-85f5-29825383136d.jpg" width="20%"></img>
-####1. 일정이 일정바 형태로 확인이 가능하다. </br>
-####2. 날짜를 클릭하면 해당 날짜의 다이얼로그가 생성된다. </br>
-####3. 해당 날짜에 일정이 있을 시 다이얼로그에서도 확인이 가능하다.</br> 
+#### 1. 일정이 일정바 형태로 확인이 가능하다. </br>
+#### 2. 날짜를 클릭하면 해당 날짜의 다이얼로그가 생성된다. </br>
+#### 3. 해당 날짜에 일정이 있을 시 다이얼로그에서도 확인이 가능하다.</br> 
 
 7) 일정 수정 & 삭제 화면</br>
 <img src="https://user-images.githubusercontent.com/48902047/122378283-cc0c3080-cfa0-11eb-82aa-0f81a539c199.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122378293-cf072100-cfa0-11eb-95dc-043300fb058b.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122378308-d3cbd500-cfa0-11eb-9901-f757d8b21cdb.jpg" width="20%"></img>
-####1. 다이얼로그에서 일정을 클릭하여 일정 수정 화면으로 이동한다. </br>
-####2. 수정 사항을 입력하고 우상단의 체크 아이콘으로 수정을 한다. </br>
-####3. 다이얼로그에서 일정을 오른쪽에서 왼쪽으로 스와이핑이 가능하다.</br>
-####4. 삭제하기 버튼을 클릭하면 삭제가 가능하다. </br>
+#### 1. 다이얼로그에서 일정을 클릭하여 일정 수정 화면으로 이동한다. </br>
+#### 2. 수정 사항을 입력하고 우상단의 체크 아이콘으로 수정을 한다. </br>
+#### 3. 다이얼로그에서 일정을 오른쪽에서 왼쪽으로 스와이핑이 가능하다.</br>
+#### 4. 삭제하기 버튼을 클릭하면 삭제가 가능하다. </br>
 
 
 
