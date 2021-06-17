@@ -3,10 +3,55 @@
 #### 연인들의 연인 맺기와 일정을 공유할 수 있는 어플리케이션</br>
 #### Firebase - Malang</br>
 
+## 2. Inteface
+1) 로그인 화면</br>
+<img src="https://user-images.githubusercontent.com/54509842/122374715-944fb980-cf9d-11eb-96e8-e3a7122924fe.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/54509842/122375504-3d96af80-cf9e-11eb-864d-f60a2501f2eb.jpg" width="20%"></img>
+#### 1. 구글 로그인/ 카카오 로그인 기능 </br>
+#### 2. 자동로그인 기능 </br>
+
+2) 회원정보 화면</br>
+<img src="https://user-images.githubusercontent.com/54509842/122375655-63bc4f80-cf9e-11eb-9c70-0fdc0d0671ca.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/54509842/122374715-944fb980-cf9d-11eb-96e8-e3a7122924fe.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/54509842/122374715-944fb980-cf9d-11eb-96e8-e3a7122924fe.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/54509842/122375285-0aecb700-cf9e-11eb-9c7e-212ae29ec158.jpg" width="20%"></img>
+#### 1. 회원정보의 입력은 사진과 닉네임과 생년월일과 학교를 받는 화면이다 </br>
+#### 2. 닉네임을 입력 받지 않을시 이메일의 앞부분으로 생성한다. </br>
+#### 3. 사진을 선택 시 선택한 사진이 미리보기로 보여진다. </br>
+
+3) 커플 매칭 화면</br>
+<img src="https://user-images.githubusercontent.com/48902047/122349509-4a5bd900-cf87-11eb-9c38-48a2e6dc713b.jpg" width="20%"></img>
+#### 유저들의 마켓에 올린 게시물이 실시간으로 보여진다. </br>
+
+4) 일정 화면</br>
+<img src="https://user-images.githubusercontent.com/48902047/122349509-4a5bd900-cf87-11eb-9c38-48a2e6dc713b.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122349752-81ca8580-cf87-11eb-9d93-d7aaf99b7aa8.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122349982-c1916d00-cf87-11eb-8af3-acab22e02f75.jpg" width="20%"></img>
+#### 1. 상단 오른쪽 돋보기 버튼을 누르면 검색창으로 검색창으로 이동된다. </br>
+#### 2. 단어를 검색시 게시물의 제목의 글자를 찾아 검색결과의 리스트를 보여준다. </br>
+#### 3. 하단 카테고리버튼을 클릭시 해당 카테고리리스트를 보여준다. </br>
+
+5) 일정 등록 화면</br>
+<img src="https://user-images.githubusercontent.com/48902047/122350743-72980780-cf88-11eb-84f8-c1ab0e283d8e.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122350881-93f8f380-cf88-11eb-8639-46ec51158392.jpg" width="20%"></img>
+#### 1. 유저가 올린 게시물을 클릭시 해당 게시물의 상세 정보를 보여준다. </br>
+#### 2. 게시물 창에는 게시물을 올린 유저의 사진을 5장까지 스와이핑까지 가능하다. </br>
+#### 3. 좋아요, 신고하기 기능도 있다. </br>
+#### 4. 게시물의 작성자와 채팅을 원할시 하단부에 있는 채팅하기를 누르면 채팅창으로 이동된다. </br>
+
+6) 일정 확인 화면</br>
+<img src="https://user-images.githubusercontent.com/48902047/122353036-a1af7880-cf8a-11eb-9957-f0c3d4e7b89d.jpg" width="20%"></img>
+<img src="https://user-images.githubusercontent.com/48902047/122351223-e803d800-cf88-11eb-8205-ced76367b2d4.jpg" width="20%"></img>
+#### 1. 게시자의 프로필사진을 클릭시 게시자의 회원정보 창이 나온다. </br>
+#### 2. 게시자 회원정보 창에는 게시자의 정수와 리뷰가 나온다. </br>
+
+7) 일정 수정 & 삭제 화면</br>
+<img src="https://user-images.githubusercontent.com/48902047/122351748-6b252e00-cf89-11eb-8198-cc2e545ff515.jpg" width="20%"></img>
+#### 1. 회원들이 올린 커뮤니티 리스트가 올라온다. </br>
 
 
 
-## 2. Explanation</br>
+## 3. Explanation</br>
 
 ### Ⅰ Calendar(패키지)</br>
 
@@ -162,7 +207,7 @@
   ⓐ 파이어스토어에 Storage에 이미지를 저장할 때에 Storage의 주소를 빼내어 사용한다. </br>
 
 
-## 3. KeyWord</br>
+## 4. KeyWord</br>
 ### 1) NavigationBar</br>
 #### Main의 하단바 구성으로 사용하였다. </br>(Main.java : 67~83) </br>
 ### 2) Fragment</br>
