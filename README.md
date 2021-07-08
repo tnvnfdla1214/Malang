@@ -20,7 +20,6 @@
 #### 4. 사진을 선택 시 선택한 사진이 미리보기로 보여진다.</br>
 3) 커플 매칭 화면</br>
 <img src="https://user-images.githubusercontent.com/48902047/122377239-ded23580-cf9f-11eb-801e-f73122fd88ba.jpg" width="20%"></img>
-<img src="https://user-images.githubusercontent.com/48902047/122349509-4a5bd900-cf87-11eb-9c38-48a2e6dc713b.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122377351-f9a4aa00-cf9f-11eb-9aaf-17733a23daf8.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122377398-045f3f00-cfa0-11eb-9a8a-d1fcdc849ee6.jpg" width="20%"></img>
 <img src="https://user-images.githubusercontent.com/48902047/122377515-1ccf5980-cfa0-11eb-8bf3-8f293489335c.jpg" width="20%"></img>
